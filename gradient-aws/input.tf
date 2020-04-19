@@ -104,7 +104,7 @@ variable "k8s_subnet_ids" {
 
 variable "k8s_version" {
     description = "Kubernetes version"
-    default = "1.14"
+    default = "1.15"
 }
 
 # LB
