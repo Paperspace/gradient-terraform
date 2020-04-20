@@ -134,6 +134,9 @@ Example:
 - CNAME RECORD *.gradient.mycompany.com [ELB_HOSTNAME]
 - CNAME RECORD gradient.mycompany.com [ELB_HOSTNAME]
 
+### KUBECONFIG
+For using the generated KUBECONFIG, EKS requires aws-iam-authenticator to be installed: https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html
+
 ### Hot nodes
 By default, hot nodes are set up for experiments, model deployments, notebooks, and tensorboards. Hot nodes can be configured by setting k8s_node_asg_min_sizes.
 
