@@ -80,6 +80,19 @@ mkdir gradient-cluster
 cd gradient-cluster
 ```
 
+### 6. Create terraform provider file in S3 (optional)
+Create a file called in gradient-cluster folder called: backend.tf
+```
+terraform {
+    backend "s3" {
+        bucket = "artifacts-bucket"
+        key    = "gradient-processing"
+        region = "us-east-1"
+        session_name = "gradient-processing-terraform"
+    }
+}
+```
+
 ## Installing Gradient on AWS
 
 ### Create a main.tf file in the gradient-cluster folder
