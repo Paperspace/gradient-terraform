@@ -118,6 +118,7 @@ variable "artifacts_secret_access_key" {
 }
 variable "gradient_processing_version" {
     description = "Gradient processing version"
+    default = "*"
 }
 variable "logs_host" {
     description = "Logs host"
