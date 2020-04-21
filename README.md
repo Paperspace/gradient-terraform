@@ -64,7 +64,7 @@ A shared file server is used to share files across workers. The AWS version of t
 
 Currently supported: 
 - efs
-- nfs
+- nfs (ensure export has proper permissions nobody:nogroup)
 
 ### 4. Setup a wildcard SSL certificate
 Gradient uses a wildcard SSL certificate to secure HTTP traffic into your processing site.
@@ -171,9 +171,26 @@ Here are the current defaults:
 
 ## Installing Gradient on VM / baremetal
 Requirements
-- Ubuntu 18.04
+- Ubuntu 18.04, Docker installed on all hosts (use "setup_docker = true" to have hosts setup with docker)
+- Set default docker runtime to nvidia in /etc/docker/daemon.json (this is automatically done if using "setup_nvidia = true":
+```
+The following is an example of how the added line appears in the JSON file. Do not remove any pre-existing content when making this change.
+{
+  "default-runtime": "nvidia",
+  "runtimes": {
+     "nvidia": {
+         "path": "/usr/bin/nvidia-container-runtime",
+         "runtimeArgs": []
+     }
+ }
+}
+```
 - Ensure your SSH public key is installed on each host
 - Ensure sudo is enabled for the account you're logging into
+- Ensure /etc/sshd/sshd_config has the following setting and that you have reload ssh
+```
+AllowTcpForwarding yes
+```
 
 ### Create a main.tf file in the gradient-cluster folder
 ```
@@ -209,9 +226,6 @@ module "gradient_metal" {
 
     // Uncomment to setup docker
     // setup_docker = true 
-
-    // Uncomment to setup nvidia drivers and nvidia-docker2, requires reboot
-    // setup_nvidia = true 
 
     shared_storage_path = "/srv/gradient"
     shared_storage_server = "shared-nfs-storage.com"
