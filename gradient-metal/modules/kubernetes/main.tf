@@ -105,6 +105,12 @@ resource "rke_cluster" "main" {
         provider = "none"
     }
 
+    services {
+        kublet {
+            extra_binds = var.kubelet_extra_binds
+        }
+    }
+
     system_images {
         kubernetes = "rancher/hyperkube:v${var.k8s_version}-rancher1"
     }

@@ -59,6 +59,9 @@ provider "kubernetes" {
     client_certificate     = module.kubernetes.k8s_client_certificate
     client_key             = module.kubernetes.k8s_client_key
     cluster_ca_certificate = module.kubernetes.k8s_cluster_ca_certificate
+    kubelet_extra_binds = [
+        "${local_storage_path}:${local_storage_path}"
+    ]
     load_config_file = false
 }
 
@@ -80,6 +83,8 @@ module "gradient_processing" {
     global_selector = var.global_selector
     label_selector_cpu = local.label_selector_cpu
     label_selector_gpu = local.label_selector_gpu
+    local_storage_path = var.local_storage_path
+    local_storage_type = "HostPath"
 	logs_host = var.logs_host
 	gradient_processing_version = var.gradient_processing_version
 	name = var.name

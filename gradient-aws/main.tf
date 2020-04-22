@@ -111,6 +111,7 @@ module "gradient_processing" {
     gradient_processing_version = var.gradient_processing_version
     name = var.name
     sentry_dsn = var.sentry_dsn
+    local_shared_storage_type = "ebs"
     shared_storage_path = var.shared_storage_path
     shared_storage_server = local.has_shared_storage ? var.shared_storage_server : module.storage.shared_storage_dns_name
     shared_storage_type = var.shared_storage_type

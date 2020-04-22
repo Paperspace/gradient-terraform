@@ -16,6 +16,10 @@ variable "kubeconfig_path" {
     description = "kubeconfig path"
 }
 
+variable "local_storage_path" {
+    description = "Local storage path for nodes"
+}
+
 variable "master_ips" {
     type = list
     description = "Kubernetes master ips"

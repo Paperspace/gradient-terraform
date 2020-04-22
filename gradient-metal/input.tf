@@ -80,6 +80,11 @@ variable "global_selector" {
     default = ""
 }
 
+variable "local_storage_path" {
+    description = "Local storage path on nodes"
+    default = "/tmpg/gradient"
+}
+
 variable "setup_docker" {
     description = "Setup docker"
     default = false
