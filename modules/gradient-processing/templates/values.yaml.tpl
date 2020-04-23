@@ -24,9 +24,9 @@ global:
   storage:
     gradient-processing-local:
       class: gradient-processing-local
-      path: ${default_storage_path}
-      server: ${default_storage_server}
-      type: ${default_storage_type}
+      path: ${local_storage_path}
+      server: ${local_storage_server}
+      type: ${local_storage_type}
     gradient-processing-shared:
       class: gradient-processing-shared
       path: ${shared_storage_path}
@@ -73,7 +73,6 @@ fluent-bit:
 
 
 gradient-operator:
-  defaultStorageType: ${defaultStorageType}
   config:
     ingressHost: ${domain}
     usePodAntiAffinity: ${use_pod_anti_affinity}

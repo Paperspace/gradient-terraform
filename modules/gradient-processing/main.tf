@@ -1,9 +1,4 @@
 locals {
-    defaultStorageType
-    default_storage_type = {
-        "efs": "AWSEBS"
-        "nfs": "AWSEBS"
-    }
     local_storage_name = "gradient-processing-local"
     shared_storage_name = "gradient-processing-shared"
     tls_secret_name = "gradient-processing-tls"
@@ -16,9 +11,10 @@ data "helm_repository" "paperspace" {
 
 resource "helm_release" "gradient_processing" {
     name = "gradient-processing"
-    repository = data.helm_repository.paperspace.metadata[0].name
-    chart      = "gradient-processing"
-    version = var.gradient_processing_version
+    //repository = data.helm_repository.paperspace.metadata[0].name
+    //chart      = "gradient-processing"
+    chart = "../../../gradient-processing-chart/charts/gradient-processing"
+    //version = var.gradient_processing_version
     values = [
         templatefile("${path.module}/templates/values.yaml.tpl", {
             enabled = var.enabled
@@ -31,7 +27,7 @@ resource "helm_release" "gradient_processing" {
             cluster_autoscaler_enabled = var.cluster_autoscaler_enabled
             cluster_apikey = var.cluster_apikey
             cluster_handle = var.cluster_handle
-            defaultStorageType = local.defaultStorageType
+            default_storage_name = local.local_storage_name
             efs_provisioner_enabled = var.shared_storage_type == "efs" || var.local_storage_type == "efs"
             elastic_search_host = var.elastic_search_host
             elastic_search_port= var.elastic_search_port
@@ -42,7 +38,7 @@ resource "helm_release" "gradient_processing" {
             label_selector_cpu = var.label_selector_cpu
             label_selector_gpu = var.label_selector_gpu
             local_storage_name = local.local_storage_name
-            local_storage_path = local.storage_paths[var.local_storage_type]
+            local_storage_path = var.local_storage_path
             local_storage_server = var.local_storage_server
             local_storage_type = var.local_storage_type
             logs_host = var.logs_host
@@ -53,7 +49,7 @@ resource "helm_release" "gradient_processing" {
             shared_storage_name = local.shared_storage_name
             shared_storage_path = var.shared_storage_path
             shared_storage_server = var.shared_storage_server
-            shared_storage_type = local.shared_storage_types[var.shared_storage_type]
+            shared_storage_type = var.shared_storage_type
             tls_cert = var.tls_cert
             tls_key = var.tls_key
             tls_secret_name = local.tls_secret_name

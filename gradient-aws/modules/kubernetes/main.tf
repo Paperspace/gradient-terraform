@@ -216,8 +216,9 @@ locals {
         "tensorboard-gpu-large"=local.root_volume_size_default,
     }, var.node_asg_max_sizes)
 
-    worker_groups = [for node_type in local.node_types : {
-        name = node_type
+    worker_groups = flatten([for node_subnet_id in var.node_subnet_ids : [for node_type in local.node_types : {
+        name = "${node_type}-${node_subnet_id}"
+        subnets = [node_subnet_id]
         additional_security_group_ids = var.node_security_group_ids
         ami_id = local.node_ami_ids[node_type]
         asg_force_delete = true
@@ -245,7 +246,7 @@ locals {
                 propagate_at_launch = 1,
             }
         ]
-    }]
+    }]])
 }
 
 data "aws_eks_cluster" "cluster" {
