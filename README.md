@@ -68,7 +68,7 @@ Currently supported:
 - nfs (ensure export has proper permissions nobody:nogroup)
 
 ### 4. Setup a wildcard SSL certificate
-Gradient uses a wildcard SSL certificate to secure HTTP traffic into your processing site.
+Gradient uses a wildcard SSL certificate to secure HTTP traffic into your processing site. You will need two files: one private key file and one .crt file that contains your entire certificate chain including any root or intermediate certificates. (Example: https://support.comodo.com/index.php?/Knowledgebase/Article/View/1145/1/how-do-i-make-my-own-bundle-file-from-crt-files)
 
 Example:
 - *.gradient.mycompany.com
