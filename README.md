@@ -4,6 +4,7 @@ Installer for Paperspace Gradient processing site
 
 ### Requirements
 - Terraform >= 0.12 (https://www.terraform.io)
+- aws-iam-authenticator, if using an EKS cluster (https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html)
 
 ### Supported target platforms
 - AWS
