@@ -80,6 +80,11 @@ variable "global_selector" {
     default = ""
 }
 
+variable "gradient_processing_chart" {
+    description = "Gradient processing chart"
+    default = "gradient-processing"
+}
+
 variable "local_storage_path" {
     description = "Local storage path on nodes"
     default = "/tmp/gradient"

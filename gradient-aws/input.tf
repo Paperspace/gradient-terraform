@@ -30,6 +30,11 @@ variable "domain" {
     description = "Domain used to host gradient"
 }
 
+variable "gradient_processing_chart" {
+    description = "Gradient processing chart"
+    default = "gradient-processing"
+}
+
 variable "kubeconfig_path" {
     description = "Kubeconfig path"
     default = "./gradient-kubeconfig"

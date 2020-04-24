@@ -36,6 +36,11 @@ variable "artifacts_secret_access_key" {
     description = "S3 compatible access key for artifacts object storage"
 }
 
+variable "chart" {
+    description = "Helm chart for gradient-processing"
+    default = "gradient-processing"
+}
+
 variable "cluster_apikey" {
   description = "Gradient cluster apikey"
 }
@@ -84,6 +89,7 @@ variable "global_selector" {
     description = "Node selector prefix used globally"
     default = ""
 }
+
 
 variable "gradient_processing_version" {
   description = "Gradient processing version"

@@ -32,11 +32,6 @@ global:
       server: ${shared_storage_server}
       type: ${shared_storage_type}
 
-
-  sharedStoragePath: ${shared_storage_path}
-  sharedStorageServer: ${shared_storage_server}
-  sharedStorageType: ${shared_storage_type}
-
 secrets: 
   amqpUri: ${amqp_uri}
   clusterApikey: ${cluster_apikey}

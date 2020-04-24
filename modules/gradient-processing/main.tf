@@ -11,10 +11,9 @@ data "helm_repository" "paperspace" {
 
 resource "helm_release" "gradient_processing" {
     name = "gradient-processing"
-    //repository = data.helm_repository.paperspace.metadata[0].name
-    //chart      = "gradient-processing"
-    chart = "../../../gradient-processing-chart/charts/gradient-processing"
-    //version = var.gradient_processing_version
+    repository = data.helm_repository.paperspace.metadata[0].name
+    chart      = var.chart
+    version = var.gradient_processing_version
     values = [
         templatefile("${path.module}/templates/values.yaml.tpl", {
             enabled = var.enabled
