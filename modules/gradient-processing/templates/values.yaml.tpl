@@ -13,7 +13,6 @@ global:
     port: ${elastic_search_port}
     user: ${elastic_search_user}
   %{ endif }
-  localStorageClass: 
   logsHost: ${logs_host}
   ingressHost: ${domain}
   serviceNodeSelector:
