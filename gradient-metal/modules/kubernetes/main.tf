@@ -106,7 +106,7 @@ resource "rke_cluster" "main" {
     }
 
     services {
-        kublet {
+        kubelet {
             extra_binds = var.kubelet_extra_binds
         }
     }

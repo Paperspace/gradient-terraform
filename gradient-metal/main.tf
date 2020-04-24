@@ -16,6 +16,9 @@ module "kubernetes" {
 	name = var.name
 	k8s_version = var.k8s_version
 	kubeconfig_path = var.kubeconfig_path
+    kubelet_extra_binds = [
+        "${var.local_storage_path}:${var.local_storage_path}"
+    ]
     master_ips = var.k8s_master_ips
     master_pool_type = local.master_pool_type
     service_pool_name = local.service_pool_name
@@ -59,9 +62,6 @@ provider "kubernetes" {
     client_certificate     = module.kubernetes.k8s_client_certificate
     client_key             = module.kubernetes.k8s_client_key
     cluster_ca_certificate = module.kubernetes.k8s_cluster_ca_certificate
-    kubelet_extra_binds = [
-        "${local_storage_path}:${local_storage_path}"
-    ]
     load_config_file = false
 }
 

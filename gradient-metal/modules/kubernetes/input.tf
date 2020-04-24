@@ -16,8 +16,9 @@ variable "kubeconfig_path" {
     description = "kubeconfig path"
 }
 
-variable "local_storage_path" {
-    description = "Local storage path for nodes"
+variable "kubelet_extra_binds" {
+    type = list
+    description = "Kubelet extra binds"
 }
 
 variable "master_ips" {
