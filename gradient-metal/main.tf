@@ -82,6 +82,7 @@ module "gradient_processing" {
     cluster_handle = var.cluster_handle
     domain = var.domain
 
+    helm_repo_url = var.helm_repo_url
     elastic_search_host = var.elastic_search_host
     elastic_search_password = var.elastic_search_password
     elastic_search_port = var.elastic_search_port

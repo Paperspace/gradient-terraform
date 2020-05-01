@@ -6,7 +6,7 @@ locals {
 
 data "helm_repository" "paperspace" {
     name = "paperspace"
-    url  = "https://infrastructure-public-chart-museum-repository.storage.googleapis.com"
+    url  = var.helm_repo_url
 }
 
 resource "helm_release" "gradient_processing" {

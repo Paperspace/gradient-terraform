@@ -136,6 +136,11 @@ variable "k8s_version" {
     default = "1.14"
 }
 
+variable "helm_repo_url" {
+    description = "Paperspace repo URL"
+    default = ""
+}
+
 # LB
 variable "tls_cert" {
     description = "SSL certificate used for loadbalancers"

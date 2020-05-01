@@ -50,6 +50,11 @@ variable "name" {
     description = "Name"
 }
 
+variable "helm_repo_url" {
+    description = "Paperspace repo URL"
+    default = ""
+}
+
 variable "ssh_key" {
     description = "SSH key_path"
     default = ""
