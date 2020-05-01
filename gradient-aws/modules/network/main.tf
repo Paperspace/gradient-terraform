@@ -10,7 +10,7 @@ locals {
 }
 
 resource "aws_eip" "nat" {
-  count = var.availability_zone_count
+  count = 1
   vpc = true
 }
 
@@ -30,5 +30,6 @@ module "vpc" {
     public_subnet_tags = var.public_subnet_tags
     public_subnets = local.public_cidr_blocks
     reuse_nat_ips = true
+    single_nat_gateway = true
     vpc_tags = var.vpc_tags
 }
