@@ -81,6 +81,12 @@ module "gradient_processing" {
     cluster_apikey = var.cluster_apikey
     cluster_handle = var.cluster_handle
     domain = var.domain
+
+    elastic_search_host = var.elastic_search_host
+    elastic_search_password = var.elastic_search_password
+    elastic_search_port = var.elastic_search_port
+    elastic_search_user = var.elastic_search_user
+
     global_selector = var.global_selector
     label_selector_cpu = local.label_selector_cpu
     label_selector_gpu = local.label_selector_gpu

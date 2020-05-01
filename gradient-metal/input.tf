@@ -3,6 +3,24 @@ variable "become_ssh_user" {
     default = "root"
 }
 
+variable "elastic_search_host" {
+    description = "Elastic search host"
+    default = ""
+}
+
+variable "elastic_search_password" {
+    description = "Elastic search password"
+    default = ""
+}
+variable "elastic_search_port" {
+    description = "Elastic search port"
+    default = ""
+}
+variable "elastic_search_user" {
+    description = "Elastic search user"
+    default = ""
+}
+
 variable "k8s_endpoint" {
     description = "Kubernetes endpoint (https://k8s_endpoint:6443)"
     default = ""

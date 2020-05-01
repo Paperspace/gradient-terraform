@@ -36,6 +36,24 @@ variable "domain" {
     description = "Domain used to host gradient"
 }
 
+variable "elastic_search_host" {
+    description = "Elastic search host"
+    default = ""
+}
+
+variable "elastic_search_password" {
+    description = "Elastic search password"
+    default = ""
+}
+variable "elastic_search_port" {
+    description = "Elastic search port"
+    default = ""
+}
+variable "elastic_search_user" {
+    description = "Elastic search user"
+    default = ""
+}
+
 variable "gradient_processing_chart" {
     description = "Gradient processing chart"
     default = "gradient-processing"
@@ -136,7 +154,7 @@ variable "cidr" {
 
 variable "subnet_netmask" {
     description = "Netmask used for subnet creation"
-    default = "24"
+    default = "18"
 }
 
 # Storage
