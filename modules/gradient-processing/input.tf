@@ -164,9 +164,17 @@ variable "sentry_dsn" {
   description = "DSN for sentry alerts"
 }
 
+variable "helm_repo_username" {
+    description = "Paperspace repo username"
+    default = ""
+}
+variable "helm_repo_password" {
+    description = "Paperspace repo password"
+    default = ""
+}
 variable "helm_repo_url" {
-    descriptiont = "Paperspace repo URL"
-    default = "https://infrastructure-public-chart-museum-repository.storage.googleapis.com"
+    description = "Paperspace repo URL"
+    default = ""
 }
 
 # tls

@@ -111,6 +111,8 @@ module "gradient_processing" {
     elastic_search_password = var.elastic_search_password
     elastic_search_port = var.elastic_search_port
     elastic_search_user = var.elastic_search_user
+    helm_repo_username = var.helm_repo_username
+    helm_repo_password = var.helm_repo_password
     helm_repo_url = var.helm_repo_url
     logs_host = var.logs_host
 

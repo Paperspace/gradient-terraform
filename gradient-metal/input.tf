@@ -50,6 +50,14 @@ variable "name" {
     description = "Name"
 }
 
+variable "helm_repo_username" {
+    description = "Paperspace repo username"
+    default = ""
+}
+variable "helm_repo_password" {
+    description = "Paperspace repo password"
+    default = ""
+}
 variable "helm_repo_url" {
     description = "Paperspace repo URL"
     default = ""

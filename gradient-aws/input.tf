@@ -136,6 +136,14 @@ variable "k8s_version" {
     default = "1.14"
 }
 
+variable "helm_repo_username" {
+    description = "Paperspace repo username"
+    default = ""
+}
+variable "helm_repo_password" {
+    description = "Paperspace repo password"
+    default = ""
+}
 variable "helm_repo_url" {
     description = "Paperspace repo URL"
     default = ""

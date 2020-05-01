@@ -1,12 +1,15 @@
 locals {
     local_storage_name = "gradient-processing-local"
+    helm_repo_url = var.helm_repo_url == "" ? "https://infrastructure-public-chart-museum-repository.storage.googleapis.com" : var.helm_repo_url
     shared_storage_name = "gradient-processing-shared"
     tls_secret_name = "gradient-processing-tls"
 }
 
 data "helm_repository" "paperspace" {
     name = "paperspace"
-    url  = var.helm_repo_url
+    url  = local.helm_repo_url
+    username = var.helm_repo_username
+    password = var.helm_repo_password
 }
 
 resource "helm_release" "gradient_processing" {
