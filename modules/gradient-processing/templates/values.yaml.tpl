@@ -66,7 +66,6 @@ fluent-bit:
         port: ${elastic_search_port}
         user: ${elastic_search_user}
 
-
 gradient-operator:
   config:
     ingressHost: ${domain}
@@ -174,6 +173,7 @@ gradient-metrics:
 
 gradient-operator-dispatcher:
   config:
+    sentryEnvironment: ${name}
     sentryDSN: ${sentry_dsn}
 
 nfs-client-provisioner:
