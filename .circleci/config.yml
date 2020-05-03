@@ -27,7 +27,7 @@ workflows:
       # plan
       - terraform_plan:
           name: plan_aws
-          path: gradient-aws
+          path: gradient-aws/tests
           workspace: default
           context: terraform
           filters:
@@ -36,7 +36,7 @@ workflows:
 
       - terraform_plan:
           name: plan_metal
-          path: gradient-metal
+          path: gradient-metal/tests
           workspace: default
           context: terraform
           filters:
