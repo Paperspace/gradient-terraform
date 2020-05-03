@@ -1,0 +1,34 @@
+version: 2.1
+
+jobs:
+  terraform_plan:
+    docker:
+      - image: hashicorp/terraform:0.12.24
+    parameters:
+      path:
+        type: string
+      workspace:
+        type: string
+    steps:
+      - checkout
+      - run:
+          command: |-
+            bin/setup
+            cd << parameters.path >>
+            terraform init
+            terraform workspace select << parameters.workspace >>
+            terraform plan
+      
+workflows:
+  version: 2
+  plan:
+    jobs:
+      # plan
+      - terraform_plan:
+          name: plan
+          path: /
+          workspace: default
+          context: terraform
+          filters:
+            branches:
+              ignore: master
