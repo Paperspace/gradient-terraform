@@ -26,8 +26,17 @@ workflows:
     jobs:
       # plan
       - terraform_plan:
-          name: plan
-          path: /
+          name: plan_aws
+          path: gradient-aws
+          workspace: default
+          context: terraform
+          filters:
+            branches:
+              ignore: master
+
+      - terraform_plan:
+          name: plan_metal
+          path: gradient-metal
           workspace: default
           context: terraform
           filters:
