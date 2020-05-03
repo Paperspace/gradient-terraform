@@ -209,3 +209,8 @@ variable "use_pod_anti_affinity" {
     description = "Use pod anti-affinity"
     default = false
 }
+
+variable "write_kubeconfig" {
+    description = "Write kubeconfig to a file"
+    default = "true"
+}

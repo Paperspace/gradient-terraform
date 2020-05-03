@@ -65,3 +65,7 @@ variable "public_key" {
 variable "vpc_id" {
     description = "VPC id"
 }
+
+variable "write_kubeconfig" {
+    description = "Write kubeconfig to a file"
+}

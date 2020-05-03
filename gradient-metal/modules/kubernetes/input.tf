@@ -61,3 +61,7 @@ variable "workers" {
     type = list
     description = "Kubernetes workers"
 }
+
+variable "write_kubeconfig" {
+    description = "Write kubeconfig to a file"
+}

@@ -45,6 +45,7 @@ module "kubernetes" {
     node_subnet_ids = local.has_k8s ? split(",", var.k8s_subnet_ids) : module.network.private_subnet_ids
     public_key = var.public_key_path == "" ? "" : file(pathexpand(var.public_key_path))
     vpc_id = module.network.vpc_id
+    write_kubeconfig = var.write_kubeconfig
 }
 
 # Storage

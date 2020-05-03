@@ -218,3 +218,8 @@ variable "iam_users" {
 
   default = []
 }
+
+variable "write_kubeconfig" {
+    description = "Write kubeconfig to a file"
+    default = "true"
+}

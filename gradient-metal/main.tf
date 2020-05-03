@@ -27,6 +27,7 @@ module "kubernetes" {
     ssh_key = var.ssh_key
     ssh_key_path = var.ssh_key_path
     ssh_user = var.ssh_user
+    write_kubeconfig = var.write_kubeconfig
     workers = var.k8s_workers
 }
 

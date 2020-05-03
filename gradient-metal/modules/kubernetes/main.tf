@@ -123,6 +123,8 @@ resource "rke_cluster" "main" {
 }
 
 resource "local_file" "kubeconfig" {
+    count = var.write_kubeconfig ? 1 : 0
+
     depends_on = [rke_cluster.main]
     filename = var.kubeconfig_path
     content  = rke_cluster.main.kube_config_yaml

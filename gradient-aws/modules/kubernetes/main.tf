@@ -294,6 +294,7 @@ module "eks" {
 
     wait_for_cluster_cmd = "until curl -k -s $ENDPOINT/healthz >/dev/null; do sleep 4; done"
     worker_groups = local.worker_groups
+    write_kubeconfig = var.write_kubeconfig
 }
 
 resource "null_resource" "cluster_status" {
