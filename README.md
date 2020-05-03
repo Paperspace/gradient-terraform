@@ -99,7 +99,7 @@ terraform {
 ### Create a main.tf file in the gradient-cluster folder
 ```
 module "gradient_aws" {
-    source = "github.com/paperspace/gradient-terraform/gradient-aws"
+    source = "github.com/paperspace/gradient-terraform/gradient-aws?ref=0.0.12"
 
     // name should only have letters, numbers, and dashes
     name = "cluster-name"
@@ -202,7 +202,7 @@ AllowTcpForwarding yes
 ### Create a main.tf file in the gradient-cluster folder
 ```
 module "gradient_metal" {
-    source = "github.com/paperspace/gradient-terraform/gradient-metal"
+    source = "github.com/paperspace/gradient-terraform/gradient-metal?ref=0.0.12"
 
     // name should only have letters, numbers, and dashes
     name = "cluster-name"
