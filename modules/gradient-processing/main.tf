@@ -63,8 +63,8 @@ resource "helm_release" "gradient_processing" {
 }
 
 data "kubernetes_service" "traefik" {
-    depends_on = [helm_release.gradient_processing]
     metadata {
-        name = "traefik"
+        // Needed to use replace to overcome constant refresh caused by depends_on
+        name = "traefik${replace(helm_release.gradient_processing.metadata[0].revision, "/.*/", "")}"
     }
 }
