@@ -13,6 +13,7 @@ jobs:
       - checkout
       - run:
           command: |-
+            apk add curl
             bin/setup
             cd << parameters.path >>
             terraform init
