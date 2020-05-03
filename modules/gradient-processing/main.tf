@@ -17,24 +17,55 @@ resource "helm_release" "gradient_processing" {
     repository = data.helm_repository.paperspace.metadata[0].name
     chart      = var.chart
     version = var.gradient_processing_version
+
+    set_sensitive {
+        name = "elasticSearch.password"
+        value = var.elastic_search_password
+    }
+    set_sensitive {
+        name = "global.artifactsAccessKeyId"
+        value = var.artifacts_access_key_id
+    }
+    set_sensitive {
+        name = "global.artifactsSecretAccessKey"
+        value = var.artifacts_secret_access_key
+    }
+    set_sensitive {
+        name  = "secrets.amqpUri"
+        value  = "${var.amqp_protocol}://${var.cluster_handle}:${var.cluster_apikey}@${var.amqp_hostname}/"
+    }
+    set_sensitive {
+        name  = "secrets.clusterApikey"
+        value = var.cluster_apikey
+    }
+    set_sensitive {
+        name  = "secrets.tlsCert"
+        value = var.tls_cert
+    }
+    set_sensitive {
+        name  = "secrets.tlsKey"
+        value = var.tls_key
+    }
+    set_sensitive {
+        name  = "secrets.traefikPrometheusAuth"
+        value = var.traefik_prometheus_auth
+    }
+
     values = [
         templatefile("${path.module}/templates/values.yaml.tpl", {
             enabled = var.enabled
 
-            amqp_uri = "${var.amqp_protocol}://${var.cluster_handle}:${var.cluster_apikey}@${var.amqp_hostname}/"
             aws_region = var.aws_region
-            artifacts_access_key_id = var.artifacts_access_key_id
             artifacts_path = var.artifacts_path
-            artifacts_secret_access_key = var.artifacts_secret_access_key
             cluster_autoscaler_enabled = var.cluster_autoscaler_enabled
-            cluster_apikey = var.cluster_apikey
             cluster_handle = var.cluster_handle
             default_storage_name = local.local_storage_name
             efs_provisioner_enabled = var.shared_storage_type == "efs" || var.local_storage_type == "efs"
             elastic_search_host = var.elastic_search_host
             elastic_search_port= var.elastic_search_port
-            elastic_search_password = var.elastic_search_password
+            elastic_search_enabled = var.elastic_search_password != ""
             elastic_search_user = var.elastic_search_user
+            elastic_search_sha = sha256("${var.elastic_search_host}${var.elastic_search_password}${var.elastic_search_port}${var.elastic_search_user}")
             domain = var.domain
             global_selector = var.global_selector
             label_selector_cpu = var.label_selector_cpu
@@ -52,11 +83,8 @@ resource "helm_release" "gradient_processing" {
             shared_storage_path = var.shared_storage_path
             shared_storage_server = var.shared_storage_server
             shared_storage_type = var.shared_storage_type
-            tls_cert = var.tls_cert
-            tls_key = var.tls_key
             tls_secret_name = local.tls_secret_name
             use_pod_anti_affinity = var.use_pod_anti_affinity
-            traefik_prometheus_auth = var.traefik_prometheus_auth
             traefik_prometheus_auth_enabled = var.traefik_prometheus_auth != ""
         })
     ]
