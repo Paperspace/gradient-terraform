@@ -46,34 +46,25 @@ variable "k8s_node_asg_max_sizes" {
     description = "k8s node autoscaling group maximum sizes"
     default = {}
 }
+
 variable "k8s_node_asg_min_sizes" {
     description = "k8s node autoscaling group minimum sizes"
     default = {}
 }
+
 variable "k8s_node_instance_types" {
     description = "k8s node instance types"
     default = {}
 }
+
 variable "k8s_security_group_ids" {
     description = "List of security group ids for kubernetes nodes (comma delimited)"
     default = ""
 }
+
 variable "k8s_subnet_ids" {
     description = "k8s node subnet ids"
     default = ""
-}
-
-variable "shared_storage_server" {
-    description = "Shared storage server to be used for Gradient"
-    default = ""
-}
-variable "shared_storage_path" {
-    description = "Shared storage path to be used for Gradient"
-    default = "/"
-}
-variable "shared_storage_type" {
-    description = "Shared storage type"
-    default = "efs"
 }
 
 variable "subnet_netmask" {

@@ -5,6 +5,8 @@ provider "aws" {
 locals {
     has_k8s = var.k8s_endpoint == "" ? false : true
     has_shared_storage = var.shared_storage_server == "" ? false : true
+    k8s_version = var.k8s_version = "" ? "1.14" : var.k8s_version
+    shared_storage_type = var.shared_storage_type == "" ? "efs" : var.shared_storage_type
 }
 
 module "network" {
@@ -125,7 +127,7 @@ module "gradient_processing" {
     local_storage_type = "AWSEBS"
     shared_storage_path = var.shared_storage_path
     shared_storage_server = local.has_shared_storage ? var.shared_storage_server : module.storage.shared_storage_dns_name
-    shared_storage_type = var.shared_storage_type
+    shared_storage_type = local.shared_storage_type
     tls_cert = var.tls_cert
     tls_key = var.tls_key
     traefik_prometheus_auth = var.traefik_prometheus_auth

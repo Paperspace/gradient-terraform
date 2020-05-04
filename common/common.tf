@@ -102,7 +102,7 @@ variable "k8s_endpoint" {
 
 variable "k8s_version" {
     description = "Kubernetes version"
-    default = "1.14"
+    default = ""
 }
 
 variable "kubeconfig_path" {
@@ -121,6 +121,19 @@ variable "public_key_path" {
 
 variable "sentry_dsn" {
     description = "DSN for sentry alerts"
+    default = ""
+}
+
+variable "shared_storage_server" {
+    description = "Shared storage server to be used for Gradient"
+    default = ""
+}
+variable "shared_storage_path" {
+    description = "Shared storage path to be used for Gradient"
+    default = "/"
+}
+variable "shared_storage_type" {
+    description = "Shared storage type"
     default = ""
 }
 
