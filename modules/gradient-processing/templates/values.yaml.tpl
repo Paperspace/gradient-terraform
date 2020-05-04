@@ -9,6 +9,7 @@ global:
   %{ if elastic_search_password != "" }
   elasticSearch:
     host: ${elastic_search_host}
+    index: ${elastic_search_index}
     password: ${elastic_search_password}
     port: ${elastic_search_port}
     user: ${elastic_search_user}

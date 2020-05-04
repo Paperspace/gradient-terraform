@@ -40,6 +40,10 @@ variable "elastic_search_host" {
     description = "Elastic search host"
     default = ""
 }
+variable "elastic_search_index" {
+    description = "Elastic search index"
+    default = ""
+}
 
 variable "elastic_search_password" {
     description = "Elastic search password"

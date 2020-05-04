@@ -12,6 +12,12 @@ variable "elastic_search_password" {
     description = "Elastic search password"
     default = ""
 }
+
+variable "elastic_search_index" {
+    description = "Elastic search index"
+    default = ""
+}
+
 variable "elastic_search_port" {
     description = "Elastic search port"
     default = ""

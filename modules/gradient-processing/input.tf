@@ -66,6 +66,11 @@ variable "elastic_search_host" {
     description = "Elastic search host"
     default = "b35b1cdf227c418b8353fd3b282527c5.us-east-1.aws.found.io"
 }
+variable "elastic_search_index" {
+    description = "Elastic search index"
+    default = ""
+}
+
 # write only key
 variable "elastic_search_password" {
     description = "Elastic search password"
