@@ -87,10 +87,6 @@ variable "enabled" {
     default = "true"
 }
 
-variable "environment" {
-    description = "Cluster environment"
-}
-
 variable "global_selector" {
     description = "Node selector prefix used globally"
     default = ""
