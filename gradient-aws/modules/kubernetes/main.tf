@@ -1,9 +1,19 @@
+data "aws_ami" "eks_cpu" {
+    most_recent      = true
+    name_regex       = "^amazon-eks-node-${var.k8s_version}.*"
+    owners = ["602401143452"]
+}
+
+data "aws_ami" "eks_gpu" {
+    most_recent      = true
+    name_regex       = "^amazon-eks-gpu-node-${var.k8s_version}.*"
+    owners = ["602401143452"]
+}
+
 locals {
     asg_max_size_default = 600
-    #cpu_ami_id = "ami-055047a9bc93fd2bf"
-    #gpu_ami_id = "ami-0ca7c6c8dd5aced03"
-    cpu_ami_id = "ami-0bf3e2c598f50ba82"
-    gpu_ami_id = "ami-031814549a4b2892c"
+    cpu_ami_id = data.aws_ami.eks_cpu.id
+    gpu_ami_id = data.aws_ami.eks_gpu.id
     root_volume_size_default = 50
 
     node_ami_ids = {
