@@ -197,6 +197,15 @@ prometheus:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
 
+prom-aggregation-gateway:
+  ingress:
+    hostPath:
+      ${domain}: /gateway
+    tls:
+    - secretName: ${tls_secret_name}
+      hosts:
+      - ${domain}
+
 traefik:
   replicas: 1
   nodeSelector:
