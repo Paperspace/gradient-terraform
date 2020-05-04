@@ -5,7 +5,7 @@ provider "aws" {
 locals {
     has_k8s = var.k8s_endpoint == "" ? false : true
     has_shared_storage = var.shared_storage_server == "" ? false : true
-    k8s_version = var.k8s_version = "" ? "1.14" : var.k8s_version
+    k8s_version = var.k8s_version == "" ? "1.14" : var.k8s_version
     shared_storage_type = var.shared_storage_type == "" ? "efs" : var.shared_storage_type
 }
 
@@ -35,7 +35,7 @@ module "kubernetes" {
     enable = !local.has_k8s
 
     name = var.name
-    k8s_version = var.k8s_version
+    k8s_version = local.k8s_version
     kubeconfig_path = var.kubeconfig_path
     iam_accounts = var.iam_accounts
     iam_roles = var.iam_roles
