@@ -193,7 +193,7 @@ prometheus:
     ingress:
       hosts:
         - ${domain}/prometheus
-  kubeStateMetrics:
+  kube-state-metrics:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
 
