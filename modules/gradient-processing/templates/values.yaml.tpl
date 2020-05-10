@@ -1,16 +1,13 @@
 global:
   amqpExchange: ${cluster_handle}
   artifactsPath: ${artifacts_path}
-  artifactsAccessKeyId: ${artifacts_access_key_id}
-  artifactsSecretAccessKey: ${artifacts_secret_access_key}
   cluster:
     handle: ${cluster_handle}
     name: ${name}
-  %{ if elastic_search_password != "" }
+  %{ if elastic_search_enabled }
   elasticSearch:
     host: ${elastic_search_host}
     index: ${elastic_search_index}
-    password: ${elastic_search_password}
     port: ${elastic_search_port}
     user: ${elastic_search_user}
   %{ endif }
@@ -33,13 +30,6 @@ global:
       server: ${shared_storage_server}
       type: ${shared_storage_type}
 
-secrets: 
-  amqpUri: ${amqp_uri}
-  clusterApikey: ${cluster_apikey}
-  tlsCert: "${tls_cert}"
-  tlsKey: "${tls_key}"
-  traefikPrometheusAuth: ${traefik_prometheus_auth}
-
 cluster-autoscaler:
   enabled: ${cluster_autoscaler_enabled}
 
@@ -61,11 +51,7 @@ efs-provisioner:
 fluent-bit:
   rawConfig: |-
     # used to trigger changes
-    elasticSearch:
-        host: ${elastic_search_host}
-        password: ${elastic_search_password}
-        port: ${elastic_search_port}
-        user: ${elastic_search_user}
+    ${elastic_search_sha}
 
 gradient-operator:
   config:

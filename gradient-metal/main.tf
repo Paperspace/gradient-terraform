@@ -46,7 +46,7 @@ module "storage" {
 
 provider "helm" {
     debug = true
-    version = "1.2.0"
+    version = "1.2.1"
     kubernetes {
         host     = module.kubernetes.k8s_host
         username = module.kubernetes.k8s_username
