@@ -53,7 +53,6 @@ resource "helm_release" "gradient_processing" {
             aws_region = var.aws_region
             artifacts_access_key_id = var.artifacts_access_key_id
             artifacts_path = var.artifacts_path
-            artifacts_secret_access_key = var.artifacts_secret_access_key
             cluster_autoscaler_enabled = var.cluster_autoscaler_enabled
             cluster_handle = var.cluster_handle
             default_storage_name = local.local_storage_name
