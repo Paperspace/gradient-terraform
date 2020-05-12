@@ -41,12 +41,14 @@ cluster-autoscaler:
 
 efs-provisioner:
   enabled: ${efs_provisioner_enabled}
+  %{if efs_provisioner_enabled == "true" }
   efsProvisioner:
     awsRegion: ${aws_region}
     efsFileSystemId: ${split(".", shared_storage_server)[0]}
     path: ${shared_storage_path}
   nodeSelector:
     paperspace.com/pool-name: ${service_pool_name}
+  %{ endif }
 
 fluent-bit:
   rawConfig: |-
