@@ -196,6 +196,32 @@ locals {
         "tensorboard-gpu-large",
     ]
 
+    node_pool_types = {
+        "services-small"="cpu",
+        "services-medium"="cpu",
+        "services-large"="cpu",
+        "experiment-cpu-small"="cpu",
+        "experiment-cpu-medium"="cpu",
+        "experiment-gpu-small"="gpu",
+        "experiment-gpu-medium"="gpu",
+        "experiment-gpu-large"="gpu",
+        "model-deployment-cpu-small"="cpu",
+        "model-deployment-cpu-medium"="cpu",
+        "model-deployment-gpu-small"="gpu",
+        "model-deployment-gpu-medium"="gpu",
+        "model-deployment-gpu-large"="gpu",
+        "notebook-cpu-small"="cpu",
+        "notebook-cpu-medium"="cpu",
+        "notebook-gpu-small"="gpu",
+        "notebook-gpu-medium"="gpu",
+        "notebook-gpu-large"="gpu",
+        "tensorboard-cpu-small"="cpu",
+        "tensorboard-cpu-medium"="cpu",
+        "tensorboard-gpu-small"="gpu",
+        "tensorboard-gpu-medium"="gpu",
+        "tensorboard-gpu-large"="gpu",
+    }
+
     node_volume_sizes = merge({
         "services-small"=local.root_volume_size_default,
         "services-medium"=local.root_volume_size_default,
@@ -238,7 +264,7 @@ locals {
         asg_min_size = local.node_asg_min_sizes[node_type]
         instance_type = local.node_instance_types[node_type]
         key_name = var.public_key == "" ? "" : aws_key_pair.main[0].id
-        kubelet_extra_args = "--node-labels=paperspace.com/pool-name=${node_type},paperspace.com/pool-type=${split("-", node_type)[1]},node-role.kubernetes.io/node=,node-role.kubernetes.io/worker=,node-role.kubernetes.io/${node_type}"
+        kubelet_extra_args = "--node-labels=paperspace.com/pool-name=${node_type},paperspace.com/pool-type=${local.node_pool_types[node_type]},node-role.kubernetes.io/node=,node-role.kubernetes.io/worker=,node-role.kubernetes.io/${node_type}"
 
         tags = [
             {
