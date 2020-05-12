@@ -113,8 +113,8 @@ module "gradient_aws" {
     cluster_handle = "cluster-handle-from-paperspace-com"
     domain = "gradient.mycompany.com"
 
-    tls_cert = replace(file("./certs/ssl-bundle.crt"), "\n", "\\n")
-    tls_key = replace(file("./certs/ssl.key"), "\n", "\\n")
+    tls_cert =file("./certs/ssl-bundle.crt")
+    tls_key = file("./certs/ssl.key")
 }
 
 output "ELB_HOSTNAME" {
@@ -239,8 +239,8 @@ module "gradient_metal" {
     ssh_key_path = "~/.ssh/gradient_rsa"
     ssh_user = "ubuntu"
 
-    tls_cert = replace(file("./certs/ssl-bundle.crt"), "\n", "\\n")
-    tls_key = replace(file("./certs/ssl.key"), "\n", "\\n")
+    tls_cert = file("./certs/ssl-bundle.crt")
+    tls_key = file("./certs/ssl.key")
 }
 ```
 
