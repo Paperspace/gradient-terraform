@@ -8,7 +8,6 @@ locals {
             "node-role.kubernetes.io/controller" = true
             "paperspace.com/pool-name" = var.service_pool_name
             "paperspace.com/pool-type" = master_node["pool-type"]
-
         }
         roles = [
             "controlplane",
