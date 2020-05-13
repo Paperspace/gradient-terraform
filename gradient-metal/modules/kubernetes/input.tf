@@ -21,13 +21,9 @@ variable "kubelet_extra_binds" {
     description = "Kubelet extra binds"
 }
 
-variable "master_ips" {
+variable "master_nodes" {
     type = list
-    description = "Kubernetes master ips"
-}
-
-variable "master_pool_type" {
-    description = "Master pool type"
+    description = "Kubernetes master nodes"
 }
 
 variable "name" {

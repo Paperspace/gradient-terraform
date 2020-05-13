@@ -3,9 +3,9 @@ variable "become_ssh_user" {
     default = "root"
 }
 
-variable "k8s_master_ips" {
+variable "k8s_master_nodes" {
     type = list
-    description = "Kubernetes master ips"
+    description = "Kubernetes master nodes"
 }
 
 variable "k8s_workers" {

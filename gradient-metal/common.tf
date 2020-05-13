@@ -134,7 +134,7 @@ variable "shared_storage_path" {
 }
 variable "shared_storage_type" {
     description = "Shared storage type"
-    default = ""
+    default = "nfs"
 }
 
 variable "tls_cert" {

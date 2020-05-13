@@ -9,10 +9,13 @@ module "gradient_metal" {
     cluster_apikey = "cluster-apikey-from-paperspace-com"
     cluster_handle = "cluster-handle-from-paperspace-com"
     domain = "gradient.mycompany.com"
-    global_selector = "metal"
 
-    k8s_master_ips = [
-        "master_ip1",
+    k8s_master_nodes = [
+        {
+            ip = "master_ip1"
+            pool-type = "cpu"
+            pool-name = "metal-cpu"
+        },
     ]
     k8s_workers = [
         {
