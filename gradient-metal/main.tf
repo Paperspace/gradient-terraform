@@ -2,7 +2,9 @@ locals {
     has_k8s = var.k8s_endpoint == "" ? false : true
     has_shared_storage = var.shared_storage_path == "" ? false : true
     k8s_version = var.k8s_version == "" ? "1.15.11" : var.k8s_version
-    service_pool_name = var.k8s_master_nodes[0]["pool-name"]
+
+    is_single_node = length(concat(var.k8s_master_nodes, var.k8s_workers)) == 1
+    service_pool_name = local.is_single_node == true ? var.k8s_master_nodes[0]["pool-name"] : var.service_pool_name
 }
 
 // Kubernetes
