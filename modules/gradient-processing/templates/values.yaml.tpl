@@ -57,7 +57,7 @@ gradient-operator:
   config:
     ingressHost: ${domain}
     usePodAntiAffinity: ${use_pod_anti_affinity}
-    %{ if global_selector != "" }
+    %{ if label_selector_cpu != "" && label_selector_gpu != "" }
     modelDeploymentConfig:
       labelName: paperspace.com/pool-name
       cpu:
@@ -196,7 +196,7 @@ traefik:
   replicas: 1
   nodeSelector:
     paperspace.com/pool-name: ${service_pool_name}
-  %{ if global_selector != "" }
+  %{ if label_selector_cpu != "" && label_selector_gpu != "" }
   serviceType: NodePort
   deployment:
     hostNetwork: true

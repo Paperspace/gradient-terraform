@@ -2,10 +2,8 @@ locals {
     has_k8s = var.k8s_endpoint == "" ? false : true
     has_shared_storage = var.shared_storage_path == "" ? false : true
     is_single_node = length(concat(var.k8s_master_ips, var.k8s_workers)) == 1
-    label_selector_cpu = local.is_single_node == true ? var.global_selector : "${var.global_selector}-cpu"
-    label_selector_gpu = local.is_single_node == true ? var.global_selector : "${var.global_selector}-gpu"
     master_pool_type = local.is_single_node == true ? "gpu" : "cpu"
-    service_pool_name = local.is_single_node == true && var.global_selector != "" ? var.global_selector : var.service_pool_name
+    service_pool_name = local.is_single_node == true ? var.gpu_selector : var.service_pool_name
     k8s_version = var.k8s_version == "" ? "1.15.11" : var.k8s_version
 }
 
@@ -94,9 +92,8 @@ module "gradient_processing" {
     elastic_search_port = var.elastic_search_port
     elastic_search_user = var.elastic_search_user
 
-    global_selector = var.global_selector
-    label_selector_cpu = local.label_selector_cpu
-    label_selector_gpu = local.label_selector_gpu
+    label_selector_cpu = var.cpu_selector
+    label_selector_gpu = var.gpu_selector
     local_storage_path = var.local_storage_path
     local_storage_type = "HostPath"
     logs_host = var.logs_host
