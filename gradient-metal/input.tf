@@ -3,9 +3,9 @@ variable "become_ssh_user" {
     default = "root"
 }
 
-variable "k8s_master_nodes" {
-    type = list
-    description = "Kubernetes master nodes"
+variable "k8s_master_node" {
+    type = map
+    description = "Kubernetes master node"
 }
 
 variable "k8s_workers" {

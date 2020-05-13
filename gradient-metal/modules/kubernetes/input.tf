@@ -21,9 +21,9 @@ variable "kubelet_extra_binds" {
     description = "Kubelet extra binds"
 }
 
-variable "master_nodes" {
-    type = list
-    description = "Kubernetes master nodes"
+variable "master_node" {
+    type = map
+    description = "Kubernetes master node"
 }
 
 variable "name" {

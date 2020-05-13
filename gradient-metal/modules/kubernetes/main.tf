@@ -1,20 +1,20 @@
 locals {
     cluster_file = "cluster.yml"
 
-    rke_nodes = concat([for master_node in var.master_nodes : {
-        ip = master_node["ip"]
+    rke_nodes = concat([{
+        ip = var.master_node["ip"]
         labels = {
             "node-role.kubernetes.io/master" = ""
             "node-role.kubernetes.io/controller" = true
             "paperspace.com/pool-name" = var.service_pool_name
-            "paperspace.com/pool-type" = master_node["pool-type"]
+            "paperspace.com/pool-type" = var.master_node["pool-type"]
         }
         roles = [
             "controlplane",
             "etcd",
             "worker",
         ]
-        pool-type = master_node["pool-type"]
+        pool-type = var.master_node["pool-type"]
     }], [ for worker in var.workers : {
         ip = worker["ip"]
         labels = {

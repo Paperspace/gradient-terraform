@@ -10,13 +10,12 @@ module "gradient_metal" {
     cluster_handle = "cluster-handle-from-paperspace-com"
     domain = "gradient.mycompany.com"
 
-    k8s_master_nodes = [
-        {
-            ip = "master_ip1"
-            pool-type = "cpu"
-            pool-name = "metal-cpu"
-        },
-    ]
+    k8s_master_node = {
+        ip = "master_ip1"
+        pool-type = "cpu"
+        pool-name = "metal-cpu"
+    }
+
     k8s_workers = [
         {
             ip = "worker_ip1"

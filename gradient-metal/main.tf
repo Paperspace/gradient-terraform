@@ -3,8 +3,8 @@ locals {
     has_shared_storage = var.shared_storage_path == "" ? false : true
     k8s_version = var.k8s_version == "" ? "1.15.11" : var.k8s_version
 
-    is_single_node = length(concat(var.k8s_master_nodes, var.k8s_workers)) == 1
-    service_pool_name = local.is_single_node == true ? var.k8s_master_nodes[0]["pool-name"] : var.service_pool_name
+    is_single_node = length(var.k8s_workers) == 0
+    service_pool_name = local.is_single_node == true ? var.k8s_master_node["pool-name"] : var.service_pool_name
 }
 
 // Kubernetes
@@ -18,7 +18,7 @@ module "kubernetes" {
     kubelet_extra_binds = [
         "${var.local_storage_path}:${var.local_storage_path}"
     ]
-    master_nodes = var.k8s_master_nodes
+    master_node = var.k8s_master_node
     service_pool_name = local.service_pool_name
     setup_docker = var.setup_docker
     setup_nvidia = var.setup_nvidia
