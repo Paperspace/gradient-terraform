@@ -51,6 +51,7 @@ resource "helm_release" "gradient_processing" {
             enabled = var.enabled
 
             aws_region = var.aws_region
+            aws_certificate_arn = var.aws_certificate_arn
             artifacts_path = var.artifacts_path
             cluster_autoscaler_enabled = var.cluster_autoscaler_enabled
             cluster_handle = var.cluster_handle
