@@ -55,9 +55,6 @@ resource "aws_acm_certificate" "main" {
     count = var.tls_cert == "" ? 1 : 0
     
     domain_name = "*.${var.domain}"
-    subject_alternative_names = [
-        var.domain
-    ]
     validation_method = "DNS"
 
     lifecycle {
@@ -117,7 +114,7 @@ module "gradient_processing" {
     amqp_port = var.amqp_port
     amqp_protocol = var.amqp_protocol
     aws_region = var.aws_region
-    aws_certificate_arn = aws_acm_certificate.main.id
+    aws_certificate_arn = var.tls_cert == "" ? aws_acm_certificate.main[0].id : ""
     artifacts_access_key_id = var.artifacts_access_key_id
     artifacts_object_storage_endpoint = var.artifacts_object_storage_endpoint
     artifacts_path = var.artifacts_path
@@ -154,5 +151,5 @@ output "elb_hostname" {
 }
 
 output "ssl_dns_record" {
-    value = "${aws_acm.certificate.resource_record_type} ${aws_acm_certificate.resource_record_name} ${aws_acm_certificate.resource.record_value}"
+    value = var.tls_cert == "" ? "${aws_acm_certificate.main[0].domain_validation_options[0]["resource_record_name"]} ${aws_acm_certificate.main[0].domain_validation_options[0]["resource_record_value"]}" : ""
 }

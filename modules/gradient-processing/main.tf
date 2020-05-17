@@ -10,7 +10,7 @@ resource "helm_release" "gradient_processing" {
     repository = local.helm_repo_url
     repository_username = var.helm_repo_username
     repository_password = var.helm_repo_password
-    chart      = var.chart
+    chart = var.chart
     version = var.gradient_processing_version
 
     set_sensitive {

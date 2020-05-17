@@ -106,5 +106,4 @@ module "gradient_processing" {
     tls_cert = var.tls_cert
     tls_key = var.tls_key
     use_pod_anti_affinity = var.use_pod_anti_affinity
-    traefik_prometheus_auth = var.traefik_prometheus_auth
 }
