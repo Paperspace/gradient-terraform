@@ -110,6 +110,12 @@ variable "kubeconfig_path" {
     default = "./gradient-kubeconfig"
 }
 
+variable "letsencrypt_settings" {
+    type = map
+    description = "Traefik Let's Encrypt settings"
+    default = {}
+}
+
 variable "name" {
     description = "Name"
 }

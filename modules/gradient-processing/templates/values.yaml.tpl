@@ -154,7 +154,7 @@ gradient-operator:
 gradient-metrics:
   ingress:
     hostPath:
-      metrics.${domain}: /
+      ${domain}: /metrics
 
 gradient-operator-dispatcher:
   config:
@@ -184,7 +184,7 @@ prometheus:
 prom-aggregation-gateway:
   ingress:
     hostPath:
-      prometheus-gateway.${domain}: /
+      ${domain}: /gateway
 
 traefik:
   replicas: 1

@@ -97,7 +97,6 @@ variable "global_selector" {
     default = ""
 }
 
-
 variable "gradient_processing_version" {
   description = "Gradient processing version"
 }

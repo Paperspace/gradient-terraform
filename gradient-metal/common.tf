@@ -110,6 +110,12 @@ variable "kubeconfig_path" {
     default = "./gradient-kubeconfig"
 }
 
+variable "letsencrypt_settings" {
+    type = map
+    description = "Traefik Let's Encrypt settings"
+    default = {}
+}
+
 variable "name" {
     description = "Name"
 }
@@ -134,7 +140,7 @@ variable "shared_storage_path" {
 }
 variable "shared_storage_type" {
     description = "Shared storage type"
-    default = "nfs"
+    default = ""
 }
 
 variable "tls_cert" {
