@@ -41,10 +41,6 @@ resource "helm_release" "gradient_processing" {
         name  = "secrets.tlsKey"
         value = var.tls_key
     }
-    set_sensitive {
-        name  = "secrets.traefikPrometheusAuth"
-        value = var.traefik_prometheus_auth
-    }
 
     values = [
         templatefile("${path.module}/templates/values.yaml.tpl", {
@@ -82,7 +78,6 @@ resource "helm_release" "gradient_processing" {
             shared_storage_type = var.shared_storage_type
             tls_secret_name = local.tls_secret_name
             use_pod_anti_affinity = var.use_pod_anti_affinity
-            traefik_prometheus_auth_enabled = var.traefik_prometheus_auth != ""
         })
     ]
 }

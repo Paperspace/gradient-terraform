@@ -50,10 +50,6 @@ variable "cluster_apikey" {
   description = "Gradient cluster apikey"
 }
 
-variable "traefik_prometheus_auth" {
-  description = "Traefik basic auth for ingress `htpasswd user:pass`"
-}
-
 variable "cluster_autoscaler_enabled" {
     type = bool
     description = "Enable cluster-autoscaler"

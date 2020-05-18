@@ -173,7 +173,6 @@ prometheus:
   nodeSelector:
     paperspace.com/pool-name: ${service_pool_name}
   server:
-    enabled: ${traefik_prometheus_auth_enabled}
     ingress:
       hosts:
         - ${domain}/prometheus
