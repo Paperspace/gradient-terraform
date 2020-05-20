@@ -146,7 +146,6 @@ module "gradient_processing" {
     shared_storage_type = local.shared_storage_type
     tls_cert = var.tls_cert
     tls_key = var.tls_key
-    traefik_prometheus_auth = var.traefik_prometheus_auth
 }
 
 output "elb_hostname" {
