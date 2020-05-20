@@ -107,6 +107,11 @@ variable "label_selector_gpu" {
   default = ""
 }
 
+variable "letsencrypt_settings" {
+  type = map
+  description = "Traefik letsencrypt settings"
+}
+
 variable "logs_host" {
   description = "Logs host endpoint"
 }

@@ -93,6 +93,7 @@ module "gradient_processing" {
 
     label_selector_cpu = var.cpu_selector
     label_selector_gpu = var.gpu_selector
+    letsencrypt_settings = var.letsencrypt_settings
     local_storage_path = var.local_storage_path
     local_storage_type = "HostPath"
     logs_host = var.logs_host
@@ -102,7 +103,7 @@ module "gradient_processing" {
     service_pool_name = local.service_pool_name
     shared_storage_server = var.shared_storage_server
     shared_storage_path = var.shared_storage_path
-    shared_storage_type = var.shared_storage_type
+    shared_storage_type = var.shared_storage_type == "" ? "nfs" : var.shared_storage_type
     tls_cert = var.tls_cert
     tls_key = var.tls_key
     use_pod_anti_affinity = var.use_pod_anti_affinity

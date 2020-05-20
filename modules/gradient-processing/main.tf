@@ -63,6 +63,7 @@ resource "helm_release" "gradient_processing" {
             global_selector = var.global_selector
             label_selector_cpu = var.label_selector_cpu
             label_selector_gpu = var.label_selector_gpu
+            letsencrypt_settings = var.letsencrypt_settings
             local_storage_name = local.local_storage_name
             local_storage_path = var.local_storage_path
             local_storage_server = var.local_storage_server
