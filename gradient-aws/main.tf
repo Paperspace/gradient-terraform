@@ -133,7 +133,8 @@ module "gradient_processing" {
     helm_repo_username = var.helm_repo_username
     helm_repo_password = var.helm_repo_password
     helm_repo_url = var.helm_repo_url
-    letsencrypt_settings = var.letsencrypt_settings
+    letsencrypt_dns_name = var.letsencrypt_dns_name
+    letsencrypt_dns_settings = var.letsencrypt_dns_settings
     logs_host = var.logs_host
 
     gradient_processing_version = var.gradient_processing_version

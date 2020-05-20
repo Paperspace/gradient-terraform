@@ -211,7 +211,7 @@ traefik:
       httpsPort: 443
   %{ endif }
 
-  %{ if length(letsencrypt_settings) != 0 }
+  %{ if length(letsencrypt_dns_settings) != 0 }
   acme:
     enabled: true
     email: "admin@${domain}"
@@ -227,13 +227,6 @@ traefik:
     challengeType: dns-01
     resolvers:
       - 8.8.8.8:53
-    dnsProvider:
-      %{ if lookup(letsencrypt_settings, "cloudflare", null) != null }
-      name: cloudflare
-      cloudflare:
-        CLOUDFLARE_EMAIL: ${lookup(letsencrypt_settings, "cloudflare")["CLOUDFLARE_EMAIL"]}
-        CLOUDFLARE_API_KEY: ${lookup(letsencrypt_settings, "cloudflare")["CLOUDFLARE_API_KEY"]}
-      %{ endif }
     persistence:
       storageClass: ${shared_storage_name}
   %{ endif }

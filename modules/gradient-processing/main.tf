@@ -42,6 +42,21 @@ resource "helm_release" "gradient_processing" {
         value = var.tls_key
     }
 
+    set_sensitive {
+        name = "traefik.acme.dnsProvider.name"
+        value = var.letsencrypt_dns_name
+    }
+
+    dynamic "set_sensitive" {
+        for_each = var.letsencrypt_dns_settings
+
+        content {
+            name = "traefik.acme.dnsProvider.${var.letsencrypt_dns_name}.${set_sensitive.key}"
+            value = set_sensitive.value
+        }
+    }
+
+
     values = [
         templatefile("${path.module}/templates/values.yaml.tpl", {
             enabled = var.enabled
@@ -63,7 +78,7 @@ resource "helm_release" "gradient_processing" {
             global_selector = var.global_selector
             label_selector_cpu = var.label_selector_cpu
             label_selector_gpu = var.label_selector_gpu
-            letsencrypt_settings = var.letsencrypt_settings
+            letsencrypt_dns_settings = var.letsencrypt_dns_settings
             local_storage_name = local.local_storage_name
             local_storage_path = var.local_storage_path
             local_storage_server = var.local_storage_server

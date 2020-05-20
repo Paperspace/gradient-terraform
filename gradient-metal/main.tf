@@ -93,7 +93,8 @@ module "gradient_processing" {
 
     label_selector_cpu = var.cpu_selector
     label_selector_gpu = var.gpu_selector
-    letsencrypt_settings = var.letsencrypt_settings
+    letsencrypt_dns_name = var.letsencrypt_dns_name
+    letsencrypt_dns_settings = var.letsencrypt_dns_settings
     local_storage_path = var.local_storage_path
     local_storage_type = "HostPath"
     logs_host = var.logs_host
