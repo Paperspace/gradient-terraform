@@ -199,8 +199,6 @@ traefik:
   %{ endif }
 
   %{ if label_selector_cpu != "" && label_selector_gpu != "" }
-  ssl:
-    enabled: true
   serviceType: NodePort
   deploymentStrategy:
     type: Recreate
