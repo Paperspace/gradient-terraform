@@ -202,6 +202,8 @@ traefik:
   ssl:
     enabled: true
   serviceType: NodePort
+  deploymentStrategy:
+    type: Recreate
   deployment:
     hostNetwork: true
     hostPort:
@@ -211,7 +213,7 @@ traefik:
       httpsPort: 443
   %{ endif }
 
-  %{ if length(letsencrypt_dns_settings) != 0 }
+  %{ if letsencrypt_enabled }
   acme:
     enabled: true
     email: "admin@${domain}"

@@ -3,6 +3,7 @@ locals {
     helm_repo_url = var.helm_repo_url == "" ? "https://infrastructure-public-chart-museum-repository.storage.googleapis.com" : var.helm_repo_url
     shared_storage_name = "gradient-processing-shared"
     tls_secret_name = "gradient-processing-tls"
+    letsencrypt_enabled = (length(var.letsencrypt_dns_settings) != 0 && (var.tls_cert == "" && var.tls_key == ""))
 }
 
 resource "helm_release" "gradient_processing" {
@@ -56,7 +57,6 @@ resource "helm_release" "gradient_processing" {
         }
     }
 
-
     values = [
         templatefile("${path.module}/templates/values.yaml.tpl", {
             enabled = var.enabled
@@ -78,7 +78,7 @@ resource "helm_release" "gradient_processing" {
             global_selector = var.global_selector
             label_selector_cpu = var.label_selector_cpu
             label_selector_gpu = var.label_selector_gpu
-            letsencrypt_dns_settings = var.letsencrypt_dns_settings
+            letsencrypt_enabled = local.letsencrypt_enabled
             local_storage_name = local.local_storage_name
             local_storage_path = var.local_storage_path
             local_storage_server = var.local_storage_server
