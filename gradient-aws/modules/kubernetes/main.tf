@@ -77,7 +77,7 @@ locals {
     }, var.node_instance_types)
 
     node_asg_desired_sizes = {
-        "services-small"=0,
+        "services-small"=1,
         "services-medium"=0,
         "services-large"=0,
 
@@ -111,25 +111,25 @@ locals {
         "services-medium"=0,
         "services-large"=0,
 
-        "experiment-cpu-small"=1,
+        "experiment-cpu-small"=0,
         "experiment-cpu-medium"=0,
         "experiment-gpu-small"=0,
         "experiment-gpu-medium"=0,
         "experiment-gpu-large"=0
 
-        "model-deployment-cpu-small"=1,
+        "model-deployment-cpu-small"=0,
         "model-deployment-cpu-medium"=0,
         "model-deployment-gpu-small"=0,
         "model-deployment-gpu-medium"=0,
         "model-deployment-gpu-large"=0
 
-        "notebook-cpu-small"=1,
+        "notebook-cpu-small"=0,
         "notebook-cpu-medium"=0,
         "notebook-gpu-small"=0,
         "notebook-gpu-medium"=0,
         "notebook-gpu-large"=0,
 
-        "tensorboard-cpu-small"=1,
+        "tensorboard-cpu-small"=0,
         "tensorboard-cpu-medium"=0,
         "tensorboard-gpu-small"=0,
         "tensorboard-gpu-medium"=0,
