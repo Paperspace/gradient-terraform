@@ -3,7 +3,6 @@ locals {
     local_storage_name = "gradient-processing-local"
     helm_repo_url = var.helm_repo_url == "" ? "https://infrastructure-public-chart-museum-repository.storage.googleapis.com" : var.helm_repo_url
     shared_storage_name = "gradient-processing-shared"
-    trafeik_ssl_enabled = ((var.tls_cert != "" && var.tls_cert != "") || (var.label_selector_cpu != "" && var.label_selector_gpu != "" ))
     tls_secret_name = "gradient-processing-tls"
 }
 
@@ -48,12 +47,6 @@ resource "helm_release" "gradient_processing" {
         name = "traefik.acme.dnsProvider.name"
         value = var.letsencrypt_dns_name
     }
-    set {
-        name = "traefik.ssl.enabled"
-        value = local.trafeik_ssl_enabled
-    }
-
-
 
     dynamic "set_sensitive" {
         for_each = var.letsencrypt_dns_settings

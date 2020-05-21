@@ -190,14 +190,6 @@ traefik:
   nodeSelector:
     paperspace.com/pool-name: ${service_pool_name}
 
-  %{ if aws_certificate_arn != "" }
-  service:
-    annotations:
-      service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "http"
-      service.beta.kubernetes.io/aws-load-balancer-ssl-cert: ${aws_certificate_arn}
-      service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "https" 
-  %{ endif }
-
   %{ if label_selector_cpu != "" && label_selector_gpu != "" }
   serviceType: NodePort
   deploymentStrategy:
