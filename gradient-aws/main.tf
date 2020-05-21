@@ -50,19 +50,6 @@ module "kubernetes" {
     write_kubeconfig = var.write_kubeconfig
 }
 
-
-resource "aws_acm_certificate" "main" {
-    count = var.tls_cert == "" ? 1 : 0
-    
-    domain_name = "*.${var.domain}"
-    validation_method = "DNS"
-    subject_alternative_names = [var.domain]
-
-    lifecycle {
-        create_before_destroy = true
-    }
-}
-
 # Storage
 module "storage" {
   source = "./modules/storage"
@@ -115,7 +102,7 @@ module "gradient_processing" {
     amqp_port = var.amqp_port
     amqp_protocol = var.amqp_protocol
     aws_region = var.aws_region
-    aws_certificate_arn = var.tls_cert == "" ? aws_acm_certificate.main[0].id : ""
+    aws_certificate_arn = var.aws_certificate_arn
     artifacts_access_key_id = var.artifacts_access_key_id
     artifacts_object_storage_endpoint = var.artifacts_object_storage_endpoint
     artifacts_path = var.artifacts_path
@@ -150,8 +137,4 @@ module "gradient_processing" {
 
 output "elb_hostname" {
     value = module.gradient_processing.traefik_service.load_balancer_ingress[0].hostname
-}
-
-output "ssl_dns_record" {
-    value = var.tls_cert == "" ? "${aws_acm_certificate.main[0].domain_validation_options[0]["resource_record_name"]} ${aws_acm_certificate.main[0].domain_validation_options[0]["resource_record_value"]}" : ""
 }
