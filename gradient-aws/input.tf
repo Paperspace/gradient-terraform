@@ -1,8 +1,3 @@
-variable "aws_certificate_arn" {
-    description = "AWS certificate ARN"
-    default = ""
-}
-
 variable "aws_region" {
     description = "AWS region"
     default = "us-east-1"

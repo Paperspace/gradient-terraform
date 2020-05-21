@@ -31,11 +31,6 @@ variable "artifacts_secret_access_key" {
     description = "S3 compatible access key for artifacts object storage"
 }
 
-variable "aws_certificate_arn" {
-    description = "AWS certificate ARN"
-    default = ""
-}
-
 variable "aws_region" {
     description = "AWS region"
     default = "us-east-1"
