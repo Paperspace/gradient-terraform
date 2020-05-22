@@ -49,11 +49,11 @@ resource "helm_release" "gradient_processing" {
     }
     set_sensitive {
         name  = "traefik.ssl.defaultCert"
-        value = var.tls_cert == "" ? "null" : var.tls_cert
+        value = var.tls_cert == "" ? "null" : base64encode(var.tls_cert)
     }
     set_sensitive {
         name  = "traefik.ssl.defaultKey"
-        value = var.tls_key == "" ? "null" : var.tls_key
+        value = var.tls_key == "" ? "null" : base64encode(var.tls_key)
     }
 
     dynamic "set_sensitive" {
