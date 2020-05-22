@@ -102,7 +102,6 @@ module "gradient_processing" {
     amqp_port = var.amqp_port
     amqp_protocol = var.amqp_protocol
     aws_region = var.aws_region
-    aws_certificate_arn = var.aws_certificate_arn
     artifacts_access_key_id = var.artifacts_access_key_id
     artifacts_object_storage_endpoint = var.artifacts_object_storage_endpoint
     artifacts_path = var.artifacts_path

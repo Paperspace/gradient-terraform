@@ -1,6 +1,5 @@
 global:
   amqpExchange: ${cluster_handle}
-  awsCertificateARN: ${aws_certificate_arn}
 
   artifactsPath: ${artifacts_path}
   cluster:

@@ -47,6 +47,14 @@ resource "helm_release" "gradient_processing" {
         name = "traefik.acme.dnsProvider.name"
         value = var.letsencrypt_dns_name
     }
+    set_sensitive {
+        name  = "traefik.ssl.defaultCert"
+        value = var.tls_cert == "" ? "null" : var.tls_cert
+    }
+    set_sensitive {
+        name  = "traefik.ssl.defaultKey"
+        value = var.tls_key == "" ? "null" : var.tls_key
+    }
 
     dynamic "set_sensitive" {
         for_each = var.letsencrypt_dns_settings
@@ -62,7 +70,6 @@ resource "helm_release" "gradient_processing" {
             enabled = var.enabled
 
             aws_region = var.aws_region
-            aws_certificate_arn = var.aws_certificate_arn
             artifacts_path = var.artifacts_path
             cluster_autoscaler_enabled = var.cluster_autoscaler_enabled
             cluster_handle = var.cluster_handle
