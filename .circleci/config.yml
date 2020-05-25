@@ -2,11 +2,20 @@ version: 2.1
 
 orbs:
   docker-tools: paperspace/docker-tools@0.0.4
+  release-tools: paperspace/release-tools@0.0.2
 
 _docker_image_gradient_installer_ps_cloud: &docker_image_gradient_installer_ps_cloud paperspace/gradient-installer-ps-cloud
 _workspace_root: &workspace_root .
 
 jobs:
+  test_cli:
+    docker:
+      - image: golang:1.14
+    steps:
+      - checkout
+      - run:
+          command: go test ./...
+
   terraform_plan:
     docker:
       - image: hashicorp/terraform:0.12.24
@@ -25,12 +34,25 @@ jobs:
             terraform init
             terraform workspace select << parameters.workspace >>
             terraform plan
+  upload_assets:
+    docker:
+      - image: golang:1.14
+    steps:
+      - checkout
+      - run:
+          command: bin/build ${CIRCLE_TAG}
+      - run:
+          command: bin/upload ${CIRCLE_TAG}
       
 workflows:
   version: 2
-  plan:
+  pr:
     jobs:
-      # plan
+      - test_cli:
+          filters:
+            branches:
+              ignore: master
+         
       - terraform_plan:
           name: plan_aws
           path: gradient-aws/tests
@@ -49,6 +71,14 @@ workflows:
             branches:
               ignore: master
 
+  main:
+    jobs:
+      - release-tools/release:
+          context: semantic-release
+          filters:
+            branches:
+              only: master
+
       - docker-tools/build_and_push:
           name: docker_build_and_push_ps_cloud
           context: docker-deploy
@@ -61,3 +91,13 @@ workflows:
           filters:
             branches:
               only: master
+
+  tag:
+    jobs:
+      - upload_assets:
+          context: semantic-release
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              ignore: /.*/

@@ -1,4 +1,5 @@
 .terraform
+/build
 gradient-kubeconfig
 plugins
 terraform.tfstate

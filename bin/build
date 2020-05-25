@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+VERSION=$1
+
+function usage {
+    echo "build VERSION"
+    exit 1
+}
+
+if [ -z "${VERSION}" ];then
+    usage
+fi
+
+GOOS=darwin go build -ldflags "-X cli.commands.version=${VERSION}" -o ${DIR}/../build/gradient-installer-darwin ${DIR}/../cmd/gradient-installer/main.go
+GOOS=linux go build -ldflags "-X cli.commands.version=${VERSION}" -o ${DIR}/../build/gradient-installer-linux ${DIR}/../cmd/gradient-installer/main.go

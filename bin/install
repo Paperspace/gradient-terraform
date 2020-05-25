@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -e 
+
+case "$( uname -s )" in
+Darwin)
+	TARGET=darwin
+	;;
+Linux)
+	TARGET=linux
+	;;
+esac
+
+TAG_NAME=$(curl -sL https://api.github.com/repos/paperspace/gradient-installer/releases/latest | grep tag_name | sed 's/.*tag_name": "\(.*\)",/\1/')
+
+curl -Ls https://github.com/Paperspace/gradient-installer/releases/download/${TAG_NAME}/gradient-installer-${TARGET} \
+-o /usr/local/bin/gradient-installer
+chmod a+x /usr/local/bin/gradient-installer

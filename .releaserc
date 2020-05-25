@@ -1,0 +1,29 @@
+plugins:
+  - 
+    - "@semantic-release/commit-analyzer"
+    - releaseRules:
+      - breaking: true
+        release: major
+      - revert: true
+        release: patch
+      - type: feat
+        release: minor
+      - type: fix
+        release: patch
+      - type: perf
+        release: patch
+      - type: chore
+        release: patch
+      - type: refactor
+        release: patch
+      - type: tweak
+        release: patch
+      - release: patch
+  - "@semantic-release/release-notes-generator"
+  -
+    - "@semantic-release/github"
+    - assets:
+      - label: Gradient Installer MacOS
+        path: build/gradient-installer-darwin
+      - label: Gradient Installer Linux
+        path: build/gradient-installer-linux
