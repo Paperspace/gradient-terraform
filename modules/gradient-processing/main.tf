@@ -15,7 +15,7 @@ resource "helm_release" "gradient_processing" {
     version = var.gradient_processing_version
 
     set_sensitive {
-         name = "elasticSearch.password"
+         name = "global.elasticSearch.password"
          value = var.elastic_search_password
     }
     set_sensitive {
