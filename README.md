@@ -1,6 +1,10 @@
 # Gradient Installer
 
-The Gradient installer will provision a Gradient processing site cluster on various types of infrastructure. The installer runs in different modes – there's an AWS-specific version that creates a Gradient cluster in Amazon's Elastic Kubernetes Service (EKS), and a more generic version that can configure bare metal servers or virtual machines in nearly any environment - including NVIDIA's DGX-1 and Google Cloud's Compute Engine.
+The Gradient installer is a module that you can run using Terraform that will provision a Gradient processing site cluster on various types of infrastructure. The installer can be configured to be run in different modes: there's an AWS-specific version that creates a Gradient cluster in Amazon's Elastic Kubernetes Service (EKS), and a more generic version that can configure bare metal servers or virtual machines in nearly any environment - including NVIDIA's DGX-1 and Google Cloud's Compute Engine.
+
+The Gradient Installer is not a tool that you run directly or that you need to download the code for or install in any way. Rather, by [following the docs starting here](https://docs.paperspace.com/gradient/gradient-private-cloud/setup/pre-installation-steps), you will use Terraform and modify the base Terraform configuration provided there, to install Gradient. That Terraform configuration will use the Gradient Installer to install your cluster.
+
+To that end, this repo has been open-sourced so that the inner-workings of the installation process are transparent to anyone who wants to install a Gradient cluster.
 
 ### Supported target platforms
 
