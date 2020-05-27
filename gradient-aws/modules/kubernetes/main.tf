@@ -222,6 +222,72 @@ locals {
         "tensorboard-gpu-large"="gpu",
     }
 
+    kubelet_extra_args = {
+        "services-small"=[],
+        "services-medium"=[],
+        "services-large"=[],
+        "experiment-cpu-small"=[],
+        "experiment-cpu-medium"=[],
+        "experiment-gpu-small"=[
+            "cloud.google.com/gke-accelerator=nvidia-tesla-k80",
+            "k8s.amazonaws.com/accelerator=nvidia-tesla-k80"
+        ],
+        "experiment-gpu-medium"=[
+            "cloud.google.com/gke-accelerator=nvidia-tesla-v100",
+            "k8s.amazonaws.com/accelerator=nvidia-tesla-v100",
+        ],
+        "experiment-gpu-large"=[
+            "cloud.google.com/gke-accelerator=nvidia-tesla-v100",
+            "k8s.amazonaws.com/accelerator=nvidia-tesla-v100",
+        ],
+
+        "model-deployment-cpu-small"=[],
+        "model-deployment-cpu-medium"=[],
+        "model-deployment-gpu-small"=[
+            "cloud.google.com/gke-accelerator=nvidia-tesla-k80",
+            "k8s.amazonaws.com/accelerator=nvidia-tesla-k80"
+        ],
+        "model-deployment-gpu-medium"=[
+            "cloud.google.com/gke-accelerator=nvidia-tesla-v100",
+            "k8s.amazonaws.com/accelerator=nvidia-tesla-v100",
+        ],
+        "model-deployment-gpu-large"=[
+            "cloud.google.com/gke-accelerator=nvidia-tesla-v100",
+            "k8s.amazonaws.com/accelerator=nvidia-tesla-v100",
+        ],
+
+        "notebook-cpu-small"=[],
+        "notebook-cpu-medium"=[],
+        "notebook-gpu-small"=[
+            "cloud.google.com/gke-accelerator=nvidia-tesla-k80",
+            "k8s.amazonaws.com/accelerator=nvidia-tesla-k80",
+        ],
+        "notebook-gpu-medium"=[
+            "cloud.google.com/gke-accelerator=nvidia-tesla-v100",
+            "k8s.amazonaws.com/accelerator=nvidia-tesla-v100",
+        ],
+        "notebook-gpu-large"=[
+            "cloud.google.com/gke-accelerator=nvidia-tesla-v100",
+            "k8s.amazonaws.com/accelerator=nvidia-tesla-v100",
+        ],
+
+        "tensorboard-cpu-small"=[],
+        "tensorboard-cpu-medium"=[],
+        "tensorboard-gpu-small"=[
+            "cloud.google.com/gke-accelerator=nvidia-tesla-k80",
+            "k8s.amazonaws.com/accelerator=nvidia-tesla-k80"
+        ],
+        "tensorboard-gpu-medium"=[
+            "cloud.google.com/gke-accelerator=nvidia-tesla-v100",
+            "k8s.amazonaws.com/accelerator=nvidia-tesla-v100",
+        ],
+        "tensorboard-gpu-large"=[
+            "cloud.google.com/gke-accelerator=nvidia-tesla-v100",
+            "k8s.amazonaws.com/accelerator=nvidia-tesla-v100",
+        ],
+
+    }
+
     node_volume_sizes = merge({
         "services-small"=local.root_volume_size_default,
         "services-medium"=local.root_volume_size_default,
@@ -264,7 +330,15 @@ locals {
         asg_min_size = local.node_asg_min_sizes[node_type]
         instance_type = local.node_instance_types[node_type]
         key_name = var.public_key == "" ? "" : aws_key_pair.main[0].id
-        kubelet_extra_args = "--node-labels=paperspace.com/pool-name=${node_type},paperspace.com/pool-type=${local.node_pool_types[node_type]},node-role.kubernetes.io/node=,node-role.kubernetes.io/worker=,node-role.kubernetes.io/${node_type}"
+        kubelet_extra_args = "--node-labels=${join(",",
+            concat([
+                "paperspace.com/pool-name=${node_type}",
+                "paperspace.com/pool-type=${local.node_pool_types[node_type]}",
+                "node-role.kubernetes.io/node=",
+                "node-role.kubernetes.io/worker=",
+                "node-role.kubernetes.io/${node_type}",
+            ], local.kubelet_extra_args[node_type])
+        )}"
 
         tags = [
             {
