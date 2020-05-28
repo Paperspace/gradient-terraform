@@ -169,9 +169,9 @@ nfs-client-provisioner:
     paperspace.com/pool-name: ${service_pool_name}
 
 prometheus:
-  nodeSelector:
-    paperspace.com/pool-name: ${service_pool_name}
   server:
+    nodeSelector:
+      paperspace.com/pool-name: ${service_pool_name}
     ingress:
       hosts:
         - ${domain}/prometheus
