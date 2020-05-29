@@ -39,7 +39,7 @@ variable "gpu_selector" {
 
 variable "local_storage_path" {
     description = "Local storage path on nodes"
-    default = "/tmp/gradient"
+    default = ""
 }
 
 variable "local_storage_server" {
@@ -49,7 +49,7 @@ variable "local_storage_server" {
 
 variable "local_storage_type" {
     description = "Local storage type"
-    default = "HostPath"
+    default = ""
 }
 
 variable "setup_docker" {

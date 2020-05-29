@@ -95,8 +95,10 @@ module "gradient_processing" {
     label_selector_gpu = var.gpu_selector
     letsencrypt_dns_name = var.letsencrypt_dns_name
     letsencrypt_dns_settings = var.letsencrypt_dns_settings
-    local_storage_path = var.local_storage_path
-    local_storage_type = "HostPath"
+    // Use shared storage by default for now
+    local_storage_server = var.local_storage_server == "" ? var.shared_storage_server : var.local_storage_server
+    local_storage_path = var.local_storage_path == "" ? var.shared_storage_path : var.local_storage_path
+    local_storage_type = var.local_storage_type == "" ? var.shared_storage_type : var.local_storage_type
     logs_host = var.logs_host
     gradient_processing_version = var.gradient_processing_version
     name = var.name

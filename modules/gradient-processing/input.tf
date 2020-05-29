@@ -121,7 +121,7 @@ variable "name" {
 
 variable "local_storage_path" {
   description = "Local storage path "
-  default = "/tmp/gradient"
+  default = "/"
 }
 variable "local_storage_server" {
   description = "Local storage server"
