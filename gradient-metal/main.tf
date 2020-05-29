@@ -15,9 +15,7 @@ module "kubernetes" {
 	name = var.name
 	k8s_version = local.k8s_version
 	kubeconfig_path = var.kubeconfig_path
-    kubelet_extra_binds = [
-        "${var.local_storage_path}:${var.local_storage_path}"
-    ]
+    kubelet_extra_binds = []
     master_node = var.k8s_master_node
     service_pool_name = local.service_pool_name
     setup_docker = var.setup_docker
