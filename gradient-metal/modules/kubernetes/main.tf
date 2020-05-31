@@ -3,6 +3,7 @@ locals {
 
     rke_nodes = concat([{
         ip = var.master_node["ip"]
+        internal_address = lookup(var.master_node, "internal_address", null)
         labels = {
             "node-role.kubernetes.io/master" = ""
             "node-role.kubernetes.io/controller" = true
@@ -17,6 +18,7 @@ locals {
         pool-type = var.master_node["pool-type"]
     }], [ for worker in var.workers : {
         ip = worker["ip"]
+        internal_address = lookup(worker, "internal_address", null)
         labels = {
             "node-role.kubernetes.io/node": ""
             "node-role.kubernetes.io/worker": ""
@@ -93,12 +95,17 @@ resource "rke_cluster" "main" {
 
         content {
             address = nodes.value["ip"]
+            internal_address = nodes.value["internal_address"]
             docker_socket = var.docker_socket
             labels = nodes.value["labels"]
             role    = nodes.value["roles"]
             ssh_key = file(var.ssh_key_path)
             user    = var.ssh_user
         }
+    }
+
+    authentication {
+        sans = var.authentication_sans
     }
 
     kubernetes_version = "v${var.k8s_version}-rancher1-1"

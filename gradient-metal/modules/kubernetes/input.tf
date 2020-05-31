@@ -1,3 +1,9 @@
+
+variable "authentication_sans" {
+    type = list
+    description = "List of hostname or IPs used for Kubernetes authentications"
+}
+
 variable "docker_socket" {
     description = "Path to remote docker socket"
     default = "/var/run/docker.sock"

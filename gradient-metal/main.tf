@@ -13,6 +13,8 @@ module "kubernetes" {
 	enable = !local.has_k8s
 
 	name = var.name
+
+    authentication_sans = var.k8s_sans
 	k8s_version = local.k8s_version
 	kubeconfig_path = var.kubeconfig_path
     kubelet_extra_binds = []

@@ -8,6 +8,12 @@ variable "k8s_master_node" {
     description = "Kubernetes master node"
 }
 
+variable "k8s_sans" {
+    type = list
+    description = "List of hostname or IPs used for Kubernetes authentications"
+    default = []
+}
+
 variable "k8s_workers" {
     type = list
     description = "Kubernetes workers"
