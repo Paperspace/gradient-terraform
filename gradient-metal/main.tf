@@ -9,14 +9,14 @@ locals {
 
 // Kubernetes
 module "kubernetes" {
-	source          = "./modules/kubernetes"
-	enable = !local.has_k8s
+    source          = "./modules/kubernetes"
+    enable = !local.has_k8s
 
-	name = var.name
+    name = var.name
 
     authentication_sans = var.k8s_sans
-	k8s_version = local.k8s_version
-	kubeconfig_path = var.kubeconfig_path
+    k8s_version = local.k8s_version
+    kubeconfig_path = var.kubeconfig_path
     kubelet_extra_binds = []
     master_node = var.k8s_master_node
     service_pool_name = local.service_pool_name
