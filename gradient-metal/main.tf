@@ -2,6 +2,7 @@ locals {
     has_k8s = var.k8s_endpoint == "" ? false : true
     has_shared_storage = var.shared_storage_path == "" ? false : true
     k8s_version = var.k8s_version == "" ? "1.15.11" : var.k8s_version
+    shared_storage_type = var.shared_storage_type == "" ? "nfs" : var.shared_storage_type
 
     is_single_node = length(var.k8s_workers) == 0
     service_pool_name = local.is_single_node == true ? var.k8s_master_node["pool-name"] : var.service_pool_name
@@ -98,7 +99,7 @@ module "gradient_processing" {
     // Use shared storage by default for now
     local_storage_server = var.local_storage_server == "" ? var.shared_storage_server : var.local_storage_server
     local_storage_path = var.local_storage_path == "" ? var.shared_storage_path : var.local_storage_path
-    local_storage_type = var.local_storage_type == "" ? var.shared_storage_type : var.local_storage_type
+    local_storage_type = var.local_storage_type == "" ? local.shared_storage_type : var.local_storage_type
     logs_host = var.logs_host
     gradient_processing_version = var.gradient_processing_version
     name = var.name
@@ -106,7 +107,7 @@ module "gradient_processing" {
     service_pool_name = local.service_pool_name
     shared_storage_server = var.shared_storage_server
     shared_storage_path = var.shared_storage_path
-    shared_storage_type = var.shared_storage_type == "" ? "nfs" : var.shared_storage_type
+    shared_storage_type = local.shared_storage_type
     tls_cert = var.tls_cert
     tls_key = var.tls_key
     use_pod_anti_affinity = var.use_pod_anti_affinity
