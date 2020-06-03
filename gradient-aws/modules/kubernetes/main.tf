@@ -342,20 +342,20 @@ locals {
 
         tags = [
             {
-                key                 = "k8s.io/cluster-autoscaler/${var.name}",
-                value               = "true",
-                propagate_at_launch = 1,
-            },
-            {
                 key                 = "k8s.io/cluster-autoscaler/enabled",
                 value               = "true",
-                propagate_at_launch = 1,
+                propagate_at_launch = "true",
             },
             {
                 key = "k8s.io/cluster-autoscaler/node-template/label/paperspace.com/pool-name"
                 value = node_type
-                propagate_at_launch = 1,
-            }
+                propagate_at_launch = "true",
+            },
+            {
+                key                 = "k8s.io/cluster-autoscaler/${var.name}",
+                value               = "true",
+                propagate_at_launch = "true",
+            },
         ]
     }]
 }
