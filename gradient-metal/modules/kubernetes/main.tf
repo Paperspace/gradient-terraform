@@ -95,7 +95,7 @@ resource "rke_cluster" "main" {
 
         content {
             address = nodes.value["ip"]
-            internal_address = nodes.value["internal_address"]
+            internal_address = nodes.value["internal-address"]
             docker_socket = var.docker_socket
             labels = nodes.value["labels"]
             role    = nodes.value["roles"]
