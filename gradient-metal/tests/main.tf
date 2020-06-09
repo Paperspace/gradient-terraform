@@ -12,6 +12,7 @@ module "gradient_metal" {
 
     k8s_master_node = {
         ip = "master_ip1"
+        internal-address = "internal_master_ip1"
         pool-type = "cpu"
         pool-name = "metal-cpu"
     }
@@ -19,11 +20,13 @@ module "gradient_metal" {
     k8s_workers = [
         {
             ip = "worker_ip1"
+            internal-address = "internal_ip1"
             pool-type = "gpu"
             pool-name = "metal-gpu"
         },
         {
             ip = "worker_ip2"
+            internal-address = "internal_ip2"
             pool-type = "cpu"
             pool-name = "metal-cpu"
         }
