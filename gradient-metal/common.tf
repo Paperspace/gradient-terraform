@@ -124,11 +124,6 @@ variable "name" {
     description = "Name"
 }
 
-variable "public_key_path" {
-    description = "Login key path"
-    default = ""
-}
-
 variable "sentry_dsn" {
     description = "DSN for sentry alerts"
     default = ""

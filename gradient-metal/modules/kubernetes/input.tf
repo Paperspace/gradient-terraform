@@ -47,12 +47,8 @@ variable "service_pool_name" {
     description = "Service pool selector"
 }
 
-variable "ssh_key" {
-    description = "SSH key"
-}
-
-variable "ssh_key_path" {
-    description = "SSH key path"
+variable "ssh_key_private" {
+    description = "Private SSH key"
 }
 
 variable "ssh_user" {

@@ -20,12 +20,12 @@ variable "k8s_workers" {
 }
 
 variable "ssh_key" {
-    description = "SSH key_path"
+    description = "Private SSH key"
     default = ""
 }
 
 variable "ssh_key_path" {
-    description = "SSH key_path"
+    description = "Private SSH key file path"
     default = "~/.ssh/id_rsa"
 }
 

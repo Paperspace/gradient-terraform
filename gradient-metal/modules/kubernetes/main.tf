@@ -43,7 +43,7 @@ resource "null_resource" "rke_nodes_wait" {
             type     = "ssh"
             user     = var.ssh_user
             host     = local.rke_nodes[count.index].ip
-            private_key = file(pathexpand(var.ssh_key_path))
+            private_key = var.ssh_key_private
         }
     }
 
@@ -54,7 +54,7 @@ resource "null_resource" "rke_nodes_wait" {
             type     = "ssh"
             user     = var.ssh_user
             host     = local.rke_nodes[count.index].ip
-            private_key = file(pathexpand(var.ssh_key_path))
+            private_key = var.ssh_key_private
         }
     }
 
@@ -71,7 +71,7 @@ resource "null_resource" "rke_nodes_wait" {
             type     = "ssh"
             user     = var.ssh_user
             host     = local.rke_nodes[count.index].ip
-            private_key = file(pathexpand(var.ssh_key_path))
+            private_key = var.ssh_key_private
         }
     }
 
@@ -81,7 +81,7 @@ resource "null_resource" "rke_nodes_wait" {
             type     = "ssh"
             user     = var.ssh_user
             host     = local.rke_nodes[count.index].ip
-            private_key = file(pathexpand(var.ssh_key_path))
+            private_key = var.ssh_key_private
         }
     }
 }
@@ -99,7 +99,7 @@ resource "rke_cluster" "main" {
             docker_socket = var.docker_socket
             labels = nodes.value["labels"]
             role    = nodes.value["roles"]
-            ssh_key = file(var.ssh_key_path)
+            ssh_key = var.ssh_key_private
             user    = var.ssh_user
         }
     }

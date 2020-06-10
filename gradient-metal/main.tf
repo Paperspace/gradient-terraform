@@ -23,8 +23,7 @@ module "kubernetes" {
     service_pool_name = local.service_pool_name
     setup_docker = var.setup_docker
     setup_nvidia = var.setup_nvidia
-    ssh_key = var.ssh_key
-    ssh_key_path = var.ssh_key_path
+    ssh_key_private = var.ssh_key == "" ? file(pathexpand(var.ssh_key_path)) : var.ssh_key
     ssh_user = var.ssh_user
     write_kubeconfig = var.write_kubeconfig
     workers = var.k8s_workers
