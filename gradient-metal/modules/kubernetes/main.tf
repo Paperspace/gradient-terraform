@@ -3,7 +3,7 @@ locals {
 
     rke_nodes = concat([{
         ip = var.master_node["ip"]
-        internal-address = lookup(var.master_node, "internal_address", null)
+        internal-address = lookup(var.master_node, "internal-address", null)
         labels = {
             "node-role.kubernetes.io/master" = ""
             "node-role.kubernetes.io/controller" = true
@@ -18,7 +18,7 @@ locals {
         pool-type = var.master_node["pool-type"]
     }], [ for worker in var.workers : {
         ip = worker["ip"]
-        internal-address = lookup(worker, "internal_address", null)
+        internal-address = lookup(worker, "internal-address", null)
         labels = {
             "node-role.kubernetes.io/node": ""
             "node-role.kubernetes.io/worker": ""
