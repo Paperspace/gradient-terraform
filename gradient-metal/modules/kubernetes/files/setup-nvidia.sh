@@ -59,6 +59,6 @@ if [ "$os_id" = "ubuntu" ] || [ "$os_id" = "debian" ];then
     fi
 
     if [ "$REBOOT" = "true" ]; then
-        reboot
+        shutdown --reboot now "System is going down for reboot now for nvidia drivers to work"
     fi
 fi
