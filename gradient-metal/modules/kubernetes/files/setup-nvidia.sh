@@ -60,6 +60,6 @@ if [ "$os_id" = "ubuntu" ] || [ "$os_id" = "debian" ];then
 
     if [ "$REBOOT" = "true" ]; then
         echo "Restarting GPU node..."
-        shutdown --reboot +3 "System is going down for reboot in 3 seconds for nvidia drivers to work" || true
+        shutdown --reboot now "System is rebooting for nvidia drivers to work" || true
     fi
 fi
