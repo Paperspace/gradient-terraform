@@ -76,7 +76,14 @@ resource "null_resource" "rke_nodes_wait" {
     }
 
     provisioner "local-exec" {
-        command = "sleep 30 && echo 'Waiting for ${local.rke_nodes[count.index].ip}'"
+        command = "sleep 10 && echo 'Waiting for ${local.rke_nodes[count.index].ip}'"
+    }
+
+    provisioner "remote-exec" {
+        inline = [
+            "echo pineapple"
+        ]
+
         connection {
             type     = "ssh"
             user     = var.ssh_user
