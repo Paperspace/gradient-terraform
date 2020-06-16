@@ -20,6 +20,7 @@ module "kubernetes" {
     kubeconfig_path = var.kubeconfig_path
     kubelet_extra_binds = []
     master_node = var.k8s_master_node
+    reboot_gpu_nodes = var.reboot_gpu_nodes
     service_pool_name = local.service_pool_name
     setup_docker = var.setup_docker
     setup_nvidia = var.setup_nvidia

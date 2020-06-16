@@ -57,4 +57,8 @@ if [ "$os_id" = "ubuntu" ] || [ "$os_id" = "debian" ];then
         service docker reload
         update_default_runtime
     fi
+
+    if [ "$REBOOT" = "true" ]; then
+        reboot
+    fi
 fi

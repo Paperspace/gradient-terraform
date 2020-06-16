@@ -64,7 +64,7 @@ resource "null_resource" "rke_nodes_wait" {
     provisioner "remote-exec" {
         inline = [
             "sudo DOCKER_USER=${var.ssh_user} SETUP_DOCKER=${var.setup_docker} sh /tmp/setup-docker.sh",
-            "sudo POOL_TYPE=${local.rke_nodes[count.index]["pool-type"]} SETUP_NVIDIA=${var.setup_nvidia} sh /tmp/setup-nvidia.sh"
+            "sudo POOL_TYPE=${local.rke_nodes[count.index]["pool-type"]} REBOOT=${var.reboot_gpu_nodes} SETUP_NVIDIA=${var.setup_nvidia} sh /tmp/setup-nvidia.sh"
         ]
 
         connection {

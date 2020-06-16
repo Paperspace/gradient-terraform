@@ -36,6 +36,11 @@ variable "name" {
     description = "Name"
 }
 
+variable "reboot_gpu_nodes" {
+    type = bool
+    description = "Reboot GPU nodes"
+}
+
 variable "setup_docker" {
     description = "Setup docker"
 }

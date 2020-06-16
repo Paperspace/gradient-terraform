@@ -19,6 +19,12 @@ variable "k8s_workers" {
     description = "Kubernetes workers"
 }
 
+variable "reboot_gpu_nodes" {
+    type = bool
+    description = "Reboot GPU nodes"
+    default = false
+}
+
 variable "ssh_key" {
     description = "Private SSH key"
     default = ""
