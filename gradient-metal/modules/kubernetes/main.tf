@@ -76,7 +76,7 @@ resource "null_resource" "rke_nodes_wait" {
     }
 
     provisioner "local-exec" {
-        command = "echo 'Waiting for ${local.rke_nodes[count.index].ip}'"
+        command = "sleep 5 && echo 'Waiting for ${local.rke_nodes[count.index].ip}'"
     }
 
     provisioner "remote-exec" {
