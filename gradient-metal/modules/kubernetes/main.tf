@@ -76,6 +76,7 @@ resource "null_resource" "rke_nodes_wait" {
     }
 
     provisioner "local-exec" {
+        # sleep to mitigate the race condition of rebooting gpu machines
         command = "sleep 5 && echo 'Waiting for ${local.rke_nodes[count.index].ip}'"
     }
 
