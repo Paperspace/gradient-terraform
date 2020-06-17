@@ -76,7 +76,7 @@ resource "null_resource" "rke_nodes_wait" {
     }
 
     provisioner "local-exec" {
-        # sleep to mitigate the race condition of rebooting gpu machines
+        # sleep to ensure we don't successfully ssh connect to a gpu machine before it starts reboot
         command = "sleep 5 && echo 'Waiting for ${local.rke_nodes[count.index].ip}'"
     }
 
