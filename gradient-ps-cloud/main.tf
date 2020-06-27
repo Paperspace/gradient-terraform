@@ -96,9 +96,9 @@ module "gradient_metal" {
 
     amqp_hostname = var.amqp_hostname
 
-    artifacts_access_key_id = var.aws_access_key_id
+    artifacts_access_key_id = var.artifacts_access_key_id
     artifacts_path = var.artifacts_path
-    artifacts_secret_access_key = var.aws_secret_access_key
+    artifacts_secret_access_key = var.artifacts_secret_access_key
     sentry_dsn = var.sentry_dsn
 
     cluster_handle = var.cluster_handle
