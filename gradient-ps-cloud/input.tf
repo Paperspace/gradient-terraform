@@ -54,7 +54,7 @@ variable "region" {
     default = "East Coast (NY2)"
 }
 
-variable "team_handle" {
+variable "ssh_key_private" {
     default = ""
 }
 
@@ -62,6 +62,6 @@ variable "ssh_key_public" {
     default = ""
 }
 
-variable "ssh_key_private" {
+variable "team_handle" {
     default = ""
 }
