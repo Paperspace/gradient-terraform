@@ -1,0 +1,57 @@
+- name: Configure PS Cloud node for gradient-installer as gradient-metal target
+  hosts: all
+  remote_user: paperspace
+  become: yes
+  become_method: sudo
+  vars:
+    install_nfs_server: false
+  tasks:
+    - name: Add existing user {{ ansible_user }} to group sudo
+      user:
+        name: "{{ ansible_user }}"
+        groups: sudo
+        append: yes
+    - name: Ensure {{ ansible_user }} has access to Docker group
+      lineinfile:
+        path: /etc/group
+        line: docker:x:999:{{ ansible_user }}
+    - name: Configure ssh
+      block:
+        - name: Ensure OpenSSH allows TCP forwarding
+          lineinfile:
+            path: /etc/ssh/sshd_config
+            line: AllowTcpForwarding yes
+        - name: Reload ssh service
+          service:
+            name: ssh
+            state: reloaded
+    - name: Install & configure nfs server
+      block:
+        - name: Install nfs server
+          apt:
+            name: nfs-kernel-server
+            state: present
+            update_cache: yes
+        - name: Create gradient nfs serve share
+          file:
+            path: /srv/gradient
+            state: directory
+        - name: Grant nfs share access to clients
+          lineinfile:
+            path: /etc/exports
+            line: /srv/gradient {{ nfs_subnet_host_with_netmask }}(rw,sync,no_subtree_check)
+        - name: Remove ownership of gradient nfs server directory
+          file:
+            path: /srv/gradient
+            state: directory
+            recurse: yes
+            owner: nobody
+            group: nogroup
+        - name: Reload nfs
+          command: exportfs -a
+        - name: Ensure nfs server is running
+          service:
+            name: nfs-kernel-server
+            state: started
+            enabled: yes
+      when: install_nfs_server|bool
