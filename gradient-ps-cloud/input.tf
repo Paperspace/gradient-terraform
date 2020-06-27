@@ -6,14 +6,6 @@ variable "admin_user_api_key" {
     default = ""
 }
 
-variable "cluster_api_key" {
-    default = ""
-}
-
-variable "cluster_handle" {
-    default = ""
-}
-
 variable "cluster_id" {
     default = ""
 }
@@ -52,6 +44,10 @@ variable "machine_template_id_gpu" {
 }
 variable "machine_type_worker_gpu" {
     default = "P4000"
+}
+
+variable "name" {
+    default = ""
 }
 
 variable "network_id" {

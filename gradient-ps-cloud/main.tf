@@ -1,7 +1,3 @@
-provider "aws" {
-    region  = "us-east-1"
-}
-
 provider "paperspace" {
     region = var.region
     api_key = var.admin_user_api_key
@@ -25,7 +21,7 @@ EOF
 
 resource "paperspace_machine" "gradient_main" {
     region = var.region
-    name = "${terraform.workspace}-main"
+    name = "${var.name}-main"
     machine_type = var.machine_type_main
     size = var.machine_storage_main
     billing_type = "hourly"
@@ -50,7 +46,7 @@ resource "paperspace_machine" "gradient_main" {
 resource "paperspace_machine" "gradient_workers_cpu" {
     count = var.machine_count_worker_cpu
     region = var.region
-    name = "${terraform.workspace}-worker-cpu-${count.index}"
+    name = "${var.name}-worker-cpu-${count.index}"
     machine_type = var.machine_type_worker_cpu
     size = var.machine_storage_worker_cpu
     billing_type = "hourly"
@@ -73,7 +69,7 @@ resource "paperspace_machine" "gradient_workers_cpu" {
 resource "paperspace_machine" "gradient_workers_gpu" {
     count = var.machine_count_worker_gpu
     region = var.region
-    name = "${terraform.workspace}-worker-gpu-${count.index}"
+    name = "${var.name}-worker-gpu-${count.index}"
     machine_type = var.machine_type_worker_gpu
     size = var.machine_storage_worker_gpu
     billing_type = "hourly"
@@ -104,29 +100,26 @@ module "gradient_metal" {
     sentry_dsn = var.sentry_dsn
 
     cluster_handle = var.cluster_handle
-    cluster_apikey = var.cluster_api_key
+    cluster_apikey = var.cluster_apikey
 
     domain = var.domain
-    gradient_processing_version = local.cluster_settings.gradient_processing_version
+    gradient_processing_version = var.gradient_processing_version
 
     elastic_search_host = var.elastic_search_host
-    elastic_search_index = terraform.workspace
+    elastic_search_index = var.name
     elastic_search_password = var.elastic_search_password
     elastic_search_user = "elastic"
 
-    helm_repo_password = lookup(local.cluster_settings, "helm_repo_password", "")
-    helm_repo_username = lookup(local.cluster_settings, "helm_repo_username", "")
-    helm_repo_url = lookup(local.cluster_settings, "helm_repo_url", "")
-    kubeconfig_path = "./${terraform.workspace}-kubeconfig"
+    helm_repo_password = var.helm_repo_password
+    helm_repo_username = var.helm_repo_username
+    helm_repo_url = var.helm_repo_url
+    kubeconfig_path = "./${var.name}-kubeconfig"
 
-    logs_host = local.logs_host[local.cluster_settings["environment"]]
+    logs_host = var.logs_host
     letsencrypt_dns_name = "cloudflare"
-    letsencrypt_dns_settings = {
-        CLOUDFLARE_EMAIL = var.cloudflare_email
-        CLOUDFLARE_API_KEY = var.cloudflare_global_api_key
-    }
+    letsencrypt_dns_settings = var.letsencrypt_dns_settings
     traefik_prometheus_auth = var.traefik_prometheus_auth
-    write_kubeconfig = false
+    write_kubeconfig = true
 
     k8s_master_node = {
         ip = paperspace_machine.gradient_main.public_ip_address
