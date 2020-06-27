@@ -92,6 +92,8 @@ resource "paperspace_machine" "gradient_workers_gpu" {
 module "gradient_metal" {
     source = "../gradient-metal"
 
+    name = var.name
+
     amqp_hostname = var.amqp_hostname
 
     artifacts_access_key_id = var.aws_access_key_id
@@ -113,13 +115,12 @@ module "gradient_metal" {
     helm_repo_password = var.helm_repo_password
     helm_repo_username = var.helm_repo_username
     helm_repo_url = var.helm_repo_url
-    kubeconfig_path = "./${var.name}-kubeconfig"
+    kubeconfig_path = var.kubeconfig_path
 
     logs_host = var.logs_host
-    letsencrypt_dns_name = "cloudflare"
+    letsencrypt_dns_name = var.letsencrypt_dns_name
     letsencrypt_dns_settings = var.letsencrypt_dns_settings
     traefik_prometheus_auth = var.traefik_prometheus_auth
-    write_kubeconfig = true
 
     k8s_master_node = {
         ip = paperspace_machine.gradient_main.public_ip_address
@@ -145,11 +146,6 @@ module "gradient_metal" {
             }
         ]
     )
-
-    # with the default gpu templates, nvidia is preinstalled on PS Cloud and thus reboot is not needed
-    reboot_gpu_nodes = false
-    setup_docker = true
-    setup_nvidia = false
 
     shared_storage_path = "/srv/gradient"
     shared_storage_server = paperspace_machine.gradient_main.private_ip_address
