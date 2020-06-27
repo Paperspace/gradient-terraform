@@ -46,10 +46,6 @@ variable "machine_type_worker_gpu" {
     default = "P4000"
 }
 
-variable "name" {
-    default = ""
-}
-
 variable "network_id" {
     default = ""
 }
