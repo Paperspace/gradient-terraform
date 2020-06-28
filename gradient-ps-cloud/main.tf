@@ -42,7 +42,7 @@ resource "paperspace_machine" "gradient_main" {
             -i '${paperspace_machine.gradient_main.public_ip_address},' \
             -e "install_nfs_server=true" \
             -e "nfs_subnet_host_with_netmask=${data.paperspace_network.network.network}/${data.paperspace_network.network.netmask}" \
-            ansible/playbook-gradient-metal-ps-cloud-node.yaml
+            ${path.module}/ansible/playbook-gradient-metal-ps-cloud-node.yaml
         EOF
     }
 }
@@ -65,7 +65,7 @@ resource "paperspace_machine" "gradient_workers_cpu" {
         command = <<EOF
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
             -i '${self.public_ip_address},' \
-            ansible/playbook-gradient-metal-ps-cloud-node.yaml
+            ${path.module}/ansible/playbook-gradient-metal-ps-cloud-node.yaml
         EOF
     }
 }
@@ -88,7 +88,7 @@ resource "paperspace_machine" "gradient_workers_gpu" {
         command = <<EOF
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
             -i '${self.public_ip_address},' \
-            ansible/playbook-gradient-metal-ps-cloud-node.yaml
+            ${path.module}/ansible/playbook-gradient-metal-ps-cloud-node.yaml
         EOF
     }
 }
