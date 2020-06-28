@@ -5,7 +5,11 @@ provider "paperspace" {
 
 data "paperspace_user" "admin" {
     email = var.admin_email
-    team_id = var.team_handle
+    team_id = var.team_id
+}
+
+data "paperspace_network" "network" {
+    id = var.network_id
 }
 
 resource "paperspace_script" "add_public_ssh_key" {

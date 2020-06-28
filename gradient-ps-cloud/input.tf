@@ -1,14 +1,8 @@
-variable "admin_email" {
-    default = ""
-}
+variable "admin_email" {}
 
-variable "admin_user_api_key" {
-    default = ""
-}
+variable "admin_user_api_key" {}
 
-variable "cluster_id" {
-    default = ""
-}
+# variable "cluster_id" {}
 
 variable "machine_storage_main" {
     default = 50
@@ -46,22 +40,14 @@ variable "machine_type_worker_gpu" {
     default = "P4000"
 }
 
-variable "network_id" {
-    default = ""
-}
+variable "network_id" {}
 
 variable "region" {
     default = "East Coast (NY2)"
 }
 
-variable "ssh_key_private" {
-    default = ""
-}
+variable "ssh_key_private" {}
 
-variable "ssh_key_public" {
-    default = ""
-}
+variable "ssh_key_public" {}
 
-variable "team_handle" {
-    default = ""
-}
+variable "team_id" {}
