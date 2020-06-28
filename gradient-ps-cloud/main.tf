@@ -34,7 +34,7 @@ resource "paperspace_machine" "gradient_main" {
     user_id = data.paperspace_user.admin.id
     team_id = data.paperspace_user.admin.team_id
     script_id = paperspace_script.add_public_ssh_key.id
-    # cluster_id = var.cluster_id
+    # cluster_id = var.cluster_id // coming soon
 
     provisioner "local-exec" {
         command = <<EOF
