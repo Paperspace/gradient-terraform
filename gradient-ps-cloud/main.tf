@@ -17,10 +17,15 @@ resource "paperspace_script" "add_public_ssh_key" {
   description = "Add public SSH key on machine create"
   script_text = <<EOF
 #!/bin/bash
-echo "${var.ssh_key_public}" >> /home/paperspace/.ssh/authorized_keys
+echo "${file(pathexpand(var.ssh_key_public_path))}" >> /home/paperspace/.ssh/authorized_keys
 EOF
   is_enabled = true
   run_once = true
+}
+
+resource "paperspace_network" "main" {
+    name = var.name
+    team_id = data.paperspace_user.admin.team_id
 }
 
 resource "paperspace_machine" "gradient_main" {
@@ -34,11 +39,13 @@ resource "paperspace_machine" "gradient_main" {
     user_id = data.paperspace_user.admin.id
     team_id = data.paperspace_user.admin.team_id
     script_id = paperspace_script.add_public_ssh_key.id
+    network_id = paperspace_network.main.id
     # cluster_id = var.cluster_id // coming soon
 
     provisioner "local-exec" {
         command = <<EOF
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
+            --key-file ${var.ssh_key_path} \
             -i '${paperspace_machine.gradient_main.public_ip_address},' \
             -e "install_nfs_server=true" \
             -e "nfs_subnet_host_with_netmask=${data.paperspace_network.network.network}/${data.paperspace_network.network.netmask}" \
@@ -59,11 +66,13 @@ resource "paperspace_machine" "gradient_workers_cpu" {
     user_id = data.paperspace_user.admin.id
     team_id = data.paperspace_user.admin.team_id
     script_id = paperspace_script.add_public_ssh_key.id
+    network_id = paperspace_network.main.id
     # cluster_id = var.cluster_id
 
     provisioner "local-exec" {
         command = <<EOF
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
+            --key-file ${var.ssh_key_path} \
             -i '${self.public_ip_address},' \
             ${path.module}/ansible/playbook-gradient-metal-ps-cloud-node.yaml
         EOF
@@ -82,11 +91,13 @@ resource "paperspace_machine" "gradient_workers_gpu" {
     user_id = data.paperspace_user.admin.id
     team_id = data.paperspace_user.admin.team_id
     script_id = paperspace_script.add_public_ssh_key.id
+    network_id = paperspace_network.main.id
     # cluster_id = var.cluster_id
 
     provisioner "local-exec" {
         command = <<EOF
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
+            --key-file ${var.ssh_key_path} \
             -i '${self.public_ip_address},' \
             ${path.module}/ansible/playbook-gradient-metal-ps-cloud-node.yaml
         EOF
@@ -153,7 +164,7 @@ module "gradient_metal" {
 
     shared_storage_path = "/srv/gradient"
     shared_storage_server = paperspace_machine.gradient_main.private_ip_address
-    ssh_key = var.ssh_key_private
+    ssh_key_path = var.ssh_key_path
     ssh_user = "paperspace"
 }
 
