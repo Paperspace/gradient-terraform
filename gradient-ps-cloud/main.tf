@@ -1,3 +1,7 @@
+locals {
+    ssh_key_path = "${path.module}/ssh_key"
+}
+
 provider "paperspace" {
     region = var.region
     api_key = var.admin_user_api_key
@@ -12,15 +16,23 @@ data "paperspace_network" "network" {
     team_id = var.team_id_integer
 }
 
+resource "null_resource" "write_public_ssh_key_file_for_ansible" {
+    provisioner "local-exec" {
+        command = <<EOF
+            echo "${var.ssh_key_private}" >> ${local.ssh_key_path}
+        EOF
+    }
+}
+
 resource "paperspace_script" "add_public_ssh_key" {
-  name = "Add public SSH key"
-  description = "Add public SSH key on machine create"
-  script_text = <<EOF
-#!/bin/bash
-echo "${file(pathexpand(var.ssh_key_public_path))}" >> /home/paperspace/.ssh/authorized_keys
-EOF
-  is_enabled = true
-  run_once = true
+    name = "Add public SSH key"
+    description = "Add public SSH key on machine create"
+    script_text = <<EOF
+        #!/bin/bash
+        echo "${var.ssh_key_public}" >> /home/paperspace/.ssh/authorized_keys
+    EOF
+    is_enabled = true
+    run_once = true
 }
 
 resource "paperspace_network" "main" {
@@ -28,6 +40,8 @@ resource "paperspace_network" "main" {
 }
 
 resource "paperspace_machine" "gradient_main" {
+    depends_on = ["paperspace_script.add_public_ssh_key", "null_resource.write_public_ssh_key_file_for_ansible"]
+
     region = var.region
     name = "${var.name}-main"
     machine_type = var.machine_type_main
@@ -44,7 +58,7 @@ resource "paperspace_machine" "gradient_main" {
     provisioner "local-exec" {
         command = <<EOF
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
-            --key-file ${var.ssh_key_path} \
+            --key-file ${local.ssh_key_path} \
             -i '${paperspace_machine.gradient_main.public_ip_address},' \
             -e "install_nfs_server=true" \
             -e "nfs_subnet_host_with_netmask=${data.paperspace_network.network.network}/${data.paperspace_network.network.netmask}" \
@@ -54,6 +68,8 @@ resource "paperspace_machine" "gradient_main" {
 }
 
 resource "paperspace_machine" "gradient_workers_cpu" {
+    depends_on = ["paperspace_script.add_public_ssh_key", "null_resource.write_public_ssh_key_file_for_ansible"]
+
     count = var.machine_count_worker_cpu
     region = var.region
     name = "${var.name}-worker-cpu-${count.index}"
@@ -71,7 +87,7 @@ resource "paperspace_machine" "gradient_workers_cpu" {
     provisioner "local-exec" {
         command = <<EOF
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
-            --key-file ${var.ssh_key_path} \
+            --key-file ${local.ssh_key_path} \
             -i '${self.public_ip_address},' \
             ${path.module}/ansible/playbook-gradient-metal-ps-cloud-node.yaml
         EOF
@@ -79,6 +95,8 @@ resource "paperspace_machine" "gradient_workers_cpu" {
 }
 
 resource "paperspace_machine" "gradient_workers_gpu" {
+    depends_on = ["paperspace_script.add_public_ssh_key", "null_resource.write_public_ssh_key_file_for_ansible"]
+
     count = var.machine_count_worker_gpu
     region = var.region
     name = "${var.name}-worker-gpu-${count.index}"
@@ -96,7 +114,7 @@ resource "paperspace_machine" "gradient_workers_gpu" {
     provisioner "local-exec" {
         command = <<EOF
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
-            --key-file ${var.ssh_key_path} \
+            --key-file ${local.ssh_key_path} \
             -i '${self.public_ip_address},' \
             ${path.module}/ansible/playbook-gradient-metal-ps-cloud-node.yaml
         EOF

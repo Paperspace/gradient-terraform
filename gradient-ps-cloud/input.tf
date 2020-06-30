@@ -65,12 +65,12 @@ variable "region" {
     default = "East Coast (NY2)"
 }
 
-variable "ssh_key_path" {
-    description = "Private SSH key path"
+variable "ssh_key_private" {
+    description = "Private SSH key content"
 }
 
-variable "ssh_key_public_path" {
-    description = "Public SSH key path"
+variable "ssh_key_public" {
+    description = "Public SSH key content"
 }
 
 variable "team_id" {
