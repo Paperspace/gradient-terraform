@@ -40,7 +40,7 @@ resource "paperspace_network" "main" {
 }
 
 resource "paperspace_machine" "gradient_main" {
-    depends_on = ["paperspace_script.add_public_ssh_key", "null_resource.write_public_ssh_key_file_for_ansible"]
+    depends_on = [paperspace_script.add_public_ssh_key, null_resource.write_public_ssh_key_file_for_ansible]
 
     region = var.region
     name = "${var.name}-main"
@@ -68,7 +68,7 @@ resource "paperspace_machine" "gradient_main" {
 }
 
 resource "paperspace_machine" "gradient_workers_cpu" {
-    depends_on = ["paperspace_script.add_public_ssh_key", "null_resource.write_public_ssh_key_file_for_ansible"]
+    depends_on = [paperspace_script.add_public_ssh_key, null_resource.write_public_ssh_key_file_for_ansible]
 
     count = var.machine_count_worker_cpu
     region = var.region
@@ -95,7 +95,7 @@ resource "paperspace_machine" "gradient_workers_cpu" {
 }
 
 resource "paperspace_machine" "gradient_workers_gpu" {
-    depends_on = ["paperspace_script.add_public_ssh_key", "null_resource.write_public_ssh_key_file_for_ansible"]
+    depends_on = [paperspace_script.add_public_ssh_key, null_resource.write_public_ssh_key_file_for_ansible]
 
     count = var.machine_count_worker_gpu
     region = var.region
@@ -181,7 +181,7 @@ module "gradient_metal" {
 
     shared_storage_path = "/srv/gradient"
     shared_storage_server = paperspace_machine.gradient_main.private_ip_address
-    ssh_key_path = var.ssh_key_path
+    ssh_key = var.ssh_key_private
     ssh_user = "paperspace"
 }
 
