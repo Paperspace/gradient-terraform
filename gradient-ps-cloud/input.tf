@@ -6,7 +6,9 @@ variable "admin_user_api_key" {
     description = "Paperspace admin API key"
 }
 
-# variable "cluster_id" {}
+variable "cluster_id_integer" {
+    description = "Cluster id integer"
+}
 
 variable "machine_storage_main" {
     description = "Main storage id"
@@ -78,5 +80,5 @@ variable "team_id" {
 }
 
 variable "team_id_integer" {
-    description = "Cluster team integer id"
+    description = "Cluster team id integer"
 }

@@ -53,7 +53,7 @@ resource "paperspace_machine" "gradient_main" {
     team_id = data.paperspace_user.admin.team_id
     script_id = paperspace_script.add_public_ssh_key.id
     network_id = paperspace_network.main.id
-    cluster_id = var.cluster_id
+    cluster_id = var.cluster_id_integer
 
     provisioner "local-exec" {
         command = <<EOF
@@ -82,7 +82,7 @@ resource "paperspace_machine" "gradient_workers_cpu" {
     team_id = data.paperspace_user.admin.team_id
     script_id = paperspace_script.add_public_ssh_key.id
     network_id = paperspace_network.main.id
-    cluster_id = var.cluster_id
+    cluster_id = var.cluster_id_integer
 
     provisioner "local-exec" {
         command = <<EOF
@@ -109,7 +109,7 @@ resource "paperspace_machine" "gradient_workers_gpu" {
     team_id = data.paperspace_user.admin.team_id
     script_id = paperspace_script.add_public_ssh_key.id
     network_id = paperspace_network.main.id
-    cluster_id = var.cluster_id
+    cluster_id = var.cluster_id_integer
 
     provisioner "local-exec" {
         command = <<EOF
