@@ -12,10 +12,6 @@ data "paperspace_user" "admin" {
     team_id = var.team_id
 }
 
-data "paperspace_network" "network" {
-    team_id = var.team_id_integer
-}
-
 resource "null_resource" "write_public_ssh_key_file_for_ansible" {
     provisioner "local-exec" {
         command = <<EOF
@@ -35,12 +31,15 @@ resource "paperspace_script" "add_public_ssh_key" {
     run_once = true
 }
 
-resource "paperspace_network" "main" {
+resource "paperspace_network" "network" {
     team_id = var.team_id_integer
 }
 
 resource "paperspace_machine" "gradient_main" {
-    depends_on = [paperspace_script.add_public_ssh_key, null_resource.write_public_ssh_key_file_for_ansible]
+    depends_on = [
+        paperspace_script.add_public_ssh_key,
+        null_resource.write_public_ssh_key_file_for_ansible
+    ]
 
     region = var.region
     name = "${var.name}-main"
@@ -52,8 +51,8 @@ resource "paperspace_machine" "gradient_main" {
     user_id = data.paperspace_user.admin.id
     team_id = data.paperspace_user.admin.team_id
     script_id = paperspace_script.add_public_ssh_key.id
-    network_id = paperspace_network.main.id
-    cluster_id = var.cluster_id_integer
+    network_id = paperspace_network.network.handle
+    # cluster = var.cluster_id_integer
 
     provisioner "local-exec" {
         command = <<EOF
@@ -61,14 +60,16 @@ resource "paperspace_machine" "gradient_main" {
             --key-file ${local.ssh_key_path} \
             -i '${paperspace_machine.gradient_main.public_ip_address},' \
             -e "install_nfs_server=true" \
-            -e "nfs_subnet_host_with_netmask=${data.paperspace_network.network.network}/${data.paperspace_network.network.netmask}" \
+            -e "nfs_subnet_host_with_netmask=${paperspace_network.network.network}/${paperspace_network.network.netmask}" \
             ${path.module}/ansible/playbook-gradient-metal-ps-cloud-node.yaml
         EOF
     }
 }
 
 resource "paperspace_machine" "gradient_workers_cpu" {
-    depends_on = [paperspace_script.add_public_ssh_key, null_resource.write_public_ssh_key_file_for_ansible]
+    depends_on = [
+        paperspace_script.add_public_ssh_key, null_resource.write_public_ssh_key_file_for_ansible
+    ]
 
     count = var.machine_count_worker_cpu
     region = var.region
@@ -81,8 +82,8 @@ resource "paperspace_machine" "gradient_workers_cpu" {
     user_id = data.paperspace_user.admin.id
     team_id = data.paperspace_user.admin.team_id
     script_id = paperspace_script.add_public_ssh_key.id
-    network_id = paperspace_network.main.id
-    cluster_id = var.cluster_id_integer
+    network_id = paperspace_network.network.handle
+    # cluster = var.cluster_id_integer
 
     provisioner "local-exec" {
         command = <<EOF
@@ -95,7 +96,10 @@ resource "paperspace_machine" "gradient_workers_cpu" {
 }
 
 resource "paperspace_machine" "gradient_workers_gpu" {
-    depends_on = [paperspace_script.add_public_ssh_key, null_resource.write_public_ssh_key_file_for_ansible]
+    depends_on = [
+        paperspace_script.add_public_ssh_key,
+        null_resource.write_public_ssh_key_file_for_ansible
+    ]
 
     count = var.machine_count_worker_gpu
     region = var.region
@@ -108,8 +112,8 @@ resource "paperspace_machine" "gradient_workers_gpu" {
     user_id = data.paperspace_user.admin.id
     team_id = data.paperspace_user.admin.team_id
     script_id = paperspace_script.add_public_ssh_key.id
-    network_id = paperspace_network.main.id
-    cluster_id = var.cluster_id_integer
+    network_id = paperspace_network.network.handle
+    # cluster = var.cluster_id_integer
 
     provisioner "local-exec" {
         command = <<EOF
@@ -186,12 +190,14 @@ module "gradient_metal" {
 }
 
 resource "null_resource" "complete_cluster_create" {
+    depends_on = [module.gradient_metal]
+
     provisioner "local-exec" {
         command = "curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPUT '${var.api_host}/clusters/secrets/${var.cluster_handle}-kubeconfig' -d '{\"clusterId\":\"${var.cluster_handle}\",\"value\":\"${file(pathexpand(var.kubeconfig_path))}\"}'"
     }
 
     provisioner "local-exec" {
-        command = "curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPOST '${var.api_host}/clusters/updateCluster' -d '{\"attributes\":{\"network\":\"${paperspace_network.main.id}}}\"'"
+        command = "curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPOST '${var.api_host}/clusters/updateCluster' -d '{\"attributes\":{\"network\":\"${paperspace_network.network.id}}}\"'"
     }
 }
 
@@ -199,6 +205,6 @@ output "main_node_public_ip_address" {
   value = paperspace_machine.gradient_main.public_ip_address
 }
 
-output "network_id" {
-    value = paperspace_network.main.id
+output "network_handle" {
+    value = paperspace_network.network.handle
 }
