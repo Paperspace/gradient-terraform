@@ -9,7 +9,7 @@ data "paperspace_user" "admin" {
 }
 
 data "paperspace_network" "network" {
-    id = var.network_id
+    team_id = var.team_id_integer
 }
 
 resource "paperspace_script" "add_public_ssh_key" {
@@ -24,8 +24,7 @@ EOF
 }
 
 resource "paperspace_network" "main" {
-    name = var.name
-    team_id = data.paperspace_user.admin.team_id
+    team_id = var.team_id_integer
 }
 
 resource "paperspace_machine" "gradient_main" {
@@ -40,7 +39,7 @@ resource "paperspace_machine" "gradient_main" {
     team_id = data.paperspace_user.admin.team_id
     script_id = paperspace_script.add_public_ssh_key.id
     network_id = paperspace_network.main.id
-    # cluster_id = var.cluster_id // coming soon
+    cluster_id = var.cluster_id
 
     provisioner "local-exec" {
         command = <<EOF
@@ -67,7 +66,7 @@ resource "paperspace_machine" "gradient_workers_cpu" {
     team_id = data.paperspace_user.admin.team_id
     script_id = paperspace_script.add_public_ssh_key.id
     network_id = paperspace_network.main.id
-    # cluster_id = var.cluster_id
+    cluster_id = var.cluster_id
 
     provisioner "local-exec" {
         command = <<EOF
@@ -92,7 +91,7 @@ resource "paperspace_machine" "gradient_workers_gpu" {
     team_id = data.paperspace_user.admin.team_id
     script_id = paperspace_script.add_public_ssh_key.id
     network_id = paperspace_network.main.id
-    # cluster_id = var.cluster_id
+    cluster_id = var.cluster_id
 
     provisioner "local-exec" {
         command = <<EOF
@@ -168,6 +167,20 @@ module "gradient_metal" {
     ssh_user = "paperspace"
 }
 
-output "main_publicIpAddress" {
+resource "null_resource" "complete_cluster_create" {
+    provisioner "local-exec" {
+        command = "curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPUT '${var.api_host}/clusters/secrets/${var.cluster_handle}-kubeconfig' -d '{\"clusterId\":\"${cluster_handle}\",\"value\":\"${file(pathexpand(var.kubeconfig_path))}\"}'"
+    }
+
+    provisioner "local-exec" {
+        command = "curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPOST '${var.api_host}/clusters/updateCluster' -d '{\"attributes\":{\"network\":\"${paperspace_network.main.id}}}\"'"
+    }
+}
+
+output "main_node_public_ip_address" {
   value = paperspace_machine.gradient_main.public_ip_address
+}
+
+output "network_id" {
+    value = paperspace_network.main.id
 }
