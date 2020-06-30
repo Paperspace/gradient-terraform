@@ -187,7 +187,7 @@ module "gradient_metal" {
 
 resource "null_resource" "complete_cluster_create" {
     provisioner "local-exec" {
-        command = "curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPUT '${var.api_host}/clusters/secrets/${var.cluster_handle}-kubeconfig' -d '{\"clusterId\":\"${cluster_handle}\",\"value\":\"${file(pathexpand(var.kubeconfig_path))}\"}'"
+        command = "curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPUT '${var.api_host}/clusters/secrets/${var.cluster_handle}-kubeconfig' -d '{\"clusterId\":\"${var.cluster_handle}\",\"value\":\"${file(pathexpand(var.kubeconfig_path))}\"}'"
     }
 
     provisioner "local-exec" {
