@@ -10,4 +10,4 @@ WORKDIR /home/paperspace/gradient-installer
 
 ADD . ./
 
-ENTRYPOINT gradient-ps-cloud && sh bin/run
+ENTRYPOINT cd gradient-ps-cloud && sh bin/run
