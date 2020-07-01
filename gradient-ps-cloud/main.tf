@@ -68,7 +68,8 @@ resource "paperspace_machine" "gradient_main" {
 
 resource "paperspace_machine" "gradient_workers_cpu" {
     depends_on = [
-        paperspace_script.add_public_ssh_key, null_resource.write_public_ssh_key_file_for_ansible
+        paperspace_script.add_public_ssh_key,
+        null_resource.write_public_ssh_key_file_for_ansible
     ]
 
     count = var.machine_count_worker_cpu
