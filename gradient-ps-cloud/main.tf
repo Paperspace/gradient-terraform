@@ -1,9 +1,8 @@
 terraform {
     backend "s3" {
         bucket = var.artifacts_path
-        key    = var.cluster_handle
+        key    = "gradient-processing-ps-cloud-managed"
         region = "us-east-1"
-        dynamodb_table = "paperspace-terraform-gradient-processing-ps-cloud-managed-clusters"
     }
 }
 
