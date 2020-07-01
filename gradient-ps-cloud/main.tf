@@ -1,6 +1,6 @@
 terraform {
     backend "s3" {
-        bucket = var.artifacts_path
+        bucket = "managed-gradient-ps-cloud"
         key    = "gradient-processing-ps-cloud-managed"
         region = "us-east-1"
     }
