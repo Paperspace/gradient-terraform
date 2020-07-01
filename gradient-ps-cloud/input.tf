@@ -6,6 +6,15 @@ variable "admin_user_api_key" {
     description = "Paperspace admin API key"
 }
 
+variable "aws_access_key_id" {
+    description = "AWS access key id"
+    default = ""
+}
+variable "aws_secret_access_key" {
+    description = "AWS secret access key"
+    default = ""
+}
+
 variable "cloudflare_api_token" {
     description = "Cloudflare API token"
     default = " "

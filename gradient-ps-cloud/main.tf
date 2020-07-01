@@ -1,3 +1,12 @@
+terraform {
+    backend "s3" {
+        bucket = var.artifacts_path
+        key    = var.cluster_handle
+        region = "us-east-1"
+        dynamodb_table = "paperspace-terraform-gradient-processing-ps-cloud-managed-clusters"
+    }
+}
+
 locals {
     ssh_key_path = "${path.module}/ssh_key"
 }
@@ -20,6 +29,7 @@ resource "null_resource" "write_public_ssh_key_file_for_ansible" {
     provisioner "local-exec" {
         command = <<EOF
             echo "${tls_private_key.ssh_key.private_key_pem}" >> ${local.ssh_key_path}
+            chmod 600 ${local.ssh_key_path}
         EOF
     }
 }
@@ -43,7 +53,7 @@ resource "paperspace_machine" "gradient_main" {
     depends_on = [
         paperspace_script.add_public_ssh_key,
         tls_private_key.ssh_key,
-        write_public_ssh_key_file_for_ansible
+        null_resource.write_public_ssh_key_file_for_ansible,
     ]
 
     region = var.region
@@ -75,7 +85,7 @@ resource "paperspace_machine" "gradient_workers_cpu" {
     depends_on = [
         paperspace_script.add_public_ssh_key,
         tls_private_key.ssh_key,
-        write_public_ssh_key_file_for_ansible
+        null_resource.write_public_ssh_key_file_for_ansible,
     ]
 
     count = var.machine_count_worker_cpu
@@ -106,7 +116,7 @@ resource "paperspace_machine" "gradient_workers_gpu" {
     depends_on = [
         paperspace_script.add_public_ssh_key,
         tls_private_key.ssh_key,
-        write_public_ssh_key_file_for_ansible
+        null_resource.write_public_ssh_key_file_for_ansible,
     ]
 
     count = var.machine_count_worker_gpu
