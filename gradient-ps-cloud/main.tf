@@ -238,6 +238,15 @@ resource "cloudflare_record" "www" {
     ttl     = 3600
 }
 
+resource "cloudflare_record" "www" {
+    count = var.cloudflare_api_token == " " && var.cloudflare_email == " " && var.cloudflare_zone_id == " " ? 0 : 1
+    zone_id = var.cloudflare_zone_id
+    name    = "*.${var.domain}"
+    value   = paperspace_machine.gradient_main.public_ip_address
+    type    = "A"
+    ttl     = 3600
+}
+
 output "main_node_public_ip_address" {
   value = paperspace_machine.gradient_main.public_ip_address
 }
