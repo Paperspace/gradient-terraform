@@ -211,7 +211,11 @@ resource "null_resource" "complete_cluster_create" {
     depends_on = [module.gradient_metal]
 
     provisioner "local-exec" {
-        command = "curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPUT '${var.api_host}/clusters/secrets/${var.cluster_handle}-kubeconfig' -d '{\"clusterId\":\"${var.cluster_handle}\",\"value\":\"${file(pathexpand(var.kubeconfig_path))}\"}'"
+        command = "curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPUT '${var.api_host}/clusters/secrets/${var.cluster_handle}_kubeconfig' -d '{\"clusterId\":\"${var.cluster_handle}\",\"value\":\"${file(pathexpand(var.kubeconfig_path))}\"}'"
+    }
+
+    provisioner "local-exec" {
+        command = "curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPUT '${var.api_host}/clusters/secrets/${var.cluster_handle}_ssh_key' -d '{\"clusterId\":\"${var.cluster_handle}\",\"value\":\"${tls_private_key.ssh_key.private_key_pem}\"}'"
     }
 
     provisioner "local-exec" {
