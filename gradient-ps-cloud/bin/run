@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# terraform apply reads terraform vars from env that are prefixed TF_VARS_
+terraform workspace new $TF_VAR_cluster_handle || true
+terraform init
+terraform apply -auto-approve

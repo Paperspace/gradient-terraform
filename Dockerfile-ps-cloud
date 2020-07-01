@@ -1,0 +1,10 @@
+FROM hashicorp/terraform:0.12.26
+
+RUN apk add ansible \
+    && apk add curl
+
+WORKDIR /home/paperspace/gradient-installer
+
+ADD . ./
+
+ENTRYPOINT sh bin/setup && cd gradient-ps-cloud && sh bin/run
