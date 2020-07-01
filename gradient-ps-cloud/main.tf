@@ -193,7 +193,7 @@ module "gradient_metal" {
 
     shared_storage_path = "/srv/gradient"
     shared_storage_server = paperspace_machine.gradient_main.private_ip_address
-    ssh_key = var.ssh_key_private
+    ssh_key = tls_private_key.ssh_key.private_key_pem
     ssh_user = "paperspace"
 }
 
