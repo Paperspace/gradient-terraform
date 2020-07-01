@@ -8,15 +8,15 @@ variable "admin_user_api_key" {
 
 variable "cloudflare_api_token" {
     description = "Cloudflare API token"
-    default = ""
+    default = " "
 }
 variable "cloudflare_email" {
     description = "Cloudflare email"
-    default = ""
+    default = " "
 }
 variable "cloudflare_zone_id" {
     description = "Cloudflare zone id"
-    default = ""
+    default = " "
 }
 
 variable "cluster_id_integer" {
