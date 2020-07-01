@@ -58,7 +58,7 @@ resource "paperspace_machine" "gradient_main" {
     region = var.region
     name = "${var.name}-main"
     machine_type = var.machine_type_main
-    size = tonumber(var.machine_storage_main)
+    size = var.machine_storage_main
     billing_type = "hourly"
     assign_public_ip = true
     template_id = var.machine_template_id_main
@@ -87,11 +87,11 @@ resource "paperspace_machine" "gradient_workers_cpu" {
         null_resource.write_public_ssh_key_file_for_ansible,
     ]
 
-    count = tonumber(var.machine_count_worker_cpu)
+    count = var.machine_count_worker_cpu
     region = var.region
     name = "${var.name}-worker-cpu-${count.index}"
     machine_type = var.machine_type_worker_cpu
-    size = tonumber(var.machine_storage_worker_cpu)
+    size = var.machine_storage_worker_cpu
     billing_type = "hourly"
     assign_public_ip = true
     template_id = var.machine_template_id_cpu
@@ -118,11 +118,11 @@ resource "paperspace_machine" "gradient_workers_gpu" {
         null_resource.write_public_ssh_key_file_for_ansible,
     ]
 
-    count = tonumber(var.machine_count_worker_gpu)
+    count = var.machine_count_worker_gpu
     region = var.region
     name = "${var.name}-worker-gpu-${count.index}"
     machine_type = var.machine_type_worker_gpu
-    size = tonumber(var.machine_storage_worker_gpu)
+    size = var.machine_storage_worker_gpu
     billing_type = "hourly"
     assign_public_ip = true
     template_id = var.machine_template_id_gpu
