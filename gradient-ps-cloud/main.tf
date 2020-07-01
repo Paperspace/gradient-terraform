@@ -2,6 +2,10 @@ locals {
     ssh_key_path = "${path.module}/ssh_key"
 }
 
+resource "tls_private_key" "ssh_key" {
+    algorithm = "RSA"
+}
+
 provider "paperspace" {
     region = var.region
     api_key = var.admin_user_api_key
@@ -15,7 +19,7 @@ data "paperspace_user" "admin" {
 resource "null_resource" "write_public_ssh_key_file_for_ansible" {
     provisioner "local-exec" {
         command = <<EOF
-            echo "${var.ssh_key_private}" >> ${local.ssh_key_path}
+            echo "${tls_private_key.ssh_key.private_key_pem}" >> ${local.ssh_key_path}
         EOF
     }
 }
@@ -25,7 +29,7 @@ resource "paperspace_script" "add_public_ssh_key" {
     description = "Add public SSH key on machine create"
     script_text = <<EOF
         #!/bin/bash
-        echo "${var.ssh_key_public}" >> /home/paperspace/.ssh/authorized_keys
+        echo "${tls_private_key.ssh_key.public_key_openssh}" >> /home/paperspace/.ssh/authorized_keys
     EOF
     is_enabled = true
     run_once = true
@@ -38,7 +42,8 @@ resource "paperspace_network" "network" {
 resource "paperspace_machine" "gradient_main" {
     depends_on = [
         paperspace_script.add_public_ssh_key,
-        null_resource.write_public_ssh_key_file_for_ansible
+        tls_private_key.ssh_key,
+        write_public_ssh_key_file_for_ansible
     ]
 
     region = var.region
@@ -69,7 +74,8 @@ resource "paperspace_machine" "gradient_main" {
 resource "paperspace_machine" "gradient_workers_cpu" {
     depends_on = [
         paperspace_script.add_public_ssh_key,
-        null_resource.write_public_ssh_key_file_for_ansible
+        tls_private_key.ssh_key,
+        write_public_ssh_key_file_for_ansible
     ]
 
     count = var.machine_count_worker_cpu
@@ -99,7 +105,8 @@ resource "paperspace_machine" "gradient_workers_cpu" {
 resource "paperspace_machine" "gradient_workers_gpu" {
     depends_on = [
         paperspace_script.add_public_ssh_key,
-        null_resource.write_public_ssh_key_file_for_ansible
+        tls_private_key.ssh_key,
+        write_public_ssh_key_file_for_ansible
     ]
 
     count = var.machine_count_worker_gpu
