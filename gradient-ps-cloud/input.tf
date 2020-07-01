@@ -6,6 +6,19 @@ variable "admin_user_api_key" {
     description = "Paperspace admin API key"
 }
 
+variable "cloudflare_api_token" {
+    description = "Cloudflare API token"
+    default = ""
+}
+variable "cloudflare_email" {
+    description = "Cloudflare email"
+    default = ""
+}
+variable "cloudflare_zone_id" {
+    description = "Cloudflare zone id"
+    default = ""
+}
+
 variable "cluster_id_integer" {
     description = "Cluster id integer"
 }
