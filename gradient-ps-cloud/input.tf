@@ -33,6 +33,7 @@ variable "cluster_id_integer" {
 }
 
 variable "machine_storage_main" {
+    type = number
     description = "Main storage id"
     default = 100
 }
@@ -46,10 +47,12 @@ variable "machine_type_main" {
 }
 
 variable "machine_count_worker_cpu" {
+    type = number
     description = "Number of CPU workers"
     default = 3
 }
 variable "machine_storage_worker_cpu" {
+    type = number
     description = "CPU worker storage"
     default = 100
 }
@@ -63,10 +66,12 @@ variable "machine_type_worker_cpu" {
 }
 
 variable "machine_count_worker_gpu" {
+    type = number
     description = "Number of GPU workers"
     default = 3
 }
 variable "machine_storage_worker_gpu" {
+    type = number
     description = "GPU worker storage"
     default = 100
 }
