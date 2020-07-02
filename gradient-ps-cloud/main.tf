@@ -229,7 +229,7 @@ provider "cloudflare" {
 }
 
 resource "cloudflare_record" "subdomain" {
-    count = var.cloudflare_api_token == " " && var.cloudflare_email == " " && var.cloudflare_zone_id == " " ? 0 : 1
+    count = var.cloudflare_api_token == "" && var.cloudflare_email == "" && var.cloudflare_zone_id == "" ? 0 : 1
     zone_id = var.cloudflare_zone_id
     name    = var.domain
     value   = paperspace_machine.gradient_main.public_ip_address
@@ -238,7 +238,7 @@ resource "cloudflare_record" "subdomain" {
 }
 
 resource "cloudflare_record" "subdomain_wildcard" {
-    count = var.cloudflare_api_token == " " && var.cloudflare_email == " " && var.cloudflare_zone_id == " " ? 0 : 1
+    count = var.cloudflare_api_token == "" && var.cloudflare_email == "" && var.cloudflare_zone_id == "" ? 0 : 1
     zone_id = var.cloudflare_zone_id
     name    = "*.${var.domain}"
     value   = paperspace_machine.gradient_main.public_ip_address

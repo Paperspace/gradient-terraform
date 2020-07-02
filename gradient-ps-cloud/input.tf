@@ -17,15 +17,15 @@ variable "aws_secret_access_key" {
 
 variable "cloudflare_api_token" {
     description = "Cloudflare API token"
-    default = " "
+    default = ""
 }
 variable "cloudflare_email" {
     description = "Cloudflare email"
-    default = " "
+    default = ""
 }
 variable "cloudflare_zone_id" {
     description = "Cloudflare zone id"
-    default = " "
+    default = ""
 }
 
 variable "cluster_id_integer" {
@@ -93,14 +93,6 @@ variable "region" {
     description = "Cloud region"
     default = "East Coast (NY2)"
 }
-
-# variable "ssh_key_private" {
-#     description = "Private SSH key content"
-# }
-
-# variable "ssh_key_public" {
-#     description = "Public SSH key content"
-# }
 
 variable "team_id" {
     description = "Cluster team id"
