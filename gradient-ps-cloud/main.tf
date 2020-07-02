@@ -223,6 +223,7 @@ resource "cloudflare_record" "subdomain" {
     value   = paperspace_machine.gradient_main.public_ip_address
     type    = "A"
     ttl     = 3600
+    proxied = var.is_managed
 }
 
 resource "cloudflare_record" "subdomain_wildcard" {
@@ -232,6 +233,7 @@ resource "cloudflare_record" "subdomain_wildcard" {
     value   = paperspace_machine.gradient_main.public_ip_address
     type    = "A"
     ttl     = 3600
+    proxied = var.is_managed
 }
 
 output "main_node_public_ip_address" {
