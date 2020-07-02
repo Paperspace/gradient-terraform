@@ -203,9 +203,9 @@ resource "null_resource" "complete_cluster_create" {
 
     provisioner "local-exec" {
         command = <<EOF
-            curl -H 'Content-Type:application/json' -H 'X-API-Key: ${local.cluster_apikey}' -XPUT '${local.api_host}/clusters/secrets/${local.cluster_handle}_ssh_key_base64' -d '{"clusterId":"${local.cluster_handle}", "value":"${base64encode(tls_private_key.ssh_key.private_key_pem)}"}'
-            curl -H 'Content-Type:application/json' -H 'X-API-Key: ${local.cluster_apikey}' -XPUT '${local.api_host}/clusters/secrets/${local.cluster_handle}_kubeconfig' -d '{"clusterId":"${local.cluster_handle}","value":"${file(pathexpand(local.kubeconfig_path))}"}'
-            curl -H 'Content-Type:application/json' -H 'X-API-Key: ${local.cluster_apikey}' -XPOST '${local.api_host}/clusters/updateCluster' -d '{"id":"${local.cluster_handle}", "attributes":{"networkId":"${paperspace_network.network.id}"}}'
+            curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPUT '${var.api_host}/clusters/secrets/${var.cluster_handle}_ssh_key_base64' -d '{"clusterId":"${var.cluster_handle}", "value":"${base64encode(tls_private_key.ssh_key.private_key_pem)}"}'
+            curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPUT '${var.api_host}/clusters/secrets/${var.cluster_handle}_kubeconfig' -d '{"clusterId":"${var.cluster_handle}","value":"${file(pathexpand(var.kubeconfig_path))}"}'
+            curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPOST '${var.api_host}/clusters/updateCluster' -d '{"id":"${var.cluster_handle}", "attributes":{"networkId":"${paperspace_network.network.id}"}}'
         EOF
     }
 }
