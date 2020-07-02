@@ -207,6 +207,40 @@ resource "null_resource" "complete_cluster_create" {
     }
 }
 
+resource "null_resource" "add_machine_to_cluster_main" {
+    depends_on = [module.gradient_metal]
+
+    provisioner "local-exec" {
+        command = <<EOF
+            curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPOST '${var.api_host}/clusterMachines/register' -d '{"clusterId":"${var.cluster_handle}", "machineId":"${paperspace_machine.gradient_main.id}"}'
+        EOF
+    }
+}
+
+resource "null_resource" "add_machine_to_cluster_worker_cpu" {
+    depends_on = [module.gradient_metal]
+
+    count = var.machine_count_worker_cpu
+
+    provisioner "local-exec" {
+        command = <<EOF
+            curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPOST '${var.api_host}/clusterMachines/register' -d '{"clusterId":"${var.cluster_handle}", "machineId":"${paperspace_machine.gradient_workers_cpu[count.index].id}"}'
+        EOF
+    }
+}
+
+resource "null_resource" "add_machine_to_cluster_worker_gpu" {
+    depends_on = [module.gradient_metal]
+
+    count = var.machine_count_worker_gpu
+
+    provisioner "local-exec" {
+        command = <<EOF
+            curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPOST '${var.api_host}/clusterMachines/register' -d '{"clusterId":"${var.cluster_handle}", "machineId":"${paperspace_machine.gradient_workers_gpu[count.index].id}"}'
+        EOF
+    }
+}
+
 provider "cloudflare" {
     version = "~> 2.0"
     email   = var.cloudflare_email
