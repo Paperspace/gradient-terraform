@@ -155,7 +155,7 @@ module "gradient_metal" {
     elastic_search_host = var.elastic_search_host
     elastic_search_index = var.name
     elastic_search_password = var.elastic_search_password
-    elastic_search_user = "elastic"
+    elastic_search_user = var.elastic_search_user
 
     helm_repo_password = var.helm_repo_password
     helm_repo_username = var.helm_repo_username
