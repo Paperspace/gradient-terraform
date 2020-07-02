@@ -6,6 +6,11 @@ variable "admin_user_api_key" {
     description = "Paperspace admin API key"
 }
 
+variable "api_host" {
+    description = "api host"
+    default = "api.paperspace.io"
+}
+
 variable "aws_access_key_id" {
     description = "AWS access key id"
     default = ""
@@ -88,11 +93,6 @@ variable "machine_template_id_gpu" {
 variable "machine_type_worker_gpu" {
     description = "GPU worker machine type"
     default = "P4000"
-}
-
-variable "api_host" {
-    description = "api host"
-    default = "api.paperspace.io"
 }
 
 variable "region" {
