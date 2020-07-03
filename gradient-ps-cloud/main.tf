@@ -17,6 +17,8 @@ data "paperspace_user" "admin" {
 }
 
 data "local_file" "ssh_key_content" {
+    depends_on = [null_resource.write_public_ssh_key_file_for_ansible]
+
     filename = pathexpand(local.ssh_key_path)
 }
 
