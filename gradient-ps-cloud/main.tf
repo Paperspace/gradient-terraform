@@ -16,21 +16,6 @@ data "paperspace_user" "admin" {
     team_id = var.team_id
 }
 
-data "local_file" "ssh_key_content" {
-    depends_on = [null_resource.write_public_ssh_key_file_for_ansible]
-
-    filename = pathexpand(local.ssh_key_path)
-}
-
-resource "null_resource" "write_public_ssh_key_file_for_ansible" {
-    provisioner "local-exec" {
-        command = <<EOF
-            echo "${tls_private_key.ssh_key.private_key_pem}" >> ${local.ssh_key_path}
-            chmod 600 ${local.ssh_key_path}
-        EOF
-    }
-}
-
 resource "paperspace_script" "add_public_ssh_key" {
     name = "Add public SSH key"
     description = "Add public SSH key on machine create"
@@ -50,8 +35,6 @@ resource "paperspace_machine" "gradient_main" {
     depends_on = [
         paperspace_script.add_public_ssh_key,
         tls_private_key.ssh_key,
-        data.local_file.ssh_key_content,
-        #null_resource.write_public_ssh_key_file_for_ansible,
     ]
 
     region = var.region
@@ -66,6 +49,13 @@ resource "paperspace_machine" "gradient_main" {
     script_id = paperspace_script.add_public_ssh_key.id
     network_id = paperspace_network.network.handle
     live_forever = true
+
+    provisioner "local-exec" {
+        command = <<EOF
+            echo "${tls_private_key.ssh_key.public_key_openssh}" >> ${local.ssh_key_path}
+            chmod 600
+        EOF
+    }
 
     provisioner "remote-exec" {
         connection {
@@ -92,8 +82,6 @@ resource "paperspace_machine" "gradient_workers_cpu" {
     depends_on = [
         paperspace_script.add_public_ssh_key,
         tls_private_key.ssh_key,
-        data.local_file.ssh_key_content,
-        #null_resource.write_public_ssh_key_file_for_ansible,
     ]
 
     count = var.machine_count_worker_cpu
@@ -109,6 +97,13 @@ resource "paperspace_machine" "gradient_workers_cpu" {
     script_id = paperspace_script.add_public_ssh_key.id
     network_id = paperspace_network.network.handle
     live_forever = true
+
+    provisioner "local-exec" {
+        command = <<EOF
+            echo "${tls_private_key.ssh_key.public_key_openssh}" >> ${local.ssh_key_path}
+            chmod 600
+        EOF
+    }
 
     provisioner "remote-exec" {
         connection {
@@ -133,8 +128,6 @@ resource "paperspace_machine" "gradient_workers_gpu" {
     depends_on = [
         paperspace_script.add_public_ssh_key,
         tls_private_key.ssh_key,
-        data.local_file.ssh_key_content,
-        #null_resource.write_public_ssh_key_file_for_ansible,
     ]
 
     count = var.machine_count_worker_gpu
@@ -150,6 +143,13 @@ resource "paperspace_machine" "gradient_workers_gpu" {
     script_id = paperspace_script.add_public_ssh_key.id
     network_id = paperspace_network.network.handle
     live_forever = true
+
+    provisioner "local-exec" {
+        command = <<EOF
+            echo "${tls_private_key.ssh_key.public_key_openssh}" >> ${local.ssh_key_path}
+            chmod 600
+        EOF
+    }
 
     provisioner "remote-exec" {
         connection {
