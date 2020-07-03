@@ -17,7 +17,7 @@ data "paperspace_user" "admin" {
 }
 
 data "local_file" "ssh_key_content" {
-    filename = expandpath(local.ssh_key_path)
+    filename = pathexpand(local.ssh_key_path)
 }
 
 resource "null_resource" "write_public_ssh_key_file_for_ansible" {
