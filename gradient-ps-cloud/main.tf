@@ -81,7 +81,7 @@ resource "paperspace_machine" "gradient_main" {
     }
 }
 
-resorce "paperspace_machine" "gradient_workers_cpu" {
+resource "paperspace_machine" "gradient_workers_cpu" {
     depends_on = [
         paperspace_script.add_public_ssh_key,
         tls_private_key.ssh_key,
