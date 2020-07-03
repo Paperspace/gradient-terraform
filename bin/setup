@@ -13,7 +13,7 @@ esac
 
 mkdir -p $TERRAFORM_PLUGINS_DIR
 
-curl -Ls https://github.com/Paperspace/terraform-provider-paperspace/releases/download/0.1.4/terraform-provider-paperspace-$TARGET -o $TERRAFORM_PLUGINS_DIR/terraform-provider-paperspace
+curl -Ls https://github.com/Paperspace/terraform-provider-paperspace/releases/download/0.1.7/terraform-provider-paperspace-$TARGET -o $TERRAFORM_PLUGINS_DIR/terraform-provider-paperspace
 chmod a+x $TERRAFORM_PLUGINS_DIR/terraform-provider-paperspace
 
 curl -Ls https://github.com/rancher/terraform-provider-rke/releases/download/1.0.0/terraform-provider-rke_$TARGET -o $TERRAFORM_PLUGINS_DIR/terraform-provider-rke
