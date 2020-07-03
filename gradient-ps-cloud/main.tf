@@ -42,6 +42,25 @@ resource "paperspace_machine" "gradient_main" {
     network_id = paperspace_network.main.id
     # cluster_id = var.cluster_id // coming soon
 
+    connection {
+        type     = "ssh"
+        user     = "paperspace"
+        host     = self.public_ip_address
+        private_key = var.ssh_key_path
+    }
+
+    provisioner "ssh-exec" {
+        command = <<EOF
+            ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
+            --key-file ${var.ssh_key_path} \
+            -i '${paperspace_machine.gradient_main.public_ip_address},' \
+            -e "install_nfs_server=true" \
+            -e "nfs_subnet_host_with_netmask=${data.paperspace_network.network.network}/${data.paperspace_network.network.netmask}" \
+            ${path.module}/ansible/playbook-gradient-metal-ps-cloud-node.yaml
+        EOF
+    }
+
+
     provisioner "local-exec" {
         command = <<EOF
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
@@ -69,6 +88,13 @@ resource "paperspace_machine" "gradient_workers_cpu" {
     network_id = paperspace_network.main.id
     # cluster_id = var.cluster_id
 
+    connection {
+        type     = "ssh"
+        user     = "paperspace"
+        host     = self.public_ip_address
+        private_key = var.ssh_key_path
+    }
+
     provisioner "local-exec" {
         command = <<EOF
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
@@ -93,6 +119,13 @@ resource "paperspace_machine" "gradient_workers_gpu" {
     script_id = paperspace_script.add_public_ssh_key.id
     network_id = paperspace_network.main.id
     # cluster_id = var.cluster_id
+
+    connection {
+        type     = "ssh"
+        user     = "paperspace"
+        host     = self.public_ip_address
+        private_key = var.ssh_key_path
+    }
 
     provisioner "local-exec" {
         command = <<EOF
