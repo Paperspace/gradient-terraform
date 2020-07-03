@@ -16,6 +16,10 @@ data "paperspace_user" "admin" {
     team_id = var.team_id
 }
 
+data "local_file" "ssh_key_content" {
+    filename = expandpath(local.ssh_key_path)
+}
+
 resource "null_resource" "write_public_ssh_key_file_for_ansible" {
     provisioner "local-exec" {
         command = <<EOF
@@ -65,7 +69,7 @@ resource "paperspace_machine" "gradient_main" {
             type     = "ssh"
             user     = "paperspace"
             host     = self.public_ip_address
-            private_key = file(pathexpand(local.ssh_key_path))
+            private_key = data.local_file.ssh_key_content.content
         }
     }
 
@@ -107,7 +111,7 @@ resource "paperspace_machine" "gradient_workers_cpu" {
             type     = "ssh"
             user     = "paperspace"
             host     = self.public_ip_address
-            private_key = file(pathexpand(local.ssh_key_path))
+            private_key = data.local_file.ssh_key_content.content
         }
     }
 
@@ -147,7 +151,7 @@ resource "paperspace_machine" "gradient_workers_gpu" {
             type     = "ssh"
             user     = "paperspace"
             host     = self.public_ip_address
-            private_key = file(pathexpand(local.ssh_key_path))
+            private_key = data.local_file.ssh_key_content.content
         }
     }
 
