@@ -53,7 +53,7 @@ resource "paperspace_machine" "gradient_main" {
     provisioner "local-exec" {
         command = <<EOF
             echo "${tls_private_key.ssh_key.public_key_openssh}" >> ${local.ssh_key_path}
-            chmod 600
+            chmod 600 ${local.ssh_key_path}
         EOF
     }
 
@@ -101,7 +101,7 @@ resource "paperspace_machine" "gradient_workers_cpu" {
     provisioner "local-exec" {
         command = <<EOF
             echo "${tls_private_key.ssh_key.public_key_openssh}" >> ${local.ssh_key_path}
-            chmod 600
+            chmod 600 ${local.ssh_key_path}
         EOF
     }
 
@@ -147,7 +147,7 @@ resource "paperspace_machine" "gradient_workers_gpu" {
     provisioner "local-exec" {
         command = <<EOF
             echo "${tls_private_key.ssh_key.public_key_openssh}" >> ${local.ssh_key_path}
-            chmod 600
+            chmod 600 ${local.ssh_key_path}
         EOF
     }
 
