@@ -60,15 +60,6 @@ resource "paperspace_machine" "gradient_main" {
     network_id = paperspace_network.network.handle
     live_forever = true
 
-    provisioner "remote-exec" {
-        connection {
-            type     = "ssh"
-            user     = "paperspace"
-            host     = self.public_ip_address
-            private_key = tls_private_key.ssh_key.private_key_pem
-        }
-    }
-
     provisioner "local-exec" {
         command = <<EOF
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
@@ -102,15 +93,6 @@ resource "paperspace_machine" "gradient_workers_cpu" {
     network_id = paperspace_network.network.handle
     live_forever = true
 
-    provisioner "remote-exec" {
-        connection {
-            type     = "ssh"
-            user     = "paperspace"
-            host     = self.public_ip_address
-            private_key = tls_private_key.ssh_key.private_key_pem
-        }
-    }
-
     provisioner "local-exec" {
         command = <<EOF
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
@@ -141,15 +123,6 @@ resource "paperspace_machine" "gradient_workers_gpu" {
     script_id = paperspace_script.add_public_ssh_key.id
     network_id = paperspace_network.network.handle
     live_forever = true
-
-    provisioner "remote-exec" {
-        connection {
-            type     = "ssh"
-            user     = "paperspace"
-            host     = self.public_ip_address
-            private_key = tls_private_key.ssh_key.public_key_openssh
-        }
-    }
 
     provisioner "local-exec" {
         command = <<EOF
