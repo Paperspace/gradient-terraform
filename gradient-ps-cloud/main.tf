@@ -62,7 +62,7 @@ resource "paperspace_machine" "gradient_main" {
             type     = "ssh"
             user     = "paperspace"
             host     = self.public_ip_address
-            private_key = file(pathexpand(local.ssh_key_path))
+            private_key = tls_private_key.ssh_key.public_key_openssh
         }
     }
 
@@ -110,7 +110,7 @@ resource "paperspace_machine" "gradient_workers_cpu" {
             type     = "ssh"
             user     = "paperspace"
             host     = self.public_ip_address
-            private_key = file(pathexpand(local.ssh_key_path))
+            private_key = tls_private_key.ssh_key.public_key_openssh
         }
     }
 
@@ -156,7 +156,7 @@ resource "paperspace_machine" "gradient_workers_gpu" {
             type     = "ssh"
             user     = "paperspace"
             host     = self.public_ip_address
-            private_key = file(pathexpand(local.ssh_key_path))
+            private_key = tls_private_key.ssh_key.public_key_openssh
         }
     }
 
