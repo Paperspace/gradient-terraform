@@ -50,7 +50,8 @@ resource "paperspace_machine" "gradient_main" {
     depends_on = [
         paperspace_script.add_public_ssh_key,
         tls_private_key.ssh_key,
-        null_resource.write_public_ssh_key_file_for_ansible,
+        data.local_file.ssh_key_content,
+        #null_resource.write_public_ssh_key_file_for_ansible,
     ]
 
     region = var.region
@@ -91,7 +92,8 @@ resource "paperspace_machine" "gradient_workers_cpu" {
     depends_on = [
         paperspace_script.add_public_ssh_key,
         tls_private_key.ssh_key,
-        null_resource.write_public_ssh_key_file_for_ansible,
+        data.local_file.ssh_key_content,
+        #null_resource.write_public_ssh_key_file_for_ansible,
     ]
 
     count = var.machine_count_worker_cpu
@@ -131,7 +133,8 @@ resource "paperspace_machine" "gradient_workers_gpu" {
     depends_on = [
         paperspace_script.add_public_ssh_key,
         tls_private_key.ssh_key,
-        null_resource.write_public_ssh_key_file_for_ansible,
+        data.local_file.ssh_key_content,
+        #null_resource.write_public_ssh_key_file_for_ansible,
     ]
 
     count = var.machine_count_worker_gpu
