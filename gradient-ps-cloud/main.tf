@@ -34,6 +34,12 @@ resource "paperspace_script" "add_public_ssh_key" {
     EOF
     is_enabled = true
     run_once = true
+
+    provisioner "local-exec" {
+        command = <<EOF
+            sleep 20
+        EOF
+    }
 }
 
 resource "paperspace_network" "network" {
