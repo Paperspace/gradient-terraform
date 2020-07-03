@@ -65,7 +65,7 @@ resource "paperspace_machine" "gradient_main" {
             type     = "ssh"
             user     = "paperspace"
             host     = self.public_ip_address
-            private_key = var.ssh_key_path
+            private_key = local.ssh_key_path
         }
     }
 
@@ -107,7 +107,7 @@ resource "paperspace_machine" "gradient_workers_cpu" {
             type     = "ssh"
             user     = "paperspace"
             host     = self.public_ip_address
-            private_key = var.ssh_key_path
+            private_key = local.ssh_key_path
         }
     }
 
@@ -147,7 +147,7 @@ resource "paperspace_machine" "gradient_workers_gpu" {
             type     = "ssh"
             user     = "paperspace"
             host     = self.public_ip_address
-            private_key = var.ssh_key_path
+            private_key = local.ssh_key_path
         }
     }
 
