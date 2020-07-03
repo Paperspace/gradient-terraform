@@ -37,12 +37,6 @@ variable "cluster_id_integer" {
     description = "Cluster id integer"
 }
 
-variable "is_proxied" {
-    type = bool
-    description = "Is PS Cloud cluster managed by Paperspace"
-    default = false
-}
-
 variable "machine_storage_main" {
     type = number
     description = "Main storage id"
