@@ -251,11 +251,11 @@ resource "null_resource" "add_machine_to_cluster_worker_gpu" {
 provider "cloudflare" {
     version = "~> 2.0"
     email   = var.cloudflare_email
-    api_token = var.cloudflare_api_token
+    api_key = var.cloudflare_api_key
 }
 
 resource "cloudflare_record" "subdomain" {
-    count = var.cloudflare_api_token == "" && var.cloudflare_email == "" && var.cloudflare_zone_id == "" ? 0 : 1
+    count = var.cloudflare_api_key == "" && var.cloudflare_email == "" && var.cloudflare_zone_id == "" ? 0 : 1
     zone_id = var.cloudflare_zone_id
     name    = var.domain
     value   = paperspace_machine.gradient_main.public_ip_address
@@ -265,7 +265,7 @@ resource "cloudflare_record" "subdomain" {
 }
 
 resource "cloudflare_record" "subdomain_wildcard" {
-    count = var.cloudflare_api_token == "" && var.cloudflare_email == "" && var.cloudflare_zone_id == "" ? 0 : 1
+    count = var.cloudflare_api_key == "" && var.cloudflare_email == "" && var.cloudflare_zone_id == "" ? 0 : 1
     zone_id = var.cloudflare_zone_id
     name    = "*.${var.domain}"
     value   = paperspace_machine.gradient_main.public_ip_address

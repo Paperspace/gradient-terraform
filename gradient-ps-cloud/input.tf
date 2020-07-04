@@ -20,8 +20,8 @@ variable "aws_secret_access_key" {
     default = ""
 }
 
-variable "cloudflare_api_token" {
-    description = "Cloudflare API token"
+variable "cloudflare_api_key" {
+    description = "Cloudflare API key"
     default = ""
 }
 variable "cloudflare_email" {
