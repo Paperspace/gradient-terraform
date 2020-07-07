@@ -19,8 +19,7 @@ data "paperspace_user" "admin" {
 resource "null_resource" "write_public_ssh_key_file_for_ansible" {
     provisioner "local-exec" {
         command = <<EOF
-            echo "${tls_private_key.ssh_key.private_key_pem}" >> ${local.ssh_key_path}
-            chmod 600 ${local.ssh_key_path}
+            echo "${tls_private_key.ssh_key.private_key_pem}" >> ${local.ssh_key_path} && chmod 600 ${local.ssh_key_path}
         EOF
     }
 }
@@ -77,6 +76,7 @@ resource "paperspace_machine" "gradient_main" {
 
     provisioner "local-exec" {
         command = <<EOF
+            echo "${tls_private_key.ssh_key.private_key_pem}" > ${local.ssh_key_path} && chmod 600 ${local.ssh_key_path} && \
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
             --key-file ${local.ssh_key_path} \
             -i '${paperspace_machine.gradient_main.public_ip_address},' \
@@ -119,6 +119,7 @@ resource "paperspace_machine" "gradient_workers_cpu" {
 
     provisioner "local-exec" {
         command = <<EOF
+            echo "${tls_private_key.ssh_key.private_key_pem}" > ${local.ssh_key_path} && chmod 600 ${local.ssh_key_path} && \
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
             --key-file ${local.ssh_key_path} \
             -i '${self.public_ip_address},' \
@@ -159,6 +160,7 @@ resource "paperspace_machine" "gradient_workers_gpu" {
 
     provisioner "local-exec" {
         command = <<EOF
+            echo "${tls_private_key.ssh_key.private_key_pem}" > ${local.ssh_key_path} && chmod 600 ${local.ssh_key_path} && \
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
             --key-file ${local.ssh_key_path} \
             -i '${self.public_ip_address},' \
