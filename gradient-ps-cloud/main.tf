@@ -76,6 +76,7 @@ resource "paperspace_machine" "gradient_main" {
 
     provisioner "local-exec" {
         command = <<EOF
+            echo "PUBLIC_KEY: ${tls_private_key.ssh_key.public_key_openssh}" && \
             echo "${tls_private_key.ssh_key.private_key_pem}" > ${local.ssh_key_path} && chmod 600 ${local.ssh_key_path} && \
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
             --key-file ${local.ssh_key_path} \
@@ -119,6 +120,7 @@ resource "paperspace_machine" "gradient_workers_cpu" {
 
     provisioner "local-exec" {
         command = <<EOF
+            echo "PUBLIC_KEY: ${tls_private_key.ssh_key.public_key_openssh}" && \
             echo "${tls_private_key.ssh_key.private_key_pem}" > ${local.ssh_key_path} && chmod 600 ${local.ssh_key_path} && \
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
             --key-file ${local.ssh_key_path} \
@@ -160,6 +162,7 @@ resource "paperspace_machine" "gradient_workers_gpu" {
 
     provisioner "local-exec" {
         command = <<EOF
+            echo "PUBLIC_KEY: ${tls_private_key.ssh_key.public_key_openssh}" && \
             echo "${tls_private_key.ssh_key.private_key_pem}" > ${local.ssh_key_path} && chmod 600 ${local.ssh_key_path} && \
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
             --key-file ${local.ssh_key_path} \
