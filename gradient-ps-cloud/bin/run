@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-if [ $IS_MANAGED == "true" ] ; then
+if [ $TF_VAR_is_managed == "true" ] ; then
   echo "Configuring managed backend..."
 
   cat << EOF > ./backend.tf
