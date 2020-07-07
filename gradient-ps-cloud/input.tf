@@ -33,10 +33,6 @@ variable "cloudflare_zone_id" {
     default = ""
 }
 
-variable "cluster_id_integer" {
-    description = "Cluster id integer"
-}
-
 variable "is_proxied" {
     type = bool
     description = "Is PS Cloud cluster managed by Paperspace"
