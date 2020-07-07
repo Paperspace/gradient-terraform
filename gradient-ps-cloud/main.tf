@@ -16,14 +16,6 @@ data "paperspace_user" "admin" {
     team_id = var.team_id
 }
 
-resource "null_resource" "write_public_ssh_key_file_for_ansible" {
-    provisioner "local-exec" {
-        command = <<EOF
-            echo "${tls_private_key.ssh_key.private_key_pem}" > ${local.ssh_key_path}
-        EOF
-    }
-}
-
 resource "paperspace_script" "add_public_ssh_key" {
     name = "Add public SSH key"
     description = "Add public SSH key on machine create"
@@ -49,7 +41,6 @@ resource "paperspace_machine" "gradient_main" {
     depends_on = [
         paperspace_script.add_public_ssh_key,
         tls_private_key.ssh_key,
-        null_resource.write_public_ssh_key_file_for_ansible,
     ]
 
     region = var.region
@@ -76,6 +67,7 @@ resource "paperspace_machine" "gradient_main" {
 
     provisioner "local-exec" {
         command = <<EOF
+            echo "${tls_private_key.ssh_key.private_key_pem}" > ${local.ssh_key_path} && chmod 600 ${local.ssh_key_path} && \
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
             --key-file ${local.ssh_key_path} \
             -i '${paperspace_machine.gradient_main.public_ip_address},' \
@@ -90,7 +82,6 @@ resource "paperspace_machine" "gradient_workers_cpu" {
     depends_on = [
         paperspace_script.add_public_ssh_key,
         tls_private_key.ssh_key,
-        null_resource.write_public_ssh_key_file_for_ansible,
     ]
 
     count = var.machine_count_worker_cpu
@@ -118,6 +109,7 @@ resource "paperspace_machine" "gradient_workers_cpu" {
 
     provisioner "local-exec" {
         command = <<EOF
+            echo "${tls_private_key.ssh_key.private_key_pem}" > ${local.ssh_key_path} && chmod 600 ${local.ssh_key_path} && \
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
             --key-file ${local.ssh_key_path} \
             -i '${self.public_ip_address},' \
@@ -130,7 +122,6 @@ resource "paperspace_machine" "gradient_workers_gpu" {
     depends_on = [
         paperspace_script.add_public_ssh_key,
         tls_private_key.ssh_key,
-        null_resource.write_public_ssh_key_file_for_ansible,
     ]
 
     count = var.machine_count_worker_gpu
@@ -158,6 +149,7 @@ resource "paperspace_machine" "gradient_workers_gpu" {
 
     provisioner "local-exec" {
         command = <<EOF
+            echo "${tls_private_key.ssh_key.private_key_pem}" > ${local.ssh_key_path} && chmod 600 ${local.ssh_key_path} && \
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
             --key-file ${local.ssh_key_path} \
             -i '${self.public_ip_address},' \
