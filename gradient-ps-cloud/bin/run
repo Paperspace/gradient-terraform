@@ -18,5 +18,4 @@ terraform init
 # terraform apply reads terraform vars from env that are prefixed TF_VARS_
 terraform workspace new $TF_VAR_cluster_handle || true
 terraform workspace select $TF_VAR_cluster_handle
-export TF_LOG=debug
 terraform apply -auto-approve
