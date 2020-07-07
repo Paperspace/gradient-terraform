@@ -45,7 +45,7 @@ resource "paperspace_machine" "gradient_main" {
 
     region = var.region
     name = "${var.cluster_handle}-${var.name}-main"
-    machine_type = "P4000"
+    machine_type = var.machine_type_main
     size = var.machine_storage_main
     billing_type = "hourly"
     assign_public_ip = true
@@ -87,7 +87,7 @@ resource "paperspace_machine" "gradient_workers_cpu" {
     count = var.machine_count_worker_cpu
     region = var.region
     name = "${var.cluster_handle}-${var.name}-worker-cpu-${count.index}"
-    machine_type = "P4000"
+    machine_type = var.machine_type_worker_cpu
     size = var.machine_storage_worker_cpu
     billing_type = "hourly"
     assign_public_ip = true
