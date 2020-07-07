@@ -246,6 +246,9 @@ resource "null_resource" "complete_cluster_create" {
     }
 }
 
+
+// Disable because of metal for now
+/*
 resource "null_resource" "add_machine_to_cluster_main" {
     depends_on = [module.gradient_metal]
 
@@ -279,6 +282,7 @@ resource "null_resource" "add_machine_to_cluster_worker_gpu" {
         EOF
     }
 }
+*/
 
 provider "cloudflare" {
     version = "~> 2.0"
