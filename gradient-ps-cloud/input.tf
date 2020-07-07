@@ -33,15 +33,9 @@ variable "cloudflare_zone_id" {
     default = ""
 }
 
-variable "is_managed" {
-    type = bool
-    description = "Is PS Cloud cluster managed by Paperspace"
-    default = false
-}
-
 variable "is_proxied" {
     type = bool
-    description = "Should cluster proxy traffic through Cloudflare"
+    description = "Is PS Cloud cluster managed by Paperspace"
     default = false
 }
 

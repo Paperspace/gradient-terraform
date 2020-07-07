@@ -55,7 +55,6 @@ resource "paperspace_machine" "gradient_main" {
     script_id = paperspace_script.add_public_ssh_key.id
     network_id = paperspace_network.network.handle
     live_forever = true
-    is_managed = true
 
     provisioner "remote-exec" {
         connection {
@@ -98,7 +97,6 @@ resource "paperspace_machine" "gradient_workers_cpu" {
     script_id = paperspace_script.add_public_ssh_key.id
     network_id = paperspace_network.network.handle
     live_forever = true
-    is_managed = true
 
     provisioner "remote-exec" {
         connection {
@@ -139,7 +137,6 @@ resource "paperspace_machine" "gradient_workers_gpu" {
     script_id = paperspace_script.add_public_ssh_key.id
     network_id = paperspace_network.network.handle
     live_forever = true
-    is_managed = true
 
     provisioner "remote-exec" {
         connection {
