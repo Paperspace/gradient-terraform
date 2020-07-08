@@ -60,4 +60,4 @@ workflows:
           docker_file: Dockerfile-ps-cloud
           filters:
             branches:
-              ignore: master
+              only: master
