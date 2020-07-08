@@ -46,7 +46,7 @@ variable "machine_storage_main" {
 }
 variable "machine_template_id_main" {
     description = "Main template id"
-    default = "tmun4o2g" # tmun4o2g is pre-installed with nvidia and docker; docker is needed for cpu, whereas nvidia is needed for gpu, but using this template introduces very little bloat and speeds up node configuration
+    default = "tpi7gqht"
 }
 variable "machine_type_main" {
     description = "Main machine type"
@@ -65,7 +65,7 @@ variable "machine_storage_worker_cpu" {
 }
 variable "machine_template_id_cpu" {
     description = "CPU template id"
-    default = "tmun4o2g" # tmun4o2g is pre-installed with nvidia and docker; docker is needed for cpu, whereas nvidia is needed for gpu, but using this template introduces very little bloat and speeds up node configuration
+    default = "tpi7gqht"
 }
 variable "machine_type_worker_cpu" {
     description = "CPU worker machine type"
