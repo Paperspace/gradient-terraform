@@ -7,11 +7,11 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/Paperspace/gradient-installer/pkg/cli"
+	"github.com/Paperspace/gradient-installer/pkg/cli/config"
+	"github.com/Paperspace/gradient-installer/pkg/cli/terraform"
+	"github.com/Paperspace/paperspace-go"
 	"github.com/manifoldco/promptui"
-	"github.com/paperspace/gradient-installer/pkg/cli"
-	"github.com/paperspace/gradient-installer/pkg/cli/config"
-	"github.com/paperspace/gradient-installer/pkg/cli/terraform"
-	"github.com/paperspace/paperspace-go"
 	"github.com/spf13/cobra"
 )
 

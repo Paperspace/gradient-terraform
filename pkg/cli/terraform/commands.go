@@ -12,8 +12,8 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/paperspace/gradient-installer/pkg/cli"
-	"github.com/paperspace/gradient-installer/pkg/cli/config"
+	"github.com/Paperspace/gradient-installer/pkg/cli"
+	"github.com/Paperspace/gradient-installer/pkg/cli/config"
 )
 
 var setupURL = "https://raw.githubusercontent.com/Paperspace/gradient-installer/master/bin/setup"

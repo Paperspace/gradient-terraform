@@ -3,7 +3,7 @@ package config
 import (
 	"os"
 
-	"github.com/paperspace/paperspace-go"
+	"github.com/Paperspace/paperspace-go"
 )
 
 type Profile struct {

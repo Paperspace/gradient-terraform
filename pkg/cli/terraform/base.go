@@ -1,10 +1,10 @@
 package terraform
 
 import (
-	"github.com/paperspace/paperspace-go"
+	"github.com/Paperspace/paperspace-go"
 )
 
-var SourcePrefix = "github.com/paperspace/gradient-installer"
+var SourcePrefix = "github.com/Paperspace/gradient-installer"
 var SupportedClusterPlatformTypes = []paperspace.ClusterPlatformType{paperspace.ClusterPlatformAWS, paperspace.ClusterPlatformDGX, paperspace.ClusterPlatformMetal}
 
 type PoolType string

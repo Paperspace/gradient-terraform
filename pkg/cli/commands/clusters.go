@@ -1,7 +1,7 @@
 package commands
 
 import (
-	"github.com/paperspace/gradient-installer/pkg/cli/commands/clusters"
+	"github.com/Paperspace/gradient-installer/pkg/cli/commands/clusters"
 	"github.com/spf13/cobra"
 )
 
