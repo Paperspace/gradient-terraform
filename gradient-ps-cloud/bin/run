@@ -22,8 +22,8 @@ terraform workspace new $TF_VAR_cluster_handle || true
 terraform workspace select $TF_VAR_cluster_handle
 
 if [ $TERRAFORM_COMMAND == "destroy" ] ; then
-  terraform destroy
+  terraform destroy -auto-approve
   exit 0
 fi
 
-terraform apply
+terraform apply -auto-approve
