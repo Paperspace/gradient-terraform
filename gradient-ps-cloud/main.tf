@@ -230,7 +230,7 @@ resource "null_resource" "register_managed_cluster_network" {
 
     provisioner "local-exec" {
         command = <<EOF
-            if [ ${var.is_managed} != "true" ] ; then
+            if [ ${var.is_managed} == "true" ] ; then
                 curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPOST '${var.api_host}/clusters/updateCluster' -d '{"id":"${var.cluster_handle}", "attributes":{"networkId":"${paperspace_network.network.id}"}}'
             fi
         EOF
@@ -242,7 +242,7 @@ resource "null_resource" "register_managed_cluster_machine_main" {
 
     provisioner "local-exec" {
         command = <<EOF
-            if [ ${var.is_managed} != "true" ] ; then
+            if [ ${var.is_managed} == "true" ] ; then
                 curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPOST '${var.api_host}/clusterMachines/register' -d '{"clusterId":"${var.cluster_handle}", "machineId":"${paperspace_machine.gradient_main.id}"}'
             fi
         EOF
@@ -256,7 +256,7 @@ resource "null_resource" "register_managed_cluster_machine_workers_cpu" {
 
     provisioner "local-exec" {
         command = <<EOF
-            if [ ${var.is_managed} != "true" ] ; then
+            if [ ${var.is_managed} == "true" ] ; then
                 curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPOST '${var.api_host}/clusterMachines/register' -d '{"clusterId":"${var.cluster_handle}", "machineId":"${paperspace_machine.gradient_workers_cpu[count.index].id}"}'
             fi
         EOF
@@ -270,7 +270,7 @@ resource "null_resource" "register_managed_cluster_machine_workers_gpu" {
 
     provisioner "local-exec" {
         command = <<EOF
-            if [ ${var.is_managed} != "true" ] ; then
+            if [ ${var.is_managed} == "true" ] ; then
                 curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPOST '${var.api_host}/clusterMachines/register' -d '{"clusterId":"${var.cluster_handle}", "machineId":"${paperspace_machine.gradient_workers_gpu[count.index].id}"}'
             fi
         EOF
