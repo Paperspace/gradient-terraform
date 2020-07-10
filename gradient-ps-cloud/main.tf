@@ -55,7 +55,7 @@ resource "paperspace_machine" "gradient_main" {
     script_id = paperspace_script.add_public_ssh_key.id
     network_id = paperspace_network.network.handle
     live_forever = true
-    is_managed = true
+    is_managed = var.is_managed
 
     provisioner "remote-exec" {
         connection {
@@ -98,7 +98,7 @@ resource "paperspace_machine" "gradient_workers_cpu" {
     script_id = paperspace_script.add_public_ssh_key.id
     network_id = paperspace_network.network.handle
     live_forever = true
-    is_managed = true
+    is_managed = var.is_managed
 
     provisioner "remote-exec" {
         connection {
@@ -139,7 +139,7 @@ resource "paperspace_machine" "gradient_workers_gpu" {
     script_id = paperspace_script.add_public_ssh_key.id
     network_id = paperspace_network.network.handle
     live_forever = true
-    is_managed = true
+    is_managed = var.is_managed
 
     provisioner "remote-exec" {
         connection {
@@ -225,46 +225,54 @@ module "gradient_metal" {
     ssh_user = "paperspace"
 }
 
-resource "null_resource" "complete_cluster_create" {
+resource "null_resource" "register_managed_cluster_network" {
     depends_on = [module.gradient_metal]
 
     provisioner "local-exec" {
         command = <<EOF
-            curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPOST '${var.api_host}/clusters/updateCluster' -d '{"id":"${var.cluster_handle}", "attributes":{"networkId":"${paperspace_network.network.id}"}}'
+            if [ ${var.is_managed} != "true" ] ; then
+                curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPOST '${var.api_host}/clusters/updateCluster' -d '{"id":"${var.cluster_handle}", "attributes":{"networkId":"${paperspace_network.network.id}"}}'
+            fi
         EOF
     }
 }
 
-resource "null_resource" "add_machine_to_cluster_main" {
+resource "null_resource" "register_managed_cluster_machine_main" {
     depends_on = [module.gradient_metal]
 
     provisioner "local-exec" {
         command = <<EOF
-            curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPOST '${var.api_host}/clusterMachines/register' -d '{"clusterId":"${var.cluster_handle}", "machineId":"${paperspace_machine.gradient_main.id}"}'
+            if [ ${var.is_managed} != "true" ] ; then
+                curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPOST '${var.api_host}/clusterMachines/register' -d '{"clusterId":"${var.cluster_handle}", "machineId":"${paperspace_machine.gradient_main.id}"}'
+            fi
         EOF
     }
 }
 
-resource "null_resource" "add_machine_to_cluster_worker_cpu" {
+resource "null_resource" "register_managed_cluster_machine_workers_cpu" {
     depends_on = [module.gradient_metal]
 
     count = var.machine_count_worker_cpu
 
     provisioner "local-exec" {
         command = <<EOF
-            curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPOST '${var.api_host}/clusterMachines/register' -d '{"clusterId":"${var.cluster_handle}", "machineId":"${paperspace_machine.gradient_workers_cpu[count.index].id}"}'
+            if [ ${var.is_managed} != "true" ] ; then
+                curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPOST '${var.api_host}/clusterMachines/register' -d '{"clusterId":"${var.cluster_handle}", "machineId":"${paperspace_machine.gradient_workers_cpu[count.index].id}"}'
+            fi
         EOF
     }
 }
 
-resource "null_resource" "add_machine_to_cluster_worker_gpu" {
+resource "null_resource" "register_managed_cluster_machine_workers_gpu" {
     depends_on = [module.gradient_metal]
 
     count = var.machine_count_worker_gpu
 
     provisioner "local-exec" {
         command = <<EOF
-            curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPOST '${var.api_host}/clusterMachines/register' -d '{"clusterId":"${var.cluster_handle}", "machineId":"${paperspace_machine.gradient_workers_gpu[count.index].id}"}'
+            if [ ${var.is_managed} != "true" ] ; then
+                curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPOST '${var.api_host}/clusterMachines/register' -d '{"clusterId":"${var.cluster_handle}", "machineId":"${paperspace_machine.gradient_workers_gpu[count.index].id}"}'
+            fi
         EOF
     }
 }
