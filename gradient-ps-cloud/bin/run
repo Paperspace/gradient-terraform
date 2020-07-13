@@ -21,6 +21,10 @@ terraform init
 terraform workspace new $TF_VAR_cluster_handle || true
 terraform workspace select $TF_VAR_cluster_handle
 
+export PAPERSPACE_API_KEY=$TF_VAR_admin_user_api_key
+export PAPERSPACE_API_HOST=$TF_VAR_api_host
+export PAPERSPACE_REGION=$TF_VAR_region
+
 if [ $TERRAFORM_COMMAND == "destroy" ] ; then
   terraform destroy -auto-approve
 else
