@@ -16,6 +16,10 @@ data "paperspace_user" "admin" {
     team_id = var.team_id
 }
 
+data "paperspace_job_storage" "main" {
+    team_id = var.team_id
+}
+
 resource "paperspace_script" "add_public_ssh_key" {
     name = "Add public SSH key"
     description = "Add public SSH key on machine create"
@@ -220,7 +224,7 @@ module "gradient_metal" {
     )
 
     shared_storage_path = "/srv/gradient"
-    shared_storage_server = paperspace_machine.gradient_main.private_ip_address
+    shared_storage_server = "169.254.169.253/export/${data.job_storage.main.handle}"
     ssh_key = tls_private_key.ssh_key.private_key_pem
     ssh_user = "paperspace"
 }
