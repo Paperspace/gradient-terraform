@@ -17,7 +17,7 @@ data "paperspace_user" "admin" {
 }
 
 data "paperspace_job_storage" "main" {
-    team_id = var.team_id
+    team_id = var.team_id_integer
 }
 
 resource "paperspace_script" "add_public_ssh_key" {
