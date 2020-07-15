@@ -1,4 +1,5 @@
 locals {
+    cpu_selector = var.machine_count_worker_cpu == 0 ? var.machine_type_worker_gpu : null
     ssh_key_path = "${path.module}/ssh_key"
 }
 
@@ -179,6 +180,7 @@ module "gradient_metal" {
 
     cluster_handle = var.cluster_handle
     cluster_apikey = var.cluster_apikey
+    cpu_selector = local.cpu_selector
 
     domain = var.domain
     gradient_processing_version = var.gradient_processing_version
