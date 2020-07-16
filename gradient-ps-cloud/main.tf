@@ -1,5 +1,4 @@
 locals {
-    cpu_selector = var.machine_count_worker_cpu == 0 ? var.machine_type_worker_gpu : null
     ssh_key_path = "${path.module}/ssh_key"
 }
 
@@ -180,7 +179,6 @@ module "gradient_metal" {
 
     cluster_handle = var.cluster_handle
     cluster_apikey = var.cluster_apikey
-    cpu_selector = local.cpu_selector
 
     domain = var.domain
     gradient_processing_version = var.gradient_processing_version
@@ -225,8 +223,8 @@ module "gradient_metal" {
         ]
     )
 
-    shared_storage_path = "/srv/gradient"
-    shared_storage_server = "169.254.169.253/export/${data.job_storage.main.handle}"
+    shared_storage_path = "/export/${data.paperspace_job_storage.main.handle}"
+    shared_storage_server = "169.254.169.253"
     ssh_key = tls_private_key.ssh_key.private_key_pem
     ssh_user = "paperspace"
 }

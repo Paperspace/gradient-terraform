@@ -25,7 +25,7 @@ export PAPERSPACE_API_KEY=$TF_VAR_admin_user_api_key
 export PAPERSPACE_API_HOST=$TF_VAR_api_host
 export PAPERSPACE_REGION=$TF_VAR_region
 
-if [ $TERRAFORM_COMMAND == "destroy" ] ; then
+if [ "$TERRAFORM_COMMAND" = "destroy" ]; then
   terraform destroy -auto-approve
 else
   terraform apply -auto-approve
