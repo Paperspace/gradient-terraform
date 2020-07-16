@@ -16,8 +16,9 @@ data "paperspace_user" "admin" {
     team_id = var.team_id
 }
 
-data "paperspace_job_storage" "main" {
+resource "paperspace_job_storage" "main" {
     team_id = var.team_id_integer
+    region = paperspace_machine.gradient_main.region
 }
 
 resource "paperspace_script" "add_public_ssh_key" {
@@ -223,7 +224,7 @@ module "gradient_metal" {
         ]
     )
 
-    shared_storage_path = "/export/${data.paperspace_job_storage.main.handle}"
+    shared_storage_path = "/export/${paperspace_job_storage.main.handle}"
     shared_storage_server = "169.254.169.253"
     ssh_key = tls_private_key.ssh_key.private_key_pem
     ssh_user = "paperspace"
