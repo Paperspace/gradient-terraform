@@ -48,7 +48,7 @@ variable "is_proxied" {
 variable "machine_storage_main" {
     type = number
     description = "Main storage id"
-    default = 100
+    default = 500
 }
 variable "machine_template_id_main" {
     description = "Main template id"
