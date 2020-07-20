@@ -60,7 +60,7 @@ func createTerraformMetalNode(terraformMetalNode *terraform.MetalNode, prefix st
 
 func setupMetalConfig(terraformMetal *terraform.Metal) error {
 	rebootGPUNodesPrompt := cli.Prompt{
-		Label:         "Reboot GPU nodes",
+		Label:         "Reboot GPU Nodes (for NVIDIA drivers)",
 		AllowedValues: cli.YesNoValues,
 		Value:         cli.BoolToYesNo(terraformMetal.RebootGPUNodes),
 		Required:      true,
@@ -77,7 +77,7 @@ func setupMetalConfig(terraformMetal *terraform.Metal) error {
 		Value:    cli.BoolToYesNo(terraformMetal.SetupNvidia),
 	}
 	sshKeyPathPrompt := cli.Prompt{
-		Label:    "SSH Key Path",
+		Label:    "SSH Private Key Path",
 		Required: true,
 		Value:    terraformMetal.SSHKeyPath,
 	}

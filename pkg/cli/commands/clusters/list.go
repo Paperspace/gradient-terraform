@@ -12,7 +12,7 @@ func NewClusterListCommand() *cobra.Command {
 		Short: "List clusters",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			client := cli.FromContext(cmd)
-			clusters, err := client.GetClusters(paperspace.ClusterListParams{})
+			clusters, err := client.GetClusters(paperspace.NewClusterListParams())
 			if err != nil {
 				return err
 			}

@@ -44,11 +44,6 @@ func Exec(cmd *exec.Cmd) error {
 	}
 }
 
-func PrintHeader(text string) {
-	formattedText := fmt.Sprintf("=== %s", text)
-	println(formattedText)
-}
-
 func PrintTable(headers []string, data [][]string) {
 	tabWriter := tabwriter.NewWriter(os.Stdout, 2, 2, 4, ' ', 0)
 
