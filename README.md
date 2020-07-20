@@ -1,8 +1,8 @@
 # Gradient Installer
 
-Gradient Installer is a CLI used to manage and setup Gradient private clusters on various platforms. Terraform is used by the CLI to setup infrastructure. The Terraform modules can also be used directly to integrate into your existing Terraform infrastructure as well.
+Gradient Installer is a CLI used to manage and setup Gradient private clusters on various platforms. Terraform is used under the hood to setup all the infrastructure. The Terraform modules can also be used directly to integrate into an existing Terraform infrastructure.
 
-You can find more documentation at: https://docs.paperspace.com/gradient/gradient-private-cloud/about
+Full docs: https://docs.paperspace.com/gradient/gradient-private-cloud/about
 
 ### Supported target platforms
 - AWS EKS
@@ -10,8 +10,8 @@ You can find more documentation at: https://docs.paperspace.com/gradient/gradien
 - VM / Baremetal
 
 ### Prerequisites
-- A Paperspace account with appropriate billing plan and API key
-- An AWS S3 bucket to store Terraform state
+- A Paperspace account with appropriate billing plan and API key [https://www.paperspace.com]
+- An AWS S3 bucket to store Terraform state [https://docs.aws.amazon.com/AmazonS3/latest/user-guide/create-bucket.html]
 
 ### Install Gradient CLI
 ```sh
@@ -46,6 +46,3 @@ Terraform modules can be used directory, here is a list of available modules
 - gradient-aws
 - gradient-metal
 - gradient-ps-cloud
-
-### AWS
-AWS EKS is used for gradient-aws. EKS requires aws-iam-authenticator to be installed to access the Kubernetes cluster. You can read more about aws-iam-authenticator at: https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html
