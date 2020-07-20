@@ -58,10 +58,6 @@ func createTerraformMetalNode(terraformMetalNode *terraform.MetalNode, prefix st
 	return terraformMetalNode, nil
 }
 
-func setupAWSConfig() (*terraform.AWS, error) {
-	return nil, nil
-}
-
 func setupMetalConfig(terraformMetal *terraform.Metal) error {
 	rebootGPUNodesPrompt := cli.Prompt{
 		Label:         "Reboot GPU nodes",
@@ -415,10 +411,6 @@ func NewClusterUpCommand() *cobra.Command {
 			// Specific
 			switch cluster.Platform {
 			case paperspace.ClusterPlatformAWS:
-				if reinstall || !terraformInstance.HasValidAWS() {
-					awsConfig := clusterInstance.setupAWSConfig()
-					clusterInstance.setupAWSClusterInstance(awsConfig)
-				}
 			case paperspace.ClusterPlatformMetal:
 				if reinstall || !terraformInstance.HasValidMetal() {
 					if err := setupMetalConfig(terraformInstance.Modules.Metal); err != nil {
