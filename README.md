@@ -38,7 +38,7 @@ gradient-installer clusters up CLUSTER_HANDLE
 ```
 
 ### Profiles
-The CLI support multiple profiles, which can be used for different teams. You can use profile by:
+The CLI supports multiple profiles, which can be used for different teams. You can use a profile by:
 ```sh
 export PAPERSPACE_PROFILE=favorite-team
 gradient-installer setup
