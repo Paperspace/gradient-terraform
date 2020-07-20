@@ -366,7 +366,7 @@ func NewClusterUpCommand() *cobra.Command {
 			client := cli.FromContext(cmd)
 
 			// Check if cluster is valid
-			checkCluster, err := client.GetCluster(id)
+			checkCluster, err := client.GetCluster(id, paperspace.ClusterGetParams{})
 			if err != nil {
 				return err
 			}

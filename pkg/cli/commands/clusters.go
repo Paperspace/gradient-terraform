@@ -10,9 +10,9 @@ func NewClusterCommand() *cobra.Command {
 		Use:   "clusters",
 		Short: "Manage private clusters",
 	}
-	command.AddCommand(clusters.NewClusterUpCommand())
-	command.AddCommand(clusters.NewClusterListCommand())
 	command.AddCommand(clusters.NewClusterDownCommand())
+	command.AddCommand(clusters.NewClusterListCommand())
+	command.AddCommand(clusters.NewClusterUpCommand())
 
 	return &command
 }

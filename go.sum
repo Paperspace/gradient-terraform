@@ -91,6 +91,8 @@ github.com/mwitkow/go-conntrack v0.0.0-20161129095857-cc309e4a2223/go.mod h1:qRW
 github.com/oklog/ulid v1.3.1/go.mod h1:CirwcVhetQ6Lv90oh/F+FBtV6XMibvdAFo93nm5qn4U=
 github.com/paperspace/paperspace-go v0.0.3-beta1 h1:CEcDrfCZWjB1hpdqTFwX3Z3CXFuJ8HjRVaAga24YPi8=
 github.com/paperspace/paperspace-go v0.0.3-beta1/go.mod h1:IsIrciX+xQ+kBeQG3JJfVLKxct6UKy3QrJ34+HVNbGE=
+github.com/paperspace/paperspace-go v0.0.3 h1:KMuRrJW11v4+T0O+LXXzzTim9xWtW2Wp05CCDxkzKbU=
+github.com/paperspace/paperspace-go v0.0.3/go.mod h1:IsIrciX+xQ+kBeQG3JJfVLKxct6UKy3QrJ34+HVNbGE=
 github.com/pelletier/go-toml v1.2.0 h1:T5zMGML61Wp+FlcbWjRDT7yAxhJNAiPPLOFECq181zc=
 github.com/pelletier/go-toml v1.2.0/go.mod h1:5z9KED0ma1S8pY6P1sdut58dfprrGBbd/94hg7ilaic=
 github.com/pkg/errors v0.8.0/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=

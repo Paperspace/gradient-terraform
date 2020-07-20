@@ -2,6 +2,7 @@ package clusters
 
 import (
 	"github.com/paperspace/gradient-installer/pkg/cli"
+	"github.com/paperspace/paperspace-go"
 	"github.com/spf13/cobra"
 )
 
@@ -11,7 +12,7 @@ func NewClusterListCommand() *cobra.Command {
 		Short: "List clusters",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			client := cli.FromContext(cmd)
-			clusters, err := client.GetClusters()
+			clusters, err := client.GetClusters(paperspace.ClusterListParams{})
 			if err != nil {
 				return err
 			}

@@ -2,7 +2,7 @@
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/stripe/stripe-cli)
 
-Gradient Installer is a CLI to manage and setup Gradient private clusters on AWS, NVIDIA DGX-1, and any VM / Baremetal. 
+Gradient Installer is a CLI to setup and manage Gradient private clusters on AWS, NVIDIA DGX-1, and any VM / Baremetal.
 
 Terraform is used under the hood to setup all the infrastructure. Terraform modules can also be used directly to integrate Gradient into an existing Terraform setup.
 
