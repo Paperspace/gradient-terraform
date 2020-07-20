@@ -397,7 +397,7 @@ func NewClusterUpCommand() *cobra.Command {
 				}
 			}
 
-			// Update cluster API values`
+			// Update cluster API values
 			terraformCommon := terraformInstance.GetCommon(cluster.Platform)
 			terraformCommon.UpdateFromCluster(&cluster)
 
