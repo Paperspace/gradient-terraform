@@ -416,8 +416,8 @@ func NewClusterUpCommand() *cobra.Command {
 			switch cluster.Platform {
 			case paperspace.ClusterPlatformAWS:
 				if reinstall || !terraformInstance.HasValidAWS() {
-					//awsConfig := clusterInstance.setupAWSConfig()
-					//clusterInstance.setupAWSClusterInstance(awsConfig)
+					awsConfig := clusterInstance.setupAWSConfig()
+					clusterInstance.setupAWSClusterInstance(awsConfig)
 				}
 			case paperspace.ClusterPlatformMetal:
 				if reinstall || !terraformInstance.HasValidMetal() {

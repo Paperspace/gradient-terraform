@@ -55,8 +55,6 @@ func NewClusterRegisterCommand() *cobra.Command {
 				}
 
 				println(cli.TextHeader("Register a private cluster"))
-				// Start user input
-
 				if err := namePrompt.Run(); err != nil {
 					return err
 				}

@@ -66,7 +66,7 @@ func NewUpdateCommand() *cobra.Command {
 				return nil
 			}
 
-			// Check for matchin OS assets
+			// Check for matching OS release assets
 			for _, asset := range latestRelease.Assets {
 				if *asset.Name == fmt.Sprintf("%s-%s", commandName, runtime.GOOS) {
 					releaseAsset = asset
