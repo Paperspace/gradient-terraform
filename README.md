@@ -12,7 +12,7 @@ Terraform is used under the hood to setup all the infrastructure. Terraform modu
 - VM / Bare metal
 
 ## Prerequisites
-- A Paperspace account with appropriate billing plan and API key [https://www.paperspace.com]
+- A Paperspace account with an appropriate billing plan and API key [https://www.paperspace.com]
 - An AWS S3 bucket to store Terraform state [https://docs.aws.amazon.com/AmazonS3/latest/user-guide/create-bucket.html]
 
 ## Install / Update
