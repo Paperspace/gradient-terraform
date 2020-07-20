@@ -251,7 +251,7 @@ func setupSSL(terraformCommon *terraform.Common) error {
 		}
 
 		println("")
-		println(cli.TextHeader("Setup Lets Encrypt (see https://docs.traefik.io/v1.7/configuration/acme)"))
+		println(cli.TextHeader("Setup Let's Encrypt (see https://docs.traefik.io/v1.7/configuration/acme)"))
 
 		if err := letsEncryptDNSProviderPrompt.Run(); err != nil {
 			return err
