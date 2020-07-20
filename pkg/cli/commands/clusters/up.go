@@ -251,7 +251,7 @@ func setupSSL(terraformCommon *terraform.Common) error {
 		}
 
 		println("")
-		println(cli.TextHeader("Setup Lets Encrypt (see https://docs.traefik.io/v1.7/configuration/acme)"))
+		println(cli.TextHeader("Setup Let's Encrypt (see https://docs.traefik.io/v1.7/configuration/acme)"))
 
 		if err := letsEncryptDNSProviderPrompt.Run(); err != nil {
 			return err
@@ -397,7 +397,7 @@ func NewClusterUpCommand() *cobra.Command {
 				}
 			}
 
-			// Update cluster API values`
+			// Update cluster API values
 			terraformCommon := terraformInstance.GetCommon(cluster.Platform)
 			terraformCommon.UpdateFromCluster(&cluster)
 
