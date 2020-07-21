@@ -89,10 +89,6 @@ github.com/mitchellh/mapstructure v1.1.2 h1:fmNYVwqnSfB9mZU6OS2O6GsXM+wcskZDuKQz
 github.com/mitchellh/mapstructure v1.1.2/go.mod h1:FVVH3fgwuzCH5S8UJGiWEs2h04kUh9fWfEaFds41c1Y=
 github.com/mwitkow/go-conntrack v0.0.0-20161129095857-cc309e4a2223/go.mod h1:qRWi+5nqEBWmkhHvq77mSJWrCKwh8bxhgT7d/eI7P4U=
 github.com/oklog/ulid v1.3.1/go.mod h1:CirwcVhetQ6Lv90oh/F+FBtV6XMibvdAFo93nm5qn4U=
-github.com/paperspace/paperspace-go v0.0.3-beta1 h1:CEcDrfCZWjB1hpdqTFwX3Z3CXFuJ8HjRVaAga24YPi8=
-github.com/paperspace/paperspace-go v0.0.3-beta1/go.mod h1:IsIrciX+xQ+kBeQG3JJfVLKxct6UKy3QrJ34+HVNbGE=
-github.com/paperspace/paperspace-go v0.0.3 h1:KMuRrJW11v4+T0O+LXXzzTim9xWtW2Wp05CCDxkzKbU=
-github.com/paperspace/paperspace-go v0.0.3/go.mod h1:IsIrciX+xQ+kBeQG3JJfVLKxct6UKy3QrJ34+HVNbGE=
 github.com/paperspace/paperspace-go v0.0.4 h1:WdzGP7bisasC9r6GVP8MDkGdm5vFCpnpgu+I151EYCc=
 github.com/paperspace/paperspace-go v0.0.4/go.mod h1:IsIrciX+xQ+kBeQG3JJfVLKxct6UKy3QrJ34+HVNbGE=
 github.com/pelletier/go-toml v1.2.0 h1:T5zMGML61Wp+FlcbWjRDT7yAxhJNAiPPLOFECq181zc=
@@ -113,6 +109,7 @@ github.com/russross/blackfriday/v2 v2.0.1 h1:lPqVAte+HuHNfhJ/0LC98ESWRz8afy9tM/0
 github.com/russross/blackfriday/v2 v2.0.1/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
 github.com/shurcooL/sanitized_anchor_name v1.0.0 h1:PdmoCO6wvbs+7yrJyMORt4/BmY5IYyJwS/kOiWx8mHo=
 github.com/shurcooL/sanitized_anchor_name v1.0.0/go.mod h1:1NzhyTcUVG4SuEtjjoZeVRXNmyL/1OwPU0+IJeTBvfc=
+github.com/sirupsen/logrus v1.2.0 h1:juTguoYk5qI21pwyTXY3B3Y5cOTH3ZUyZCg1v/mihuo=
 github.com/sirupsen/logrus v1.2.0/go.mod h1:LxeOpSwHxABJmUn/MG1IvRgCAasNZTLOkJPxbbu5VWo=
 github.com/soheilhy/cmux v0.1.4/go.mod h1:IM3LyeVVIOuxMH7sFAkER9+bJ4dT7Ms6E4xg4kGIyLM=
 github.com/spaolacci/murmur3 v0.0.0-20180118202830-f09979ecbc72/go.mod h1:JwIasOWyU6f++ZhiEuf87xNszmSA2myDM2Kzu9HwQUA=

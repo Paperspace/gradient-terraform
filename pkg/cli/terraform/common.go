@@ -2,6 +2,7 @@ package terraform
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/paperspace/paperspace-go"
 )
@@ -34,6 +35,29 @@ func NewCommon() *Common {
 	}
 }
 
+func (c *Common) GetTLSCert() string {
+	if c.TLSCert == "" {
+		return ""
+	}
+
+	return StringFileUnwrap(c.TLSCert)
+}
+
+func (c *Common) GetTLSKey() string {
+	if c.TLSKey == "" {
+		return ""
+	}
+
+	return StringFileUnwrap(c.TLSKey)
+}
+
+func (c *Common) SetTLSCert(value string) {
+	c.TLSCert = StringFileWrap(value)
+}
+
+func (c *Common) SetTLSKey(value string) {
+	c.TLSKey = StringFileWrap(value)
+}
 func (c *Common) HasValidArtifactsStorage() bool {
 	if c.ArtifactsAccessKeyID == "" {
 		return false
@@ -126,4 +150,13 @@ func (c *Common) UpdateSourcePrefix(prefix string, platform paperspace.ClusterPl
 	}
 
 	c.TerraformSource = fmt.Sprintf("%s/%s", prefix, suffix)
+}
+
+func StringFileWrap(value string) string {
+	return fmt.Sprintf("%s%s%s", "${file(\"", value, "\")}")
+}
+
+func StringFileUnwrap(value string) string {
+	formattedValue := strings.TrimPrefix(value, "${file(\"")
+	return strings.TrimSuffix(formattedValue, "\")}")
 }

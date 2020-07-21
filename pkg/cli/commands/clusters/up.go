@@ -3,6 +3,7 @@ package clusters
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 
@@ -173,7 +174,33 @@ func setupMetalConfig(terraformMetal *terraform.Metal) error {
 	return nil
 }
 
-func setupSSL(terraformCommon *terraform.Common) error {
+func saveFilePath(path, destPath string) error {
+	_, err := os.Stat(path)
+	if err != nil {
+		return err
+	}
+
+	srcFile, err := os.Open(path)
+	if err != nil {
+		return err
+	}
+	defer srcFile.Close()
+
+	destFile, err := os.Create(destPath)
+	if err != nil {
+		return err
+	}
+	defer destFile.Close()
+
+	_, err = io.Copy(srcFile, destFile)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func setupSSL(terraformCommon *terraform.Common, terraformDir string) error {
 	var method string
 
 	if terraformCommon.HasValidTLS() {
@@ -204,26 +231,47 @@ func setupSSL(terraformCommon *terraform.Common) error {
 		tlsCertPrompt := cli.Prompt{
 			Label:    "SSL Certificate Path",
 			Required: true,
-			Value:    terraformCommon.TLSCert,
+			Value:    terraformCommon.GetTLSCert(),
 		}
 		tlsKeyPrompt := cli.Prompt{
 			Label:    "SSL Key Path",
 			Required: true,
-			Value:    terraformCommon.TLSKey,
+			Value:    terraformCommon.GetTLSKey(),
 		}
 
 		println("")
 		println(cli.TextHeader("Setup SSL Certificates"))
 
-		if err := tlsCertPrompt.Run(); err != nil {
-			return err
-		}
-		if err := tlsKeyPrompt.Run(); err != nil {
-			return err
+		for {
+			if err := tlsCertPrompt.Run(); err != nil {
+				return err
+			}
+
+			storedTLSCert := filepath.Join(terraformDir, "ssl.cert")
+			if err := saveFilePath(tlsCertPrompt.Value, storedTLSCert); err != nil {
+				println("Could not save file to cluster directory, please try again")
+				continue
+			}
+
+			terraformCommon.SetTLSCert(storedTLSCert)
+			break
 		}
 
-		terraformCommon.TLSCert = tlsCertPrompt.Value
-		terraformCommon.TLSKey = tlsKeyPrompt.Value
+		for {
+			if err := tlsKeyPrompt.Run(); err != nil {
+				return err
+			}
+
+			storedTLSKey := filepath.Join(terraformDir, "ssl.key")
+			if err := saveFilePath(tlsKeyPrompt.Value, storedTLSKey); err != nil {
+				println("Could not save file to cluster directory, please try again")
+				continue
+			}
+
+			terraformCommon.SetTLSKey(storedTLSKey)
+			break
+		}
+
 	case "letsencrypt":
 		terraformCommon.TLSCert = ""
 		terraformCommon.TLSKey = ""
@@ -403,7 +451,13 @@ func NewClusterUpCommand() *cobra.Command {
 
 			// Check SSL settings are valid
 			if reinstall || !terraformCommon.HasValidSSL() {
-				if err := setupSSL(terraformCommon); err != nil {
+				configDir, err := config.ConfigDirectory()
+				if err != nil {
+					return err
+				}
+
+				sslDir := filepath.Join(configDir, terraformDir)
+				if err := setupSSL(terraformCommon, sslDir); err != nil {
 					return err
 				}
 			}
