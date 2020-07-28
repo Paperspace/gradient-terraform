@@ -137,7 +137,7 @@ func (c *Common) UpdateFromCluster(cluster *paperspace.Cluster) {
 	c.ClusterAPIKey = cluster.APIToken.Key
 	c.ClusterHandle = cluster.ID
 	c.Domain = cluster.Domain
-	c.Name = cluster.Name
+	c.Name = strings.ReplaceAll(cluster.Name, " ", "-")
 }
 
 func (c *Common) UpdateSourcePrefix(prefix string, platform paperspace.ClusterPlatformType) {

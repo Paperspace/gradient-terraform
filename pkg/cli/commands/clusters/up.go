@@ -188,15 +188,23 @@ func saveFilePath(path, destPath string) error {
 	}
 	defer srcFile.Close()
 
+	if err := os.MkdirAll(filepath.Dir(destPath), 0700); err != nil {
+		return nil
+	}
+
 	destFile, err := os.Create(destPath)
 	if err != nil {
 		return err
 	}
 	defer destFile.Close()
 
-	_, err = io.Copy(srcFile, destFile)
+	n, err := io.Copy(destFile, srcFile)
 	if err != nil {
 		return err
+	}
+
+	if n == 0 {
+		return fmt.Errorf("Source file is empty: %s", path)
 	}
 
 	return nil
@@ -250,9 +258,11 @@ func setupSSL(terraformCommon *terraform.Common, terraformDir string) error {
 			}
 
 			storedTLSCert := filepath.Join(terraformDir, "ssl.cert")
-			if err := saveFilePath(tlsCertPrompt.Value, storedTLSCert); err != nil {
-				println("Could not save file to cluster directory, please try again")
-				continue
+			if tlsCertPrompt.Value != storedTLSCert {
+				if err := saveFilePath(tlsCertPrompt.Value, storedTLSCert); err != nil {
+					println("Could not save file to cluster directory, please try again")
+					continue
+				}
 			}
 
 			terraformCommon.SetTLSCert(storedTLSCert)
@@ -265,9 +275,11 @@ func setupSSL(terraformCommon *terraform.Common, terraformDir string) error {
 			}
 
 			storedTLSKey := filepath.Join(terraformDir, "ssl.key")
-			if err := saveFilePath(tlsKeyPrompt.Value, storedTLSKey); err != nil {
-				println("Could not save file to cluster directory, please try again")
-				continue
+			if tlsKeyPrompt.Value != storedTLSKey {
+				if err := saveFilePath(tlsKeyPrompt.Value, storedTLSKey); err != nil {
+					println("Could not save file to cluster directory, please try again")
+					continue
+				}
 			}
 
 			terraformCommon.SetTLSKey(storedTLSKey)
