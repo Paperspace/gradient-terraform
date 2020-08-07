@@ -19,12 +19,15 @@ func main() {
 	configPathExists, err := config.ConfigPathExists("", "config")
 	if err != nil {
 		println(cli.TextError(err.Error()))
+		os.Exit(1)
 	}
 	if !configPathExists {
 		commands.NewSetupCommand(profileName).Execute()
+		println("")
 	}
 	if err := config.LoadConfigIfExists("", "config", &cliConfig); err != nil {
 		println(cli.TextError(err.Error()))
+		os.Exit(1)
 	}
 
 	profile := cliConfig.CreateOrGetProfile(profileName)
@@ -33,5 +36,6 @@ func main() {
 	rootCommand := commands.NewRootCommand(profileName)
 	if err := rootCommand.ExecuteContext(ctx); err != nil {
 		println(cli.TextError(err.Error()))
+		os.Exit(1)
 	}
 }

@@ -418,7 +418,7 @@ func NewClusterUpCommand() *cobra.Command {
 			if len(args) > 0 {
 				id = args[0]
 			} else {
-				NewClusterRegisterCommand().Execute()
+				NewClusterRegisterCommand().ExecuteContext(cmd.Context())
 			}
 			terraformDir := filepath.Join("clusters", id)
 			client := cli.FromContext(cmd)

@@ -2,6 +2,7 @@ package cli
 
 import (
 	"context"
+	"os"
 
 	"github.com/paperspace/paperspace-go"
 	"github.com/spf13/cobra"
@@ -19,6 +20,8 @@ func FromContext(cmd *cobra.Command) *paperspace.Client {
 	client, ok := ctx.Value(paperspaceContextKey).(*paperspace.Client)
 
 	if !ok {
+		println(TextError("Could not create Paperspace Client, this is an error, please file a bug"))
+		os.Exit(1)
 		return nil
 	}
 

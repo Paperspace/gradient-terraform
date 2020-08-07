@@ -24,6 +24,7 @@ func NewClusterRegisterCommand() *cobra.Command {
 			var region string
 
 			client := cli.FromContext(cmd)
+			client.CreateCluster(paperspace.ClusterCreateParams{})
 			if createFilePath == "" {
 				awsRegionSelect := promptui.Select{
 					Label: "AWS Region",
