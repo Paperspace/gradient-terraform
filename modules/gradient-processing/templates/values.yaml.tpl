@@ -12,7 +12,8 @@ global:
     port: ${elastic_search_port}
     user: ${elastic_search_user}
   %{ endif }
-  logsHost: ${logs_host}
+  logs:
+    host: ${logs_host}
   ingressHost: ${domain}
   serviceNodeSelector:
     paperspace.com/pool-name: ${service_pool_name}
