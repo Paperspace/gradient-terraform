@@ -110,7 +110,6 @@ workflows:
             branches:
               ignore: master
 
-
   main:
     jobs:
       - release-tools/release:
