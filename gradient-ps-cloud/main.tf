@@ -1,3 +1,12 @@
+terraform {
+    required_providers {
+        cloudflare = {
+            source  = "cloudflare/cloudflare"
+            version = "~> 2.10.0"
+        }
+    }
+}
+
 locals {
     ssh_key_path = "${path.module}/ssh_key"
 }
