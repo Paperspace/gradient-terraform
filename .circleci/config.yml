@@ -16,9 +16,9 @@ jobs:
       - run:
           command: go test ./...
 
-  terraform_plan:
+  terraform_plan_12:
     docker:
-      - image: hashicorp/terraform:0.12.24
+      - image: hashicorp/terraform:0.12.29
     parameters:
       path:
         type: string
@@ -34,6 +34,26 @@ jobs:
             terraform init
             terraform workspace select << parameters.workspace >>
             terraform plan
+  terraform_plan_13:
+    docker:
+      - image: hashicorp/terraform:0.13.0
+    parameters:
+      path:
+        type: string
+      workspace:
+        type: string
+    steps:
+      - checkout
+      - run:
+          command: |-
+            apk add curl
+            bin/setup
+            cd << parameters.path >>
+            terraform init
+            terraform workspace select << parameters.workspace >>
+            terraform plan
+
+
   upload_assets:
     docker:
       - image: golang:1.14
@@ -54,7 +74,7 @@ workflows:
             branches:
               ignore: master
          
-      - terraform_plan:
+      - terraform_plan_12:
           name: plan_aws
           path: gradient-aws/tests
           workspace: default
@@ -63,7 +83,7 @@ workflows:
             branches:
               ignore: master
 
-      - terraform_plan:
+      - terraform_plan_12:
           name: plan_metal
           path: gradient-metal/tests
           workspace: default
@@ -71,6 +91,25 @@ workflows:
           filters:
             branches:
               ignore: master
+
+      - terraform_plan_13:
+          name: plan_aws
+          path: gradient-aws/tests
+          workspace: default
+          context: terraform
+          filters:
+            branches:
+              ignore: master
+
+      - terraform_plan_13:
+          name: plan_metal
+          path: gradient-metal/tests
+          workspace: default
+          context: terraform
+          filters:
+            branches:
+              ignore: master
+
 
   main:
     jobs:
