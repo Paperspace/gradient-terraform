@@ -2,7 +2,7 @@
 set -e
 
 PAPERSPACE_VERSION=0.2.11
-RKE_VERSION=1.0.0
+RKE_VERSION=1.0.1
 TERRAFORM_PLUGINS_DIR=~/.terraform.d/plugins
 
 case "$( uname -s )" in
@@ -28,13 +28,15 @@ fi
 
 echo "Installing terraform-provider-paperspace $PAPERSPACE_VERSION..."
 mkdir -p $PAPERSPACE_TARGET_DIR
-curl -Ls https://github.com/Paperspace/terraform-provider-paperspace/releases/download/$PAPERSPACE_VERSION/terraform-provider-paperspace-$TARGET -o $PAPERSPACE_TARGET
+curl -Ls https://github.com/Paperspace/terraform-provider-paperspace/releases/download/$PAPERSPACE_VERSION/terraform-provider-paperspace_$TARGET -o $PAPERSPACE_TARGET
 chmod a+x $PAPERSPACE_TARGET
 
 if [ -z "`terraform -h | grep 0.13upgrade`" ];then
 	RKE_TARGET=$TERRAFORM_PLUGINS_DIR/$TERRAFORM_TARGET/terraform-provider-rke
 	
 	echo "Installing terraform-provider-rke $RKE_VERSION..."
-	curl -Ls https://github.com/rancher/terraform-provider-rke/releases/download/$RKE_VERSION/terraform-provider-rke_$TARGET -o $RKE_TARGET
+	curl -Ls https://github.com/rancher/terraform-provider-rke/releases/download/$RKE_VERSION/terraform-provider-rke_$TERRAFORM_TARGET -o /tmp/terraform-provider-rke-$RKE_VERSION.zip
+	unzip /tmp/terraform-provider-rke-$RKE_VERSION.zip
+	mv /tmp/terraform-provider-rke_v$RKE_VERSION $RKE_TARGET
 	chmod a+x $RKE_TARGET
 fi
