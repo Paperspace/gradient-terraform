@@ -1,3 +1,11 @@
+terraform {
+    required_providers {
+        rke = {
+            source  = "rancher/rke"
+        }
+    }
+}
+
 locals {
     cluster_file = "cluster.yml"
 

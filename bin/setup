@@ -34,14 +34,12 @@ chmod a+x $PAPERSPACE_TARGET
 if [ -z "`terraform -h | grep 0.13upgrade`" ];then
 	RKE_TARGET_DIR=$TERRAFORM_PLUGINS_DIR/$TERRAFORM_TARGET
 	RKE_TARGET=$RKE_TARGET_DIR/terraform-provider-rke
-else
-	RKE_TARGET_DIR=$TERRAFORM_PLUGINS_DIR/registry.terraform.io/hashicorp/rke/$RKE_VERSION/$TERRAFORM_TARGET
-	RKE_TARGET=$RKE_TARGET_DIR/terraform-provider-rke_v$RKE_VERSION
+
+	echo "Installing terraform-provider-rke $RKE_VERSION..."
+	mkdir -p $RKE_TARGET_DIR
+	curl -Ls https://github.com/rancher/terraform-provider-rke/releases/download/v$RKE_VERSION/terraform-provider-rke_${RKE_VERSION}_$TERRAFORM_TARGET.zip -o /tmp/terraform-provider-rke-$RKE_VERSION.zip
+	cd /tmp && unzip /tmp/terraform-provider-rke-$RKE_VERSION.zip
+	mv /tmp/terraform-provider-rke_v$RKE_VERSION $RKE_TARGET
+	chmod a+x $RKE_TARGET
 fi
 
-echo "Installing terraform-provider-rke $RKE_VERSION..."
-mkdir -p $RKE_TARGET_DIR
-curl -Ls https://github.com/rancher/terraform-provider-rke/releases/download/v$RKE_VERSION/terraform-provider-rke_${RKE_VERSION}_$TERRAFORM_TARGET.zip -o /tmp/terraform-provider-rke-$RKE_VERSION.zip
-cd /tmp && unzip /tmp/terraform-provider-rke-$RKE_VERSION.zip
-mv /tmp/terraform-provider-rke_v$RKE_VERSION $RKE_TARGET
-chmod a+x $RKE_TARGET
