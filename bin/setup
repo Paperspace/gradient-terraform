@@ -35,7 +35,7 @@ if [ -z "`terraform -h | grep 0.13upgrade`" ];then
 	RKE_TARGET=$TERRAFORM_PLUGINS_DIR/$TERRAFORM_TARGET/terraform-provider-rke
 	
 	echo "Installing terraform-provider-rke $RKE_VERSION..."
-	curl -Ls https://github.com/rancher/terraform-provider-rke/releases/download/$RKE_VERSION/terraform-provider-rke_$TERRAFORM_TARGET -o /tmp/terraform-provider-rke-$RKE_VERSION.zip
+	curl -Ls https://github.com/rancher/terraform-provider-rke/releases/download/v$RKE_VERSION/terraform-provider-rke_${RKE_VERSION}_$TERRAFORM_TARGET.zip -o /tmp/terraform-provider-rke-$RKE_VERSION.zip
 	unzip /tmp/terraform-provider-rke-$RKE_VERSION.zip
 	mv /tmp/terraform-provider-rke_v$RKE_VERSION $RKE_TARGET
 	chmod a+x $RKE_TARGET
