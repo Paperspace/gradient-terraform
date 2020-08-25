@@ -2,7 +2,7 @@
 set -e
 
 PAPERSPACE_VERSION=0.2.11
-RKE_VERSION=1.0.1
+RKE_VERSION=1.1.0
 TERRAFORM_PLUGINS_DIR=~/.terraform.d/plugins
 
 case "$( uname -s )" in
