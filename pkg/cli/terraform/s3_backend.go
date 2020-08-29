@@ -3,12 +3,12 @@ package terraform
 import "path"
 
 type S3Backend struct {
-	AccessKeyID     string `json:"access_key"`
+	AccessKeyID     string `json:"access_key,omitempty"`
 	Bucket          string `json:"bucket"`
 	Endpoint        string `json:"endpoint,omitempty"`
 	Key             string `json:"key"`
 	Region          string `json:"region"`
-	SecretAccessKey string `json:"secret_key"`
+	SecretAccessKey string `json:"secret_key,omitempty"`
 	SessionName     string `json:"session_name"`
 }
 

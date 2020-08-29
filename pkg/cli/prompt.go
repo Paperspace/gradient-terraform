@@ -11,7 +11,6 @@ var YesNoValues = []string{"yes", "no"}
 var maskChar = '*'
 
 type Prompt struct {
-	AllowEmpty bool
 	AllowedValues  []string
 	HideValue      bool
 	Label          string
@@ -77,7 +76,7 @@ func (p *Prompt) Run() error {
 			return err
 		}
 		value = strings.TrimSuffix(value, "\n")
-		if value != "" || p.AllowEmpty {
+		if value != "" {
 			p.Value = value
 		}
 
@@ -102,4 +101,3 @@ func (p *Prompt) Run() error {
 
 	return nil
 }
-
