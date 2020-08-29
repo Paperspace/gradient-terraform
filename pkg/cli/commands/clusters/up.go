@@ -370,8 +370,9 @@ func setupTerraformProvider(terraformProvider *terraform.TerraformProvider) erro
 		Value:    terraformProvider.Backends.S3.Region,
 	}
 	s3EndpointPrompt := cli.Prompt{
-		Label: "Endpoint",
-		Value: terraformProvider.Backends.S3.Endpoint,
+		Label:      "Endpoint",
+		AllowEmpty: true,
+		Value:      terraformProvider.Backends.S3.Endpoint,
 	}
 
 	if err := s3BucketPrompt.Run(); err != nil {
@@ -415,13 +416,17 @@ func NewClusterUpCommand() *cobra.Command {
 			var id string
 
 			// Prepare args
+			client := cli.FromContext(cmd)
 			if len(args) > 0 {
 				id = args[0]
 			} else {
-				NewClusterRegisterCommand().ExecuteContext(cmd.Context())
+				var err error
+				id, err = ClusterRegister(client, "")
+				if err != nil {
+					return err
+				}
 			}
 			terraformDir := filepath.Join("clusters", id)
-			client := cli.FromContext(cmd)
 
 			// Check if cluster is valid
 			checkCluster, err := client.GetCluster(id, paperspace.ClusterGetParams{})
