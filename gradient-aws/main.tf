@@ -23,26 +23,15 @@ data "aws_ec2_instance_type_offerings" "available" {
 }
 
 locals {
-}
-
-
-
-
-output "test" {
-  value = local.az
-}
-
-
-locals {
     az = compact([for name in data.aws_availability_zones.available.names : length(data.aws_ec2_instance_type_offerings.available[name].instance_types) == length(local.instance_types) ? name : ""])[0]
-	  
     az_map = zipmap(data.aws_availability_zones.available.names, data.aws_availability_zones.available.names)
+    
     has_k8s = var.k8s_endpoint == "" ? false : true
     has_shared_storage = var.shared_storage_server == "" ? false : true
     k8s_version = var.k8s_version == "" ? "1.14" : var.k8s_version
     instance_types = [
         "c5.xlarge",
-        "c5.2large",
+        "c5.2xlarge",
         "c5.4xlarge",
         "p2.xlarge",
         "p3.2xlarge",
