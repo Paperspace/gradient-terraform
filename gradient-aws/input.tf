@@ -10,7 +10,7 @@ variable "availability_zone_count" {
 
 variable "availability_zone" {
     description = "Default availability zone"
-    default = "us-east-1a"
+    default = ""
 }
 
 variable "cidr" {

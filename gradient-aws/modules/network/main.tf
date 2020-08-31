@@ -3,6 +3,7 @@ data "aws_availability_zones" "available" {
 }
 
 locals {
+    azs = var.availability_zone == "" ? var.availability_zone[slice(data.aws_availability_zones.available.names, 0, var.availability_zone_count) : [var.availability_zone]
     cidr_netmask = split("/", var.cidr)[1]
     netmask_unit = var.subnet_netmask - local.cidr_netmask
     private_cidr_blocks = [cidrsubnet(var.cidr, local.netmask_unit, 0)]
@@ -20,7 +21,7 @@ module "vpc" {
     name = var.name
     create_vpc = var.enable
 
-    azs = var.availability_zone
+    azs = local.azs
     cidr = var.cidr
     enable_dns_hostnames = true
     enable_nat_gateway = true
