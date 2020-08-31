@@ -1,5 +1,5 @@
-variable "availability_zone_count" {
-    type = number
+variable "availability_zone" {
+    description = "Default availability zone"
 }
 
 variable "enable" {

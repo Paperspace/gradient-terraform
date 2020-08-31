@@ -2,10 +2,52 @@ provider "aws" {
   region = var.aws_region
 }
 
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
+data "aws_ec2_instance_type_offerings" "available" {
+    for_each = local.az_map
+
+    filter {
+        name   = "instance-type"
+        values = local.instance_types
+    }
+
+    filter {
+        name   = "location"
+        values = [each.key]
+    }
+
+    location_type = "availability-zone"
+}
+
 locals {
+}
+
+
+
+
+output "test" {
+  value = local.az
+}
+
+
+locals {
+    az = compact([for name in data.aws_availability_zones.available.names : length(data.aws_ec2_instance_type_offerings.available[name].instance_types) == length(local.instance_types) ? name : ""])[0]
+	  
+    az_map = zipmap(data.aws_availability_zones.available.names, data.aws_availability_zones.available.names)
     has_k8s = var.k8s_endpoint == "" ? false : true
     has_shared_storage = var.shared_storage_server == "" ? false : true
     k8s_version = var.k8s_version == "" ? "1.14" : var.k8s_version
+    instance_types = [
+        "c5.xlarge",
+        "c5.2large",
+        "c5.4xlarge",
+        "p2.xlarge",
+        "p3.2xlarge",
+        "p3.16xlarge"
+    ]
     shared_storage_type = var.shared_storage_type == "" ? "efs" : var.shared_storage_type
 }
 
@@ -13,7 +55,7 @@ module "network" {
     source = "./modules/network"
     enable = !local.has_k8s
 
-    availability_zone_count = var.availability_zone_count
+    availability_zone = local.az
     cidr = var.cidr
     name = var.name
     private_subnet_tags = {
