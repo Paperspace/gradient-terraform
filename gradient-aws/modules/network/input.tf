@@ -1,7 +1,3 @@
-variable "availability_zone" {
-    description = "Default availability zone"
-}
-
 variable "availability_zone_count" {
     type = number
 }
