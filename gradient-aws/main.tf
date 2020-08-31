@@ -37,6 +37,7 @@ locals {
         "p3.2xlarge",
         "p3.16xlarge"
     ]
+    k8s_version = var.k8s_version == "" ? "1.15" : var.k8s_version
     shared_storage_type = var.shared_storage_type == "" ? "efs" : var.shared_storage_type
 }
 
