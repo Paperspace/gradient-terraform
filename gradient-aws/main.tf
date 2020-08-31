@@ -28,7 +28,6 @@ locals {
     
     has_k8s = var.k8s_endpoint == "" ? false : true
     has_shared_storage = var.shared_storage_server == "" ? false : true
-    k8s_version = var.k8s_version == "" ? "1.14" : var.k8s_version
     instance_types = [
         "c5.xlarge",
         "c5.2xlarge",
