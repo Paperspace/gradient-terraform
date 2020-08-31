@@ -3,7 +3,7 @@ data "aws_availability_zones" "available" {
 }
 
 locals {
-    azs = var.availability_zone == "" ? var.availability_zone[slice(data.aws_availability_zones.available.names, 0, var.availability_zone_count) : [var.availability_zone]
+    azs = var.availability_zone == "" ? slice(data.aws_availability_zones.available.names, 0, var.availability_zone_count) : [var.availability_zone]
     cidr_netmask = split("/", var.cidr)[1]
     netmask_unit = var.subnet_netmask - local.cidr_netmask
     private_cidr_blocks = [cidrsubnet(var.cidr, local.netmask_unit, 0)]
