@@ -3,6 +3,13 @@ variable "aws_region" {
     default = "us-east-1"
 }
 
+
+variable "availability_zones" {
+    type = list
+    description = "availability zones"
+    default = []
+}
+
 variable "availability_zone_count" {
     description = "Number of availability zones to be used"
     default = 2

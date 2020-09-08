@@ -44,7 +44,7 @@ module "network" {
     source = "./modules/network"
     enable = !local.has_k8s
 
-    availability_zones = slice(local.az, 0, 2)
+    availability_zones = length(var.availability_zones) >= 2 ? slice(var.availability_zones, 0, 2) : slice(local.az, 0, 2)
     cidr = var.cidr
     name = var.name
     private_subnet_tags = {
