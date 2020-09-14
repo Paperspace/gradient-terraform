@@ -275,16 +275,18 @@ resource "paperspace_script" "autoscale" {
         usermod -G docker paperspace
 
         echo "${tls_private_key.ssh_key.public_key_openssh}" >> /home/paperspace/.ssh/authorized_keys
+
         export MACHINE_ID=`curl -s https://metadata.paperspace.com/meta-data/machine | grep id | sed 's/^.*: "\(.*\)".*/\1/'`
+        export MACHINE_PRIVATE_IP=`curl -s https://metadata.paperspace.com/meta-data/machine | grep privateIpAddress | sed 's/^.*: "\(.*\)".*/\1/'`
+
         ${rancher2_cluster.main.cluster_registration_token[0].node_command} \
             --worker \
             --label paperspace.com/pool-name=${each.key} \
             --label paperspace.com/pool-type=${each.value.type} \
-            --node-name "$MACHINE_ID" \
-            --address `curl -s https://metadata.paperspace.com/meta-data/machine | grep publicIpAddress | sed 's/^.*: "\(.*\)".*/\1/'` \
-            --internal-address `curl -s https://metadata.paperspace.com/meta-data/machine | grep privateIpAddress | sed 's/^.*: "\(.*\)".*/\1/'`
-
-        curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPOST '${var.api_host}/clusterMachines/register' -d '{"clusterId":"${var.cluster_handle}", "machineId":"$MACHINE_ID"}'
+            --label provider.autoscaler/prefix=paperspace \
+            --label provider.autoscaler/nodeName=$MACHINE_ID \
+            --node-name $MACHINE_ID \
+            --address $MACHINE_PRIVATE_IP
     EOF
     is_enabled = true
     run_once = true
