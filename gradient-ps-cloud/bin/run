@@ -3,6 +3,10 @@
 # Note: Terraform reads vars from env vars that are prefixed TF_VARS_,
 # and they'll be named whatever the rest of the env var name is.
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+pushd ${DIR}/..
+
 echo "Configuring managed backend..."
 
 cat << EOF > ./backend.tf
@@ -30,3 +34,5 @@ if [ "$TERRAFORM_COMMAND" = "destroy" ]; then
 else
   terraform apply -auto-approve
 fi
+
+popd
