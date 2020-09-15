@@ -225,7 +225,13 @@ resource "rancher2_cluster" "main" {
   description = var.name
   rke_config {
         kubernetes_version = "v${local.k8s_version}-rancher1-1"
-        
+
+        dns {
+            node_selector = {
+              "paperspace.com/pool-name" = "services-small"
+            }
+        }
+
         ingress {
             provider = "none"
         }

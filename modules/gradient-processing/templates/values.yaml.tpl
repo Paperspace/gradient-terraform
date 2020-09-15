@@ -46,10 +46,6 @@ cluster-autoscaler:
       minSize: ${autoscaling_group["min"]}
       maxSize: ${autoscaling_group["max"]}
     %{ endfor }
-  extraArgs:
-    skip-nodes-with-system-pods: false
-    scale-down-delay-after-add: 5m
-    scale-down-unneeded-time: 5m
   extraEnv:
     PAPERSPACE_BASEURL: ${paperspace_base_url}
     PAPERSPACE_CLUSTER_ID: ${cluster_handle}
