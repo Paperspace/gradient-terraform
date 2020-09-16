@@ -5,7 +5,7 @@ locals {
     shared_storage_type = var.shared_storage_type == "" ? "nfs" : var.shared_storage_type
 
     is_single_node = length(var.k8s_workers) == 0
-    service_pool_name = local.is_single_node == true ? var.k8s_master_node["pool-name"] : var.service_pool_name
+    service_pool_name = local.is_single_node == true && !var.cluster_autoscaler_enabled ? var.k8s_master_node["pool-name"] : var.service_pool_name
 }
 
 // Kubernetes
@@ -80,6 +80,9 @@ module "gradient_processing" {
     artifacts_secret_access_key = var.artifacts_secret_access_key
     chart = var.gradient_processing_chart
     cluster_apikey = var.cluster_apikey
+    cluster_autoscaler_autoscaling_groups = var.cluster_autoscaler_autoscaling_groups
+    cluster_autoscaler_cloudprovider = var.cluster_autoscaler_cloudprovider
+    cluster_autoscaler_enabled = var.cluster_autoscaler_enabled
     cluster_handle = var.cluster_handle
     domain = var.domain
 

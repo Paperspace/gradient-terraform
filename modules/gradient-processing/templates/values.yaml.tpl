@@ -34,12 +34,45 @@ global:
 
 cluster-autoscaler:
   enabled: ${cluster_autoscaler_enabled}
+  %{ if cluster_autoscaler_cloudprovider == "paperspace" }
+  image:
+    pullPolicy: Always
+    repository: paperspace/cluster-autoscaler
+    tag: v1.15
+
+  autoscalingGroups:
+    %{ for autoscaling_group in cluster_autoscaler_autoscaling_groups }
+    - name: ${autoscaling_group["name"]}
+      minSize: ${autoscaling_group["min"]}
+      maxSize: ${autoscaling_group["max"]}
+    %{ endfor }
+  extraArgs:
+    skip-nodes-with-system-pods: false
+  extraEnv:
+    PAPERSPACE_BASEURL: ${paperspace_base_url}
+    PAPERSPACE_CLUSTER_ID: ${cluster_handle}
+  extraEnvSecrets:
+    PAPERSPACE_APIKEY:
+      name: gradient-processing
+      key: PS_API_KEY
+
+  %{ endif }
 
   awsRegion: ${aws_region}
   autoDiscovery:
     clusterName: ${name}
+  cloudProvider: ${cluster_autoscaler_cloudprovider}
+
   nodeSelector:
     paperspace.com/pool-name: ${service_pool_name}
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
 
 efs-provisioner:
   enabled: ${efs_provisioner_enabled}
@@ -150,6 +183,152 @@ gradient-operator:
           requests:
             memory: 58Gi
     %{ endif }
+    %{ if cluster_autoscaler_cloudprovider == "paperspace" }
+    modelDeploymentConfig:
+      labelName: paperspace.com/pool-name
+      cpu:
+        small:
+          label: "C5"
+          requests:
+            cpu: 3
+            memory: 6Gi
+        medium:
+          label: "C7"
+          requests:
+            cpu: 9
+            memory: 22.5Gi
+        large:
+          label: "C10"
+          requests:
+            cpu: 24
+            memory: 183Gi
+      gpu:
+        small:
+          label: "P4000"
+          requests:
+            cpu: 6
+            memory: 22.5Gi
+        medium:
+          label: "P5000"
+          requests:
+            cpu: 6
+            memory: 22.5Gi
+        large:
+          label: "V100"
+          requests:
+            nvidia.com/gpu: 1
+            cpu: 6
+            memory: 22.5Gi
+
+
+
+
+    experimentConfig:
+      labelName: paperspace.com/pool-name
+      cpu:
+        small:
+          label: "C5"
+          requests:
+            cpu: 3
+            memory: 6Gi
+        medium:
+          label: "C7"
+          requests:
+            cpu: 9
+            memory: 22.5Gi
+        large:
+          label: "C10"
+          requests:
+            cpu: 24
+            memory: 183Gi
+      gpu:
+        small:
+          label: "P4000"
+          requests:
+            cpu: 6
+            memory: 22.5Gi
+        medium:
+          label: "P5000"
+          requests:
+            cpu: 6
+            memory: 22.5Gi
+        large:
+          label: "V100"
+          requests:
+            nvidia.com/gpu: 1
+            cpu: 6
+            memory: 22.5Gi
+    notebookConfig:
+      labelName: paperspace.com/pool-name
+      cpu:
+        small:
+          label: "C5"
+          requests:
+            cpu: 3
+            memory: 6Gi
+        medium:
+          label: "C7"
+          requests:
+            cpu: 9
+            memory: 22.5Gi
+        large:
+          label: "C10"
+          requests:
+            cpu: 24
+            memory: 183Gi
+      gpu:
+        small:
+          label: "P4000"
+          requests:
+            cpu: 6
+            memory: 22.5Gi
+        medium:
+          label: "P5000"
+          requests:
+            cpu: 6
+            memory: 22.5Gi
+        large:
+          label: "V100"
+          requests:
+            nvidia.com/gpu: 1
+            cpu: 6
+            memory: 22.5Gi
+    tensorboardConfig:
+      labelName: paperspace.com/pool-name
+      cpu:
+        small:
+          label: "C5"
+          requests:
+            cpu: 3
+            memory: 6Gi
+        medium:
+          label: "C7"
+          requests:
+            cpu: 9
+            memory: 22.5Gi
+        large:
+          label: "C10"
+          requests:
+            cpu: 24
+            memory: 183Gi
+      gpu:
+        small:
+          label: "P4000"
+          requests:
+            cpu: 6
+            memory: 22.5Gi
+        medium:
+          label: "P5000"
+          requests:
+            cpu: 6
+            memory: 22.5Gi
+        large:
+          label: "V100"
+          requests:
+            nvidia.com/gpu: 1
+            cpu: 6
+            memory: 22.5Gi
+    %{ endif }
 
 gradient-metrics:
   ingress:
@@ -190,7 +369,7 @@ traefik:
   nodeSelector:
     paperspace.com/pool-name: ${service_pool_name}
 
-  %{ if label_selector_cpu != "" && label_selector_gpu != "" }
+  %{ if (label_selector_cpu != "" && label_selector_gpu != "") || cluster_autoscaler_cloudprovider == "paperspace" }
   serviceType: NodePort
   deploymentStrategy:
     type: Recreate

@@ -45,11 +45,21 @@ variable "cluster_apikey" {
   description = "Gradient cluster apikey"
 }
 
-variable "cluster_autoscaler_enabled" {
-    type = bool
-    description = "Enable cluster-autoscaler"
-    default = false
+variable "cluster_autoscaler_autoscaling_groups" {
+  type = list
+  description = "Cluster autoscaler autoscaling groups"
+  default = []
 }
+variable "cluster_autoscaler_cloudprovider" {
+    description = "Cluster autoscaler provider"
+    default = "aws"
+}
+variable "cluster_autoscaler_enabled" {
+  type = bool
+  description = "Enable cluster autoscaler"
+  default = false
+}
+
 variable "cluster_handle" {
   description = "Gradient cluster handle"
 }
@@ -154,6 +164,11 @@ variable "minikube" {
   type = bool
   description = "Set to true if minikube is being used"
   default = false
+}
+
+variable "paperspace_base_url" {
+  description = "Paperspace base URL"
+  default = "https://api.paperspace.io"
 }
 
 variable "service_pool_name" {

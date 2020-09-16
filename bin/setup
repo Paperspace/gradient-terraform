@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 set -e
 
-PAPERSPACE_VERSION=0.2.11
+PAPERSPACE_VERSION=0.2.13
 RKE_VERSION=1.0.1
 TERRAFORM_PLUGINS_DIR=~/.terraform.d/plugins
 

@@ -71,6 +71,8 @@ resource "helm_release" "gradient_processing" {
 
             aws_region = var.aws_region
             artifacts_path = var.artifacts_path
+            cluster_autoscaler_autoscaling_groups = var.cluster_autoscaler_autoscaling_groups
+            cluster_autoscaler_cloudprovider = var.cluster_autoscaler_cloudprovider
             cluster_autoscaler_enabled = var.cluster_autoscaler_enabled
             cluster_handle = var.cluster_handle
             default_storage_name = local.local_storage_name
@@ -93,6 +95,7 @@ resource "helm_release" "gradient_processing" {
             logs_host = var.logs_host
             name = var.name
             nfs_client_provisioner_enabled = var.shared_storage_type == "nfs" || var.local_storage_type == "nfs"
+            paperspace_base_url = var.paperspace_base_url
             sentry_dsn = var.sentry_dsn
             service_pool_name = var.service_pool_name
             shared_storage_name = local.shared_storage_name

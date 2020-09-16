@@ -8,7 +8,17 @@ variable "admin_user_api_key" {
 
 variable "api_host" {
     description = "api host"
-    default = "api.paperspace.io"
+    default = "https://api.paperspace.io"
+}
+
+variable "asg_max_sizes" {
+    description = "Autoscaling Group max sizes"
+    default = {}
+}
+
+variable "asg_min_sizes" {
+    description = "Autoscaling Group min sizes"
+    default = {}
 }
 
 variable "aws_access_key_id" {
@@ -33,18 +43,6 @@ variable "cloudflare_zone_id" {
     default = ""
 }
 
-variable "is_managed" {
-    type = bool
-    description = "Is PS Cloud cluster managed by Paperspace"
-    default = false
-}
-
-variable "is_proxied" {
-    type = bool
-    description = "Should cluster proxy traffic through Cloudflare"
-    default = false
-}
-
 variable "machine_storage_main" {
     type = number
     description = "Main storage id"
@@ -59,11 +57,6 @@ variable "machine_type_main" {
     default = "C5"
 }
 
-variable "machine_count_worker_cpu" {
-    type = number
-    description = "Number of CPU workers"
-    default = 3
-}
 variable "machine_storage_worker_cpu" {
     type = number
     description = "CPU worker storage"
@@ -73,16 +66,7 @@ variable "machine_template_id_cpu" {
     description = "CPU template id"
     default = "tpi7gqht" # tpi7gqht comes pre-installed with docker
 }
-variable "machine_type_worker_cpu" {
-    description = "CPU worker machine type"
-    default = "C5"
-}
 
-variable "machine_count_worker_gpu" {
-    type = number
-    description = "Number of GPU workers"
-    default = 3
-}
 variable "machine_storage_worker_gpu" {
     type = number
     description = "GPU worker storage"
@@ -92,9 +76,15 @@ variable "machine_template_id_gpu" {
     description = "GPU template id"
     default = "tmun4o2g"
 }
-variable "machine_type_worker_gpu" {
-    description = "GPU worker machine type"
-    default = "P4000"
+
+variable "rancher_api_url" {
+    description = "Rancher API URL"
+}
+variable "rancher_access_key" {
+    description = "Rancher access_key"
+}
+variable "rancher_secret_key" {
+    description = "Rancher secret_key"
 }
 
 variable "region" {
@@ -108,4 +98,10 @@ variable "team_id" {
 
 variable "team_id_integer" {
     description = "Cluster team id integer"
+}
+
+variable "workers" {
+    type = list
+    description = "Additional workers"
+    default = []
 }
