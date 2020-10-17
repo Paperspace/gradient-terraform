@@ -36,7 +36,7 @@ jobs:
             terraform plan
   terraform_plan_13:
     docker:
-      - image: hashicorp/terraform:0.13.0
+      - image: hashicorp/terraform:0.13.4
     parameters:
       path:
         type: string
