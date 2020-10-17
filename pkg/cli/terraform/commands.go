@@ -79,7 +79,9 @@ func InitCommand(configDir string) error {
 	cmd.Dir = configDir
 
 	if err := os.Remove(filepath.Join(configDir, ".terraform", "terraform.tfstate")); err != nil {
-		return err
+		if !os.IsNotExist(err) {
+			return err
+		}
 	}
 
 	cmd.Stderr = os.Stderr
