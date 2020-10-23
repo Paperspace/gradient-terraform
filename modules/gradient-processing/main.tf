@@ -74,6 +74,7 @@ resource "helm_release" "gradient_processing" {
             cluster_autoscaler_autoscaling_groups = var.cluster_autoscaler_autoscaling_groups
             cluster_autoscaler_cloudprovider = var.cluster_autoscaler_cloudprovider
             cluster_autoscaler_enabled = var.cluster_autoscaler_enabled
+            cluster_autoscaler_unneeded = var.cluster_autoscaler_unneeded
             cluster_handle = var.cluster_handle
             default_storage_name = local.local_storage_name
             efs_provisioner_enabled = var.shared_storage_type == "efs" || var.local_storage_type == "efs"

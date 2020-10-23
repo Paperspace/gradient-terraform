@@ -59,6 +59,11 @@ variable "cluster_autoscaler_enabled" {
   description = "Enable cluster autoscaler"
   default = false
 }
+variable "cluster_autoscaler_unneeded_time" {
+  type = number
+  description = "Cluster autoscaler unneeded time before de-scaling a node"
+  default = 0
+}
 
 variable "cluster_handle" {
   description = "Gradient cluster handle"
