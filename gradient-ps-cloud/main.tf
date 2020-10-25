@@ -191,6 +191,7 @@ module "gradient_processing" {
     cluster_apikey = var.cluster_apikey
     cluster_autoscaler_cloudprovider = "paperspace"
     cluster_autoscaler_enabled = true
+    cluster_autoscaler_unneeded_time = "8m"
     cluster_handle = var.cluster_handle
     domain = var.domain
 
