@@ -15,6 +15,7 @@ import (
 const (
 	InClusterContainerRegistryOption  = "Install on cluster"
 	ThirdPartyContainerRegistryOption = "Use 3rd Party"
+	NoContainerRegistry               = "No container registry"
 )
 
 func ClusterRegister(client *paperspace.Client, createFilePath string) (string, error) {
@@ -54,9 +55,8 @@ func ClusterRegister(client *paperspace.Client, createFilePath string) (string, 
 			Items: terraform.SupportedClusterPlatformTypes,
 		}
 		useContainerRegistrySelect := promptui.Select{
-			Label: "Container Registry",
-			// TODO(bbatha) enable in cluster registry PS-13895
-			Items: []string{ThirdPartyContainerRegistryOption /*, InClusterContainerRegistryOption*/},
+			Label: "Container Registry, used for storing notebook snapshots and container builds",
+			Items: []string{ThirdPartyContainerRegistryOption, NoContainerRegistry},
 		}
 		containerRegistryURLPrompt := cli.Prompt{
 			Label:    "Container Registry Username",
