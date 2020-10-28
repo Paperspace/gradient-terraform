@@ -48,6 +48,10 @@ cluster-autoscaler:
     %{ endfor }
   extraArgs:
     skip-nodes-with-system-pods: false
+    %{ if cluster_autoscaler_unneeded_time != 0 }
+    scale-down-delay-after-add: ${cluster_autoscaler_unneeded_time}
+    scale-down-unneeded-time: ${cluster_autoscaler_unneeded_time}
+    %{ endif }
   extraEnv:
     PAPERSPACE_BASEURL: ${paperspace_base_url}
     PAPERSPACE_CLUSTER_ID: ${cluster_handle}
