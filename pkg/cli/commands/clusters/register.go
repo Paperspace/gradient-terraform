@@ -59,11 +59,11 @@ func ClusterRegister(client *paperspace.Client, createFilePath string) (string, 
 			Items: []string{ThirdPartyContainerRegistryOption, NoContainerRegistry},
 		}
 		containerRegistryURLPrompt := cli.Prompt{
-			Label:    "Container Registry Username",
+			Label:    "Container Registry URL",
 			Required: true,
 		}
 		containerRegistryRepositoryPrompt := cli.Prompt{
-			Label:    "Container Registry Username",
+			Label:    "Container Registry Repository",
 			Required: true,
 		}
 		containerRegistryUsernamePrompt := cli.Prompt{
@@ -71,7 +71,7 @@ func ClusterRegister(client *paperspace.Client, createFilePath string) (string, 
 			Required: true,
 		}
 		containerRegistryPasswordPrompt := cli.Prompt{
-			Label:    "Container Registry Username",
+			Label:    "Container Registry Password",
 			Required: true,
 			UseMask:  true,
 		}
