@@ -3,3 +3,8 @@
 gradient-kubeconfig
 plugins
 terraform.tfstate
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
