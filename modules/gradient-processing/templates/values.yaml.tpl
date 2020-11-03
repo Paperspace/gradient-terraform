@@ -48,7 +48,7 @@ cluster-autoscaler:
     %{ endfor }
   extraArgs:
     skip-nodes-with-system-pods: false
-    %{ if cluster_autoscaler_unneeded_time != 0 }
+    %{ if cluster_autoscaler_unneeded_time != "" }
     scale-down-delay-after-add: ${cluster_autoscaler_unneeded_time}
     scale-down-unneeded-time: ${cluster_autoscaler_unneeded_time}
     %{ endif }
