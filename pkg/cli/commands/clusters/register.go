@@ -23,7 +23,6 @@ func ClusterRegister(client *paperspace.Client, createFilePath string) (string, 
 	var params paperspace.ClusterCreateParams
 	var region string
 
-	client.CreateCluster(paperspace.ClusterCreateParams{})
 	if createFilePath == "" {
 		awsRegionSelect := promptui.Select{
 			Label: "AWS Region",
