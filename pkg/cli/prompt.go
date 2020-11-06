@@ -28,11 +28,7 @@ func BoolToYesNo(value bool) string {
 }
 
 func YesNoToBool(value string) bool {
-	if value == "yes" {
-		return true
-	}
-
-	return false
+	return value == "yes"
 }
 
 func (p *Prompt) MaskValue(value string) string {
@@ -71,12 +67,16 @@ func (p *Prompt) Run() error {
 	// to empty the input buffer at these lengths to have larger inputs
 	// for values like GCP keys. You need a library like readline to manipulate
 	// tty modes to read longer inputs
-	rl, err := readline.New(prompt)
-	if err != nil {
-		return err
-	}
 	for {
-		value, err := rl.Readline()
+		var value string
+		var err error
+		if p.UseMask {
+			var b []byte
+			b, err = readline.Password(prompt)
+			value = string(b)
+		} else {
+			value, err = readline.Line(prompt)
+		}
 		if err != nil {
 			return err
 		}
