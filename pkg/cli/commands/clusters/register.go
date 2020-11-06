@@ -71,9 +71,9 @@ func ClusterRegister(client *paperspace.Client, createFilePath string) (string, 
 			Required: true,
 		}
 		containerRegistryPasswordPrompt := cli.Prompt{
-			Label:    "Container Registry Password",
-			Required: true,
-			UseMask:  true,
+			Label:     "Container Registry Password",
+			Required:  true,
+			UseMask:   true,
 		}
 
 		println(cli.TextHeader("Register a private cluster"))
