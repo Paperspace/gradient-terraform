@@ -1,10 +1,9 @@
 package cli
 
 import (
-	"bufio"
 	"fmt"
-	"os"
 	"strings"
+	"github.com/chzyer/readline"
 )
 
 var YesNoValues = []string{"yes", "no"}
@@ -15,7 +14,6 @@ type Prompt struct {
 	HideValue      bool
 	Label          string
 	MaskShowLength int
-	MaxLength      int
 	Required       bool
 	UseMask        bool
 	Value          string
@@ -30,11 +28,7 @@ func BoolToYesNo(value bool) string {
 }
 
 func YesNoToBool(value string) bool {
-	if value == "yes" {
-		return true
-	}
-
-	return false
+	return value == "yes"
 }
 
 func (p *Prompt) MaskValue(value string) string {
@@ -67,15 +61,25 @@ func (p *Prompt) Run() error {
 		promptTextParts = append(promptTextParts, fmt.Sprintf("[%s]", displayValue))
 	}
 
-	for {
-		fmt.Printf("%s: ", strings.Join(promptTextParts, " "))
 
-		reader := bufio.NewReader(os.Stdin)
-		value, err := reader.ReadString('\n')
+	prompt := fmt.Sprintf("%s: ", strings.Join(promptTextParts, " "))
+	// macos limits input lines to 1024 bytes, linux to 4096. we need
+	// to empty the input buffer at these lengths to have larger inputs
+	// for values like GCP keys. You need a library like readline to manipulate
+	// tty modes to read longer inputs
+	for {
+		var value string
+		var err error
+		if p.UseMask {
+			var b []byte
+			b, err = readline.Password(prompt)
+			value = string(b)
+		} else {
+			value, err = readline.Line(prompt)
+		}
 		if err != nil {
 			return err
 		}
-		value = strings.TrimSuffix(value, "\n")
 		if value != "" {
 			p.Value = value
 		}

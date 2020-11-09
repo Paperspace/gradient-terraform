@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/paperspace/paperspace-go"
+	"github.com/Paperspace/paperspace-go"
 )
 
 type Common struct {

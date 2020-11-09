@@ -4,7 +4,7 @@ import (
 	"context"
 	"os"
 
-	"github.com/paperspace/paperspace-go"
+	"github.com/Paperspace/paperspace-go"
 	"github.com/spf13/cobra"
 )
 

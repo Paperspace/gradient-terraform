@@ -11,8 +11,8 @@ import (
 	"regexp"
 	"runtime"
 
+	"github.com/Paperspace/gradient-installer/pkg/cli"
 	"github.com/google/go-github/v32/github"
-	"github.com/paperspace/gradient-installer/pkg/cli"
 	"github.com/spf13/cobra"
 )
 

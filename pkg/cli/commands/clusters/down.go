@@ -3,9 +3,9 @@ package clusters
 import (
 	"path/filepath"
 
-	"github.com/paperspace/gradient-installer/pkg/cli"
-	"github.com/paperspace/gradient-installer/pkg/cli/config"
-	"github.com/paperspace/gradient-installer/pkg/cli/terraform"
+	"github.com/Paperspace/gradient-installer/pkg/cli"
+	"github.com/Paperspace/gradient-installer/pkg/cli/config"
+	"github.com/Paperspace/gradient-installer/pkg/cli/terraform"
 	"github.com/spf13/cobra"
 )
 
