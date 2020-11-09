@@ -140,6 +140,7 @@ module "gradient_processing" {
     chart = var.gradient_processing_chart
     cluster_apikey = var.cluster_apikey
     cluster_autoscaler_enabled = true
+    cluster_autoscaler_cloudprovider = "aws"
     cluster_handle = var.cluster_handle
     domain = var.domain
     elastic_search_host = var.elastic_search_host

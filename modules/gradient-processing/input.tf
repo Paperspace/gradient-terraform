@@ -51,8 +51,8 @@ variable "cluster_autoscaler_autoscaling_groups" {
   default = []
 }
 variable "cluster_autoscaler_cloudprovider" {
-    description = "Cluster autoscaler provider"
-    default = "aws"
+  description = "Cluster autoscaler provider"
+  default = ""
 }
 variable "cluster_autoscaler_enabled" {
   type = bool
@@ -142,7 +142,7 @@ variable "local_storage_server" {
   default = ""
 }
 variable "local_storage_type" {
-  description = "Local local storage type"
+  description = "Local storage type"
 }
 
 variable "shared_storage_path" {
@@ -153,7 +153,6 @@ variable "shared_storage_server" {
   description = "Shared storage server"
   default = ""
 }
-
 variable "shared_storage_type" {
   description = "Default shared storage type"
 }
