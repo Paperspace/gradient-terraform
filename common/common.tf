@@ -13,7 +13,7 @@ variable "amqp_protocol" {
 }
 
 variable "artifacts_access_key_id" {
-    description = "S3 compatibile access key for artifacts object storage"
+    description = "S3 compatible access key for artifacts object storage"
 }
 
 variable "artifacts_object_storage_endpoint" {
@@ -25,7 +25,7 @@ variable "artifacts_path" {
     description = "Object storage path used for Gradient"
 }
 
-variable "artifacts_region" { 
+variable "artifacts_region" {
     description = "Object storage region used for Gradient"
     default = "us-east-1"
 }
@@ -150,6 +150,10 @@ variable "shared_storage_path" {
 }
 variable "shared_storage_type" {
     description = "Shared storage type"
+    default = ""
+}
+variable "shared_storage_class" {
+    description = "Shared storage class"
     default = ""
 }
 
