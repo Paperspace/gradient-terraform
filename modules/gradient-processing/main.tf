@@ -1,8 +1,10 @@
 locals {
     letsencrypt_enabled = (length(var.letsencrypt_dns_settings) != 0 && (var.tls_cert == "" && var.tls_key == ""))
     local_storage_name = "gradient-processing-local"
+    local_storage_class = var.local_storage_class == "" ? "gradient-processing-local" : var.local_storage_class
     helm_repo_url = var.helm_repo_url == "" ? "https://infrastructure-public-chart-museum-repository.storage.googleapis.com" : var.helm_repo_url
     shared_storage_name = "gradient-processing-shared"
+    shared_storage_class = var.shared_storage_class == "" ? "gradient-processing-shared" : var.shared_storage_class
     tls_secret_name = "gradient-processing-tls"
 }
 
@@ -75,6 +77,7 @@ resource "helm_release" "gradient_processing" {
             cluster_autoscaler_cloudprovider = var.cluster_autoscaler_cloudprovider
             cluster_autoscaler_enabled = var.cluster_autoscaler_enabled
             cluster_autoscaler_unneeded_time = var.cluster_autoscaler_unneeded_time
+            cluster_cloud_provider = var.cluster_cloud_provider
             cluster_handle = var.cluster_handle
             default_storage_name = local.local_storage_name
             efs_provisioner_enabled = var.shared_storage_type == "efs" || var.local_storage_type == "efs"
@@ -93,6 +96,7 @@ resource "helm_release" "gradient_processing" {
             local_storage_path = var.local_storage_path
             local_storage_server = var.local_storage_server
             local_storage_type = var.local_storage_type
+            local_storage_class = local.local_storage_class
             logs_host = var.logs_host
             name = var.name
             nfs_client_provisioner_enabled = var.shared_storage_type == "nfs" || var.local_storage_type == "nfs"
@@ -103,6 +107,7 @@ resource "helm_release" "gradient_processing" {
             shared_storage_path = var.shared_storage_path
             shared_storage_server = var.shared_storage_server
             shared_storage_type = var.shared_storage_type
+            shared_storage_class = local.shared_storage_class
             tls_secret_name = local.tls_secret_name
             use_pod_anti_affinity = var.use_pod_anti_affinity
         })

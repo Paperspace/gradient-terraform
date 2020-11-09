@@ -64,6 +64,11 @@ variable "cluster_autoscaler_unneeded_time" {
   default = ""
 }
 
+variable "cluster_cloud_provider" {
+  description = "Cluster cloud provider"
+  default = ""
+}
+
 variable "cluster_handle" {
   description = "Gradient cluster handle"
 }
@@ -134,7 +139,7 @@ variable "name" {
 }
 
 variable "local_storage_path" {
-  description = "Local storage path "
+  description = "Local storage path"
   default = "/"
 }
 variable "local_storage_server" {
@@ -144,9 +149,12 @@ variable "local_storage_server" {
 variable "local_storage_type" {
   description = "Local storage type"
 }
+variable "local_storage_class" {
+  description = "Local storage class"
+}
 
 variable "shared_storage_path" {
-  description = "Shared storage path "
+  description = "Shared storage path"
   default = "/"
 }
 variable "shared_storage_server" {
@@ -155,6 +163,9 @@ variable "shared_storage_server" {
 }
 variable "shared_storage_type" {
   description = "Default shared storage type"
+}
+variable "shared_storage_class" {
+  description = "Default shared storage class"
 }
 
 # k8s

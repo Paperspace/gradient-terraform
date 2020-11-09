@@ -5,13 +5,13 @@ global:
   cluster:
     handle: ${cluster_handle}
     name: ${name}
-  %{ if elastic_search_enabled }
+  %{~ if elastic_search_enabled ~}
   elasticSearch:
     host: ${elastic_search_host}
     index: ${elastic_search_index}
     port: ${elastic_search_port}
     user: ${elastic_search_user}
-  %{ endif }
+  %{~ endif ~}
   logs:
     host: ${logs_host}
   ingressHost: ${domain}
@@ -22,36 +22,37 @@ global:
   sharedStorageName: ${shared_storage_name}
   storage:
     gradient-processing-local:
-      class: gradient-processing-local
+      class: ${local_storage_class}
       path: ${local_storage_path}
       server: ${local_storage_server}
       type: ${local_storage_type}
     gradient-processing-shared:
-      class: gradient-processing-shared
+      class: ${shared_storage_class}
       path: ${shared_storage_path}
       server: ${shared_storage_server}
       type: ${shared_storage_type}
 
 cluster-autoscaler:
   enabled: ${cluster_autoscaler_enabled}
-  %{ if cluster_autoscaler_cloudprovider == "paperspace" }
+  %{~ if cluster_autoscaler_enabled ~}
+  %{~ if cluster_autoscaler_cloudprovider == "paperspace" ~}
   image:
     pullPolicy: Always
     repository: paperspace/cluster-autoscaler
     tag: v1.15
 
   autoscalingGroups:
-    %{ for autoscaling_group in cluster_autoscaler_autoscaling_groups }
+    %{~ for autoscaling_group in cluster_autoscaler_autoscaling_groups ~}
     - name: ${autoscaling_group["name"]}
       minSize: ${autoscaling_group["min"]}
       maxSize: ${autoscaling_group["max"]}
-    %{ endfor }
+    %{~ endfor ~}
   extraArgs:
     skip-nodes-with-system-pods: false
-    %{ if cluster_autoscaler_unneeded_time != "" }
+    %{~ if cluster_autoscaler_unneeded_time != "" ~}
     scale-down-delay-after-add: ${cluster_autoscaler_unneeded_time}
     scale-down-unneeded-time: ${cluster_autoscaler_unneeded_time}
-    %{ endif }
+    %{~ endif ~}
   extraEnv:
     PAPERSPACE_BASEURL: ${paperspace_base_url}
     PAPERSPACE_CLUSTER_ID: ${cluster_handle}
@@ -59,8 +60,7 @@ cluster-autoscaler:
     PAPERSPACE_APIKEY:
       name: gradient-processing
       key: PS_API_KEY
-
-  %{ endif }
+  %{~ endif ~}
 
   awsRegion: ${aws_region}
   autoDiscovery:
@@ -77,15 +77,18 @@ cluster-autoscaler:
     limits:
       cpu: 100m
       memory: 128Mi
+  %{~ endif ~}
 
 efs-provisioner:
   enabled: ${efs_provisioner_enabled}
+  %{~ if efs_provisioner_enabled ~}
   efsProvisioner:
     awsRegion: ${aws_region}
     efsFileSystemId: "${split(".", shared_storage_server)[0]}"
     path: ${shared_storage_path}
   nodeSelector:
     paperspace.com/pool-name: ${service_pool_name}
+  %{~ endif ~}
 
 fluent-bit:
   rawConfig: |-
@@ -96,7 +99,7 @@ gradient-operator:
   config:
     ingressHost: ${domain}
     usePodAntiAffinity: ${use_pod_anti_affinity}
-    %{ if label_selector_cpu != "" && label_selector_gpu != "" }
+    %{~ if label_selector_cpu != "" && label_selector_gpu != "" ~}
     modelDeploymentConfig:
       labelName: paperspace.com/pool-name
       cpu:
@@ -186,8 +189,8 @@ gradient-operator:
           label: ${label_selector_gpu}
           requests:
             memory: 58Gi
-    %{ endif }
-    %{ if cluster_autoscaler_cloudprovider == "paperspace" }
+    %{~ endif ~}
+    %{~ if cluster_autoscaler_cloudprovider == "paperspace" ~}
     modelDeploymentConfig:
       labelName: paperspace.com/pool-name
       cpu:
@@ -223,10 +226,6 @@ gradient-operator:
             nvidia.com/gpu: 1
             cpu: 6
             memory: 22.5Gi
-
-
-
-
     experimentConfig:
       labelName: paperspace.com/pool-name
       cpu:
@@ -332,10 +331,14 @@ gradient-operator:
             nvidia.com/gpu: 1
             cpu: 6
             memory: 22.5Gi
-    %{ endif }
+    %{~ endif ~}
 
 gradient-metrics:
   ingress:
+    %{~ if cluster_cloud_provider == "azure" ~}
+    annotations:
+      kubernetes.io/ingress.class: traefik
+    %{~ endif ~}
     hostPath:
       ${domain}: /metrics
 
@@ -346,17 +349,23 @@ gradient-operator-dispatcher:
 
 nfs-client-provisioner:
   enabled: ${nfs_client_provisioner_enabled}
+  %{~ if nfs_client_provisioner_enabled ~}
   nfs:
     path: ${shared_storage_path}
     server: ${shared_storage_server}
   nodeSelector:
     paperspace.com/pool-name: ${service_pool_name}
+  %{~ endif ~}
 
 prometheus:
   server:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
     ingress:
+      %{~ if cluster_cloud_provider == "azure" ~}
+      annotations:
+        kubernetes.io/ingress.class: traefik
+      %{~ endif ~}
       hosts:
         - ${domain}/prometheus
   kube-state-metrics:
@@ -365,15 +374,32 @@ prometheus:
 
 prom-aggregation-gateway:
   ingress:
+    %{~ if cluster_cloud_provider == "azure" ~}
+    annotations:
+      kubernetes.io/ingress.class: traefik
+    %{~ endif ~}
     hostPath:
       ${domain}: /gateway
+
+argo:
+  controller:
+    nodeSelector:
+      paperspace.com/pool-name: ${service_pool_name}
 
 traefik:
   replicas: 1
   nodeSelector:
     paperspace.com/pool-name: ${service_pool_name}
+  %{~ if cluster_cloud_provider == "azure" ~}
+  rbac:
+    enabled: true
+  kubernetes:
+    ingressClass: traefik
+    ingressEndpoint:
+      useDefaultPublishedService: true
+  %{~ endif ~}
 
-  %{ if (label_selector_cpu != "" && label_selector_gpu != "") || cluster_autoscaler_cloudprovider == "paperspace" }
+  %{~ if (label_selector_cpu != "" && label_selector_gpu != "") || cluster_autoscaler_cloudprovider == "paperspace" ~}
   serviceType: NodePort
   deploymentStrategy:
     type: Recreate
@@ -384,9 +410,9 @@ traefik:
       httpPort: 80
       httpsEnabled: true
       httpsPort: 443
-  %{ endif }
+  %{~ endif ~}
 
-  %{ if letsencrypt_enabled }
+  %{~ if letsencrypt_enabled ~}
   acme:
     enabled: true
     email: "admin@${domain}"
@@ -404,9 +430,4 @@ traefik:
       - 8.8.8.8:53
     persistence:
       storageClass: ${shared_storage_name}
-  %{ endif }
-
-argo:
-  controller:
-    nodeSelector:
-      paperspace.com/pool-name: ${service_pool_name}
+  %{~ endif ~}
