@@ -501,6 +501,8 @@ func NewClusterUpCommand() *cobra.Command {
 			// Specific
 			switch cluster.Platform {
 			case paperspace.ClusterPlatformAWS:
+			case paperspace.ClusterPlatformAzure:
+			case paperspace.ClusterPlatformGCP:
 			case paperspace.ClusterPlatformMetal:
 				if reinstall || !terraformInstance.HasValidMetal() {
 					if err := setupMetalConfig(terraformInstance.Modules.Metal); err != nil {

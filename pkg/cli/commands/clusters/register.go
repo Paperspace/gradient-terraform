@@ -28,6 +28,14 @@ func ClusterRegister(client *paperspace.Client, createFilePath string) (string, 
 			Label: "AWS Region",
 			Items: paperspace.ClusterAWSRegions,
 		}
+		azureRegionSelect := promptui.Select{
+			Label: "Azure Region",
+			Items: paperspace.ClusterAzureRegions,
+		}
+		gcpRegionSelect := promptui.Select{
+			Label: "GCP Region",
+			Items: paperspace.ClusterGCPRegions,
+		}
 		artifactsAccessKeyIDPrompt := cli.Prompt{
 			Label:    "Artifacts S3 Access Key ID",
 			Required: true,
@@ -89,6 +97,18 @@ func ClusterRegister(client *paperspace.Client, createFilePath string) (string, 
 		}
 		if platform == string(paperspace.ClusterPlatformAWS) {
 			_, region, err = awsRegionSelect.Run()
+			if err != nil {
+				return "", err
+			}
+		}
+		if platform == string(paperspace.ClusterPlatformAzure) {
+			_, region, err = azureRegionSelect.Run()
+			if err != nil {
+				return "", err
+			}
+		}
+		if platform == string(paperspace.ClusterPlatformGCP) {
+			_, region, err = gcpRegionSelect.Run()
 			if err != nil {
 				return "", err
 			}

@@ -5,7 +5,7 @@ import (
 )
 
 var SourcePrefix = "github.com/Paperspace/gradient-installer"
-var SupportedClusterPlatformTypes = []paperspace.ClusterPlatformType{paperspace.ClusterPlatformAWS, paperspace.ClusterPlatformDGX, paperspace.ClusterPlatformMetal}
+var SupportedClusterPlatformTypes = []paperspace.ClusterPlatformType{paperspace.ClusterPlatformAWS, paperspace.ClusterPlatformAzure, paperspace.ClusterPlatformGCP, paperspace.ClusterPlatformDGX, paperspace.ClusterPlatformMetal}
 
 type PoolType string
 
@@ -30,6 +30,16 @@ func NewTerraform(platform paperspace.ClusterPlatformType) *Terraform {
 		terraformOutputs.DNSCName = &TerraformOutput{
 			Value: "${module.gradient_aws.elb_hostname}",
 		}
+	case paperspace.ClusterPlatformAzure:
+		terraformModules.Azure = NewAzure()
+		terraformOutputs.DNSCName = &TerraformOutput{
+			Value: "${module.gradient_azure.lb_hostname}",
+		}
+	case paperspace.ClusterPlatformGCP:
+		terraformModules.GCP = NewGCP()
+		terraformOutputs.DNSCName = &TerraformOutput{
+			Value: "${module.gradient_gcp.lb_hostname}",
+		}
 	case paperspace.ClusterPlatformMetal:
 		terraformModules.Metal = NewMetal()
 	}
@@ -47,6 +57,10 @@ func (t *Terraform) GetCommon(platform paperspace.ClusterPlatformType) *Common {
 	switch platform {
 	case paperspace.ClusterPlatformAWS:
 		return t.Modules.AWS.Common
+	case paperspace.ClusterPlatformAzure:
+		return t.Modules.Azure.Common
+	case paperspace.ClusterPlatformGCP:
+		return t.Modules.GCP.Common
 	case paperspace.ClusterPlatformMetal:
 		return t.Modules.Metal.Common
 	}
@@ -56,6 +70,20 @@ func (t *Terraform) GetCommon(platform paperspace.ClusterPlatformType) *Common {
 
 func (t *Terraform) HasValidAWS() bool {
 	if t.Modules == nil || t.Modules.AWS == nil {
+		return false
+	}
+	return false
+}
+
+func (t *Terraform) HasValidAzure() bool {
+	if t.Modules == nil || t.Modules.Azure == nil {
+		return false
+	}
+	return false
+}
+
+func (t *Terraform) HasValidGCP() bool {
+	if t.Modules == nil || t.Modules.GCP == nil {
 		return false
 	}
 	return false

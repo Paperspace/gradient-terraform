@@ -145,6 +145,10 @@ func (c *Common) UpdateSourcePrefix(prefix string, platform paperspace.ClusterPl
 	switch platform {
 	case paperspace.ClusterPlatformAWS:
 		suffix = "gradient-aws"
+	case paperspace.ClusterPlatformAzure:
+		suffix = "gradient-azure"
+	case paperspace.ClusterPlatformGCP:
+		suffix = "gradient-gcp"
 	case paperspace.ClusterPlatformMetal:
 		suffix = "gradient-metal"
 	}
