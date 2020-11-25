@@ -173,7 +173,6 @@ func setupMetalConfig(terraformMetal *terraform.Metal) error {
 	terraformMetal.WorkerNodes = workerNodes
 	terraformMetal.SharedStoragePath = sharedStoragePath.Value
 	terraformMetal.SharedStorageServer = sharedStorageServer.Value
-	terraformMetal.SetupNvidia = cli.YesNoToBool(setupNvidiaPrompt.Value)
 	terraformMetal.SetupDocker = cli.YesNoToBool(setupDockerPrompt.Value)
 	terraformMetal.SetupNvidia = cli.YesNoToBool(setupNvidiaPrompt.Value)
 	terraformMetal.SSHKeyPath = sshKeyPathPrompt.Value
