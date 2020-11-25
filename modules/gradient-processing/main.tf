@@ -55,6 +55,10 @@ resource "helm_release" "gradient_processing" {
         name  = "traefik.ssl.defaultKey"
         value = var.tls_key == "" ? "null" : base64encode(var.tls_key)
     }
+    set_sensitive {
+        name  = "gradient-metrics.config.newRelicKey"
+        value = var.metrics_new_relic_key
+    }
 
     dynamic "set_sensitive" {
         for_each = var.letsencrypt_dns_settings
@@ -105,6 +109,8 @@ resource "helm_release" "gradient_processing" {
             shared_storage_type = var.shared_storage_type
             tls_secret_name = local.tls_secret_name
             use_pod_anti_affinity = var.use_pod_anti_affinity
+            metrics_new_relic_enabled = var.metrics_new_relic_enabled
+            metrics_new_relic_name = var.metrics_new_relic_name
         })
     ]
 }

@@ -338,6 +338,9 @@ gradient-metrics:
   ingress:
     hostPath:
       ${domain}: /metrics
+  config:
+    newRelicEnabled: ${metrics_new_relic_enabled}
+    newRelicName: ${metrics_new_relic_name}
 
 gradient-operator-dispatcher:
   config:
