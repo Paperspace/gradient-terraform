@@ -16,19 +16,21 @@ const (
 
 type Terraform struct {
 	Modules           *TerraformModules  `json:"module"`
-	Outputs           *TerraformOutputs  `json:"output"`
+	Outputs           *TerraformOutputs  `json:"output,omitempty"`
 	TerraformProvider *TerraformProvider `json:"terraform"`
 }
 
 func NewTerraform(platform paperspace.ClusterPlatformType) *Terraform {
 	terraformModules := TerraformModules{}
-	terraformOutputs := TerraformOutputs{}
+	var terraformOutputs *TerraformOutputs
 
 	switch platform {
 	case paperspace.ClusterPlatformAWS:
 		terraformModules.AWS = NewAWS()
-		terraformOutputs.DNSCName = &TerraformOutput{
-			Value: "${module.gradient_aws.elb_hostname}",
+		terraformOutputs = &TerraformOutputs{
+			DNSCName: &TerraformOutput{
+				Value: "${module.gradient_aws.elb_hostname}",
+			},
 		}
 	case paperspace.ClusterPlatformMetal:
 		terraformModules.Metal = NewMetal()
@@ -36,7 +38,7 @@ func NewTerraform(platform paperspace.ClusterPlatformType) *Terraform {
 
 	terraform := Terraform{
 		Modules:           &terraformModules,
-		Outputs:           &terraformOutputs,
+		Outputs:           terraformOutputs,
 		TerraformProvider: NewTerraformProvider(),
 	}
 
