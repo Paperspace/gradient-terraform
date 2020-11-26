@@ -17,8 +17,8 @@ type Metal struct {
 	Sans                []string     `json:"k8s_sans,omitempty"`
 	SetupDocker         bool         `json:"setup_docker,omitempty"`
 	SetupNvidia         bool         `json:"setup_nvidia,omitempty"`
-	SharedStoragePath   string       `json:"shared_storage_path`
-	SharedStorageServer string       `json:"shared_storage_server`
+	SharedStoragePath   string       `json:"shared_storage_path,omitempty"`
+	SharedStorageServer string       `json:"shared_storage_server,omitempty"`
 	SSHKeyPath          string       `json:"ssh_key_path,omitempty"`
 	SSHUser             string       `json:"ssh_user,omitempty"`
 }

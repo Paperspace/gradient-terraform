@@ -98,6 +98,12 @@ func setupMetalConfig(terraformMetal *terraform.Metal) error {
 		Required: true,
 		Value:    terraformMetal.SSHUser,
 	}
+	if err := sharedStorageServer.Run(); err != nil {
+		return err
+	}
+	if err := sharedStoragePath.Run(); err != nil {
+		return err
+	}
 
 	mainNode, err := createTerraformMetalNode(terraformMetal.MainNode, "Main Node", true)
 	if err != nil {
