@@ -60,6 +60,17 @@ func createTerraformMetalNode(terraformMetalNode *terraform.MetalNode, prefix st
 }
 
 func setupMetalConfig(terraformMetal *terraform.Metal) error {
+	// Typed to NFS till we support more storage types
+	sharedStorageServer := cli.Prompt{
+		Label:    "NFS Server",
+		Required: true,
+		Value:    terraformMetal.SharedStorageServer,
+	}
+	sharedStoragePath := cli.Prompt{
+		Label:    "NFS Storage Path",
+		Required: true,
+		Value:    terraformMetal.SharedStoragePath,
+	}
 	rebootGPUNodesPrompt := cli.Prompt{
 		Label:         "Reboot GPU Nodes (for NVIDIA drivers)",
 		AllowedValues: cli.YesNoValues,
@@ -86,6 +97,12 @@ func setupMetalConfig(terraformMetal *terraform.Metal) error {
 		Label:    "SSH User",
 		Required: true,
 		Value:    terraformMetal.SSHUser,
+	}
+	if err := sharedStorageServer.Run(); err != nil {
+		return err
+	}
+	if err := sharedStoragePath.Run(); err != nil {
+		return err
 	}
 
 	mainNode, err := createTerraformMetalNode(terraformMetal.MainNode, "Main Node", true)
@@ -160,6 +177,8 @@ func setupMetalConfig(terraformMetal *terraform.Metal) error {
 
 	terraformMetal.MainNode = mainNode
 	terraformMetal.WorkerNodes = workerNodes
+	terraformMetal.SharedStoragePath = sharedStoragePath.Value
+	terraformMetal.SharedStorageServer = sharedStorageServer.Value
 	terraformMetal.SetupDocker = cli.YesNoToBool(setupDockerPrompt.Value)
 	terraformMetal.SetupNvidia = cli.YesNoToBool(setupNvidiaPrompt.Value)
 	terraformMetal.SSHKeyPath = sshKeyPathPrompt.Value
