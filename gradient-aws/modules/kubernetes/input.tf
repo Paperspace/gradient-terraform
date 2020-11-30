@@ -58,8 +58,8 @@ variable "k8s_version" {
     description = "Kubernetes version"
 }
 
-variable "pre_userdata" {
-    description = "Prepend user data"
+variable "post_userdata" {
+    description = "Append user data"
     default = ""
 }
 

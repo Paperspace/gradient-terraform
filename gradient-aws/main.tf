@@ -76,7 +76,7 @@ module "kubernetes" {
     node_instance_types = var.k8s_node_instance_types
     node_security_group_ids = local.has_k8s ? split(",", var.k8s_security_group_ids) : [module.network.private_security_group_id]
     node_subnet_ids = local.has_k8s ? split(",", var.k8s_subnet_ids) : module.network.private_subnet_ids
-    pre_userdata = templatefile("${path.module}/files/pre-userdata.sh.tpl", {
+    post_userdata = templatefile("${path.module}/files/post-userdata.sh.tpl", {
         enable_gcr_mirror = var.enable_gcr_mirror
     })
     public_key = var.public_key_path == "" ? "" : file(pathexpand(var.public_key_path))
