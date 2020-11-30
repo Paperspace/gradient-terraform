@@ -20,6 +20,11 @@ variable "cidr" {
     default = "10.0.0.0/16"
 }
 
+variable "enable_gcr_mirror" {
+    description = "Enable GCR mirror"
+    default = false
+}
+
 variable "iam_accounts" {
     description = "Additional AWS account numbers to add to the aws-auth configmap."
     type        = list(string)

@@ -58,6 +58,11 @@ variable "k8s_version" {
     description = "Kubernetes version"
 }
 
+variable "post_userdata" {
+    description = "Append user data"
+    default = ""
+}
+
 variable "public_key" {
     description = "Login public key name"
 }
