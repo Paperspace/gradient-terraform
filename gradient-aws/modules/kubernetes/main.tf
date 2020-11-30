@@ -323,6 +323,7 @@ locals {
         name = "${node_type}-${data.aws_subnet.nodes[0].availability_zone}"
         subnets = [var.node_subnet_ids[0]]
         additional_security_group_ids = var.node_security_group_ids
+        additional_userdata = var.additional_userdata
         ami_id = local.node_ami_ids[node_type]
         asg_force_delete = true
         asg_desired_capacity = local.node_asg_desired_sizes[node_type]
@@ -339,7 +340,6 @@ locals {
                 "node-role.kubernetes.io/${node_type}",
             ], local.kubelet_extra_args[node_type])
         )}"
-        post_userdata = var.post_userdata
 
         tags = [
             {

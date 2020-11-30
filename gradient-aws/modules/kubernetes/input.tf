@@ -7,6 +7,11 @@ variable "enable" {
     description = "If module should be enabled"
 }
 
+variable "additional_userdata" {
+    description = "Append user data"
+    default = ""
+}
+
 variable "iam_accounts" {
     description = "Additional AWS account numbers to add to the aws-auth configmap."
     type        = list(string)
@@ -56,11 +61,6 @@ variable "node_subnet_ids" {
 
 variable "k8s_version" {
     description = "Kubernetes version"
-}
-
-variable "post_userdata" {
-    description = "Append user data"
-    default = ""
 }
 
 variable "public_key" {
