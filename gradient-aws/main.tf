@@ -166,6 +166,10 @@ module "gradient_processing" {
     shared_storage_type = local.shared_storage_type
     tls_cert = var.tls_cert
     tls_key = var.tls_key
+
+    metrics_new_relic_key = var.metrics_new_relic_key
+    metrics_new_relic_enabled = var.metrics_new_relic_enabled
+    metrics_new_relic_name = var.metrics_new_relic_name
 }
 
 output "elb_hostname" {

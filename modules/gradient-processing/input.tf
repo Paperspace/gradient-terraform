@@ -209,3 +209,20 @@ variable "use_pod_anti_affinity" {
     description = "Use pod antiaffinity"
     default = "false"
 }
+
+# Metrics New Relic
+
+variable "metrics_new_relic_key" {
+    description = "New Relic access key"
+    default = ""
+}
+
+variable "metrics_new_relic_enabled" {
+    description = "Enables New Relic monitoring on the metrics API"
+    default = "false"
+}
+
+variable "metrics_new_relic_name" {
+    description = "Postfix for New Relic application name"
+    default = ""
+}
