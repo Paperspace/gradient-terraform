@@ -1,3 +1,4 @@
+%{ if enable_gcr_mirror }
 cat << EOF > /etc/docker/daemon.json
 {
   "bridge": "none",
@@ -13,3 +14,4 @@ cat << EOF > /etc/docker/daemon.json
 EOF
 
 service docker reload
+%{ endif }
