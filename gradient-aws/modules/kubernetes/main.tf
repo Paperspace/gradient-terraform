@@ -339,6 +339,7 @@ locals {
                 "node-role.kubernetes.io/${node_type}",
             ], local.kubelet_extra_args[node_type])
         )}"
+        pre_user_data = var.pre_userdata
 
         tags = [
             {
