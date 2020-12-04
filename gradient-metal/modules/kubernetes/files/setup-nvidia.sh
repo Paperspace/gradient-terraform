@@ -46,20 +46,20 @@ if [ "$os_id" = "ubuntu" ] || [ "$os_id" = "debian" ];then
         apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/$cuda_distribution/$arch/7fa2af80.pub
         add-apt-repository "deb http://developer.download.nvidia.com/compute/cuda/repos/$cuda_distribution/$arch/ /"
         apt-get update
-        apt-get -y install cuda-drivers
-    fi
+        apt-get -y install cuda-drivers-450
 
-    # NVIDIA container toolkit
-    if [ ! "$(docker info | grep "Default Runtime" | sed 's/.*Default Runtime: //')" = "nvidia" ];then
-        curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
-        curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
-        apt-get update && sudo apt-get install -y nvidia-docker2
-        update_default_runtime
-        service docker reload
-    fi
+        # NVIDIA container toolkit
+        if [ ! "$(docker info | grep "Default Runtime" | sed 's/.*Default Runtime: //')" = "nvidia" ];then
+            curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
+            curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+            apt-get update && sudo apt-get install -y nvidia-docker2
+            update_default_runtime
+            service docker reload
+        fi
 
-    if [ "$REBOOT" = "true" ]; then
-        echo "Restarting GPU node..."
-        shutdown --reboot +2 "System is rebooting for nvidia drivers to work" || true
+        if [ "$REBOOT" = "true" ]; then
+            echo "Restarting GPU node..."
+            shutdown --reboot +2 "System is rebooting for nvidia drivers to work" || true
+        fi
     fi
 fi
