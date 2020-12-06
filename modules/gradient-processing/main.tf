@@ -80,6 +80,7 @@ resource "helm_release" "gradient_processing" {
             cluster_autoscaler_enabled = var.cluster_autoscaler_enabled
             cluster_autoscaler_unneeded_time = var.cluster_autoscaler_unneeded_time
             cluster_handle = var.cluster_handle
+            cluster_secret_checksum = sha256("${var.cluster_handle}${var.cluster_apikey}")
             default_storage_name = local.local_storage_name
             efs_provisioner_enabled = var.shared_storage_type == "efs" || var.local_storage_type == "efs"
             elastic_search_enabled = var.elastic_search_password != ""
@@ -89,7 +90,6 @@ resource "helm_release" "gradient_processing" {
             elastic_search_sha = sha256("${var.elastic_search_host}${var.elastic_search_password}${var.elastic_search_port}${var.elastic_search_user}")
             elastic_search_user = var.elastic_search_user
             domain = var.domain
-            gradient_processing_secret_checksum = sha256("${var.cluster_handle}${var.cluster_apikey}")
             global_selector = var.global_selector
             label_selector_cpu = var.label_selector_cpu
             label_selector_gpu = var.label_selector_gpu
