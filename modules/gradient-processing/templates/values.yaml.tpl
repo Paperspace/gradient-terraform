@@ -15,7 +15,7 @@ global:
   logs:
     host: ${logs_host}
   ingressHost: ${domain}
-  gradientProcessingSecretChecksum: ${gradient_processing_secret_checksum}
+  clusterSecretChecksum: ${cluster_secret_checksum}
   serviceNodeSelector:
     paperspace.com/pool-name: ${service_pool_name}
 
