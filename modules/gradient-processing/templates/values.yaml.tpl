@@ -17,6 +17,7 @@ global:
   ingressHost: ${domain}
   serviceNodeSelector:
     paperspace.com/pool-name: ${service_pool_name}
+  api: ${paperspace_base_url}
 
   defaultStorageName: ${default_storage_name}
   sharedStorageName: ${shared_storage_name}
