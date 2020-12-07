@@ -104,6 +104,7 @@ module "gradient_processing" {
     local_storage_path = var.local_storage_path == "" ? var.shared_storage_path : var.local_storage_path
     local_storage_type = var.local_storage_type == "" ? local.shared_storage_type : var.local_storage_type
     logs_host = var.logs_host
+    paperspace_base_url = var.api_host
     gradient_processing_version = var.gradient_processing_version
     name = var.name
     sentry_dsn = var.sentry_dsn

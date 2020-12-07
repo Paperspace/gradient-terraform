@@ -97,3 +97,8 @@ variable "use_pod_anti_affinity" {
     description = "Use pod anti-affinity"
     default = false
 }
+
+variable "api_host" {
+    description = "api host"
+    default = "https://api.paperspace.io"
+}
