@@ -98,3 +98,8 @@ variable "metrics_new_relic_name" {
     description = "Postfix for New Relic application name"
     default = ""
 }
+
+variable "api_host" {
+    description = "api host"
+    default = "https://api.paperspace.io"
+}
