@@ -366,10 +366,9 @@ prometheus:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
 
-prom-aggregation-gateway:
+prometheus-pushgateway:
   ingress:
-    hostPath:
-      ${domain}: /gateway
+    enabled: false
 
 traefik:
   replicas: 1
