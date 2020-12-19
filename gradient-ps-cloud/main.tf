@@ -281,6 +281,43 @@ resource "paperspace_script" "autoscale" {
 
         usermod -G docker paperspace
 
+        if [ ${each.value.type} = cpu ];then
+        cat > /etc/docker/dameon.json <<EOL
+{
+    "bridge": "none",
+    "log-driver": "json-file",
+    "log-opts": {
+        "max-size": "10m",
+        "max-file": "10"
+    },
+    "live-restore": true,
+    "max-concurrent-downloads": 10,
+    "registry-mirrors": ["https://mirror.gcr.io"]
+}
+        EOL
+        fi
+
+        if [ ${each.value.type} = gpu ];then
+        cat > /etc/docker/dameon.json <<EOL
+{
+    "exec-opts": ["native.cgroupdriver=systemd"],
+    "log-driver": "json-file",
+    "log-opts": {
+        "max-size": "100m"
+    },
+    "storage-driver": "overlay2",
+    "default-runtime": "nvidia",
+    "runtimes": {
+        "nvidia": {
+            "path": "/usr/bin/nvidia-container-runtime",
+            "runtimeArgs": []
+        }
+    },
+    "registry-mirrors": ["https://mirror.gcr.io"]
+}
+        EOL
+        service docker reload
+
         echo "${tls_private_key.ssh_key.public_key_openssh}" >> /home/paperspace/.ssh/authorized_keys
 
         export MACHINE_ID=`curl -s https://metadata.paperspace.com/meta-data/machine | grep id | sed 's/^.*: "\(.*\)".*/\1/'`
