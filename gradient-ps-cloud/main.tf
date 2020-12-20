@@ -94,6 +94,24 @@ resource "paperspace_script" "add_public_ssh_key" {
     script_text = <<EOF
         #!/bin/bash
         echo "${tls_private_key.ssh_key.public_key_openssh}" >> /home/paperspace/.ssh/authorized_keys
+
+        until docker ps -a || (( count++ >= 30 )); do echo "Check if docker is up..."; sleep 2; done
+        cat <<EOL > /etc/docker/daemon.json
+{
+    "bridge": "none",
+    "log-driver": "json-file",
+    "log-opts": {
+        "max-size": "10m",
+        "max-file": "10"
+    },
+    "live-restore": true,
+    "max-concurrent-downloads": 10,
+    "registry-mirrors": ["https://mirror.gcr.io"]
+}
+EOL
+        service docker reload
+
+
         ${rancher2_cluster.main.cluster_registration_token[0].node_command} \
             --etcd --controlplane --worker \
             --label paperspace.com/pool-name=services-small \
@@ -177,7 +195,7 @@ provider "kubernetes" {
 
 // Gradient
 module "gradient_processing" {
-	source = "../modules/gradient-processing"
+    source = "../modules/gradient-processing"
     enabled = rancher2_cluster_sync.main.id == "" ? false : true
 
     amqp_hostname = var.amqp_hostname
@@ -280,6 +298,45 @@ resource "paperspace_script" "autoscale" {
         until docker ps -a || (( count++ >= 30 )); do echo "Check if docker is up..."; sleep 2; done
 
         usermod -G docker paperspace
+
+        if [ ${each.value.type} = cpu ];then
+            cat <<EOL > /etc/docker/daemon.json
+{
+    "bridge": "none",
+    "log-driver": "json-file",
+    "log-opts": {
+        "max-size": "10m",
+        "max-file": "10"
+    },
+    "live-restore": true,
+    "max-concurrent-downloads": 10,
+    "registry-mirrors": ["https://mirror.gcr.io"]
+}
+EOL
+        fi
+
+        if [ ${each.value.type} = gpu ];then
+            cat <<EOL > /etc/docker/daemon.json
+{
+    "exec-opts": ["native.cgroupdriver=systemd"],
+    "log-driver": "json-file",
+    "log-opts": {
+        "max-size": "100m"
+    },
+    "storage-driver": "overlay2",
+    "default-runtime": "nvidia",
+    "runtimes": {
+        "nvidia": {
+            "path": "/usr/bin/nvidia-container-runtime",
+            "runtimeArgs": []
+        }
+    },
+    "registry-mirrors": ["https://mirror.gcr.io"]
+}
+EOL
+        fi
+
+        service docker reload
 
         echo "${tls_private_key.ssh_key.public_key_openssh}" >> /home/paperspace/.ssh/authorized_keys
 
