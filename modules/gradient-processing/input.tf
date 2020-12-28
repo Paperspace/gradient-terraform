@@ -15,22 +15,6 @@ variable "amqp_protocol" {
 
 
 # Cluster
-variable "artifacts_access_key_id" {
-    description = "S3 compatibile access key for artifacts object storage"
-}
-
-variable "artifacts_object_storage_endpoint" {
-    description = "Object storage endpoint to be used for Gradient"
-}
-
-variable "artifacts_path" {
-    description = "Object storage path used for Gradient"
-}
-
-variable "artifacts_secret_access_key" {
-    description = "S3 compatible access key for artifacts object storage"
-}
-
 variable "aws_region" {
     description = "AWS region"
     default = "us-east-1"

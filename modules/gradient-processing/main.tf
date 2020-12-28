@@ -19,14 +19,6 @@ resource "helm_release" "gradient_processing" {
          value = var.elastic_search_password
     }
     set_sensitive {
-        name = "global.artifactsAccessKeyId"
-        value = var.artifacts_access_key_id
-    }
-    set_sensitive {
-        name = "global.artifactsSecretAccessKey"
-        value = var.artifacts_secret_access_key
-    }
-    set_sensitive {
         name  = "secrets.amqpUri"
         value  = "${var.amqp_protocol}://${var.cluster_handle}:${var.cluster_apikey}@${var.amqp_hostname}/"
     }
@@ -74,7 +66,6 @@ resource "helm_release" "gradient_processing" {
             enabled = var.enabled
 
             aws_region = var.aws_region
-            artifacts_path = var.artifacts_path
             cluster_autoscaler_autoscaling_groups = var.cluster_autoscaler_autoscaling_groups
             cluster_autoscaler_cloudprovider = var.cluster_autoscaler_cloudprovider
             cluster_autoscaler_enabled = var.cluster_autoscaler_enabled
