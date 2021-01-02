@@ -253,7 +253,7 @@ resource "rancher2_cluster" "main" {
 resource "rancher2_cluster_sync" "main" {
     depends_on = [paperspace_machine.gradient_main]
     cluster_id =  rancher2_cluster.main.id
-    state_confirm = 3
+    state_confirm = 10
 
     timeouts {
         create = "8m"
