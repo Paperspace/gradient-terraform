@@ -373,9 +373,16 @@ prometheus-pushgateway:
     enabled: false
 
 traefik:
-  replicas: 1
+  replicas: ${lb_count}
   nodeSelector:
-    paperspace.com/pool-name: ${service_pool_name}
+    paperspace.com/pool-name: ${lb_pool_name}
+
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          topologyKey: "kubernetes.io/hostname"
 
   %{ if (label_selector_cpu != "" && label_selector_gpu != "") || cluster_autoscaler_cloudprovider == "paperspace" }
   serviceType: NodePort

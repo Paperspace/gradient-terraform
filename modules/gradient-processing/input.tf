@@ -158,6 +158,15 @@ variable "shared_storage_type" {
   description = "Default shared storage type"
 }
 
+variable "lb_count" {
+  description = "Number of LB pods"
+  default = 1
+}
+variable "lb_pool_name" {
+    description = "LB pool node selector"
+    default = "services-small"
+}
+
 # k8s
 variable "k8s_namespace" {
   description = "K8s namespace"

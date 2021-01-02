@@ -67,3 +67,13 @@ ${rancher_command} \
     --node-name $MACHINE_ID \
     --address $MACHINE_PRIVATE_IP
 %{ endif ~}
+
+%{ if kind == "worker_public" ~}
+${rancher_command} \
+    --worker \
+    --label paperspace.com/pool-name=${pool_name} \
+    --label paperspace.com/pool-type=${pool_type} \
+    --node-name $MACHINE_ID \
+    --address $MACHINE_PUBLIC_IP \
+    --internal-address $MACHINE_PRIVATE_IP
+%{ endif ~}

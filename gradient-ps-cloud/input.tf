@@ -62,6 +62,21 @@ variable "machine_type_main" {
     default = "C5"
 }
 
+variable "machine_storage_lb" {
+    type = number
+    description = "LB storage"
+    default = 100
+}
+
+variable "machine_template_id_lb" {
+    description = "LB template id"
+    default = "tpi7gqht"
+}
+
+variable "machine_type_lb" {
+    description = "LB machine type"
+    default = "C5"
+}
 
 variable "machine_storage_service" {
     type = number

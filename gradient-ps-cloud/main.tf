@@ -53,10 +53,14 @@ locals {
     cluster_autoscaler_cloudprovider = "paperspace"
     cluster_autoscaler_enabled = true
     enable_gradient_service = var.kind == "singlenode" ? 0 : 1
+    enable_gradient_lb = var.kind == "singlenode" ? 0 : 1
+    gradient_lb_count = var.kind == "singlenode" ? 0 : 2
     gradient_main_count = var.kind == "singlenode" ? 1 : 3
     gradient_service_count = var.kind == "singlenode" ? 0 : 2
     k8s_version = var.k8s_version == "" ? "1.15.12" : var.k8s_version
     kubeconfig = yamldecode(rancher2_cluster_sync.main.kube_config)
+    lb_ips = var.kind == "singlenode" ? [paperspace_machine.gradient_main[0].public_ip_address] : paperspace_machine.gradient_lb.*.public_ip_address
+    lb_pool_name = var.kind == "singlenode" ? "services-small" : "lb"
 
     storage_path = "/srv/gradient"
     storage_server = paperspace_machine.gradient_main[0].private_ip_address
@@ -82,13 +86,35 @@ provider "rancher2" {
     secret_key = var.rancher_secret_key
 }
 
+provider "helm" {
+    debug = true
+    version = "1.2.1"
+    kubernetes {
+        host     = local.kubeconfig["clusters"][0]["cluster"]["server"]
+        token = local.kubeconfig["users"][0]["user"]["token"]
+
+        load_config_file = false
+    }
+}
+provider "kubernetes" {
+    host     = local.kubeconfig["clusters"][0]["cluster"]["server"]
+    token = local.kubeconfig["users"][0]["user"]["token"]
+    
+    load_config_file = false
+}
 data "paperspace_user" "admin" {
     email = var.admin_email
     team_id = var.team_id
 }
 
+
+
 resource "tls_private_key" "ssh_key" {
     algorithm = "RSA"
+}
+
+resource "paperspace_network" "network" {
+    team_id = var.team_id_integer
 }
 
 resource "paperspace_script" "gradient_main" {
@@ -112,11 +138,6 @@ resource "paperspace_script" "gradient_main" {
         EOF
     }
 }
-
-resource "paperspace_network" "network" {
-    team_id = var.team_id_integer
-}
-
 resource "paperspace_machine" "gradient_main" {
     count = local.gradient_main_count
 
@@ -162,24 +183,6 @@ resource "paperspace_machine" "gradient_main" {
     }
 }
 
-provider "helm" {
-    debug = true
-    version = "1.2.1"
-    kubernetes {
-        host     = local.kubeconfig["clusters"][0]["cluster"]["server"]
-        token = local.kubeconfig["users"][0]["user"]["token"]
-
-        load_config_file = false
-    }
-}
-
-provider "kubernetes" {
-    host     = local.kubeconfig["clusters"][0]["cluster"]["server"]
-    token = local.kubeconfig["users"][0]["user"]["token"]
-    
-    load_config_file = false
-}
-
 // Gradient
 module "gradient_processing" {
     source = "../modules/gradient-processing"
@@ -209,6 +212,8 @@ module "gradient_processing" {
     elastic_search_port = var.elastic_search_port
     elastic_search_user = var.elastic_search_user
 
+    lb_count = length(local.lb_ips)
+    lb_pool_name = local.lb_pool_name
     letsencrypt_dns_name = var.letsencrypt_dns_name
     letsencrypt_dns_settings = var.letsencrypt_dns_settings
     local_storage_server = local.storage_server
@@ -289,57 +294,6 @@ resource "paperspace_script" "autoscale" {
     is_enabled = true
     run_once = true
 }
-
-resource "paperspace_machine" "gradient_service" {
-    count = local.gradient_service_count
-
-    depends_on = [
-        paperspace_script.gradient_service,
-        tls_private_key.ssh_key,
-    ]
-
-    region = var.region
-    name = "${var.name}-service${format("%02s", count.index + 1)}"
-    machine_type = var.machine_type_service
-    size = var.machine_storage_service
-    billing_type = "hourly"
-    assign_public_ip = true
-    template_id = var.machine_template_id_service
-    user_id = data.paperspace_user.admin.id
-    team_id = data.paperspace_user.admin.team_id
-    script_id = paperspace_script.gradient_service[0].id
-    network_id = paperspace_network.network.handle
-    live_forever = true
-    is_managed = true
-
-    provisioner "remote-exec" {
-        connection {
-            timeout = "10m"
-            type     = "ssh"
-            user     = "paperspace"
-            host     = self.public_ip_address
-            private_key = tls_private_key.ssh_key.private_key_pem
-        }
-    } 
-}
-
-resource "paperspace_script" "gradient_service" {
-    count = local.enable_gradient_service
-
-    name = "Gradient service setup"
-    description = "Gradient service setup"
-    script_text = templatefile("${path.module}/templates/setup-script.tpl", {
-        kind = "worker"
-        gpu_enabled = false
-        pool_name = "services-small"
-        pool_type = "cpu"
-        rancher_command =  rancher2_cluster.main.cluster_registration_token[0].node_command
-        ssh_public_key = tls_private_key.ssh_key.public_key_openssh
-    })
-    is_enabled = true
-    run_once = true
-}
-
 resource "null_resource" "register_managed_cluster_network" {
     provisioner "local-exec" {
         command = <<EOF
@@ -359,20 +313,20 @@ resource "null_resource" "register_managed_cluster_machine_main" {
 }
 
 resource "cloudflare_record" "subdomain" {
-    count = var.cloudflare_api_key == "" && var.cloudflare_email == "" && var.cloudflare_zone_id == "" ? 0 : 1
+    count = var.cloudflare_api_key == "" || var.cloudflare_email == "" || var.cloudflare_zone_id == ""  ? 0 : length(local.lb_ips)
     zone_id = var.cloudflare_zone_id
     name    = var.domain
-    value   = paperspace_machine.gradient_main[0].public_ip_address
+    value   = local.lb_ips[count.index]
     type    = "A"
     ttl     = 3600
     proxied = false
 }
 
 resource "cloudflare_record" "subdomain_wildcard" {
-    count = var.cloudflare_api_key == "" && var.cloudflare_email == "" && var.cloudflare_zone_id == "" ? 0 : 1
+    count = var.cloudflare_api_key == "" || var.cloudflare_email == "" || var.cloudflare_zone_id == ""  ? 0 : length(local.lb_ips)
     zone_id = var.cloudflare_zone_id
     name    = "*.${var.domain}"
-    value   = paperspace_machine.gradient_main[0].public_ip_address
+    value   = local.lb_ips[count.index]
     type    = "A"
     ttl     = 3600
     proxied = false
