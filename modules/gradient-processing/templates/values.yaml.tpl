@@ -1,7 +1,7 @@
 global:
   amqpExchange: ${cluster_handle}
-  artifactsPath: ${artifacts_path}
 
+  artifactsPath: ${artifacts_path}
   cluster:
     handle: ${cluster_handle}
     name: ${name}
