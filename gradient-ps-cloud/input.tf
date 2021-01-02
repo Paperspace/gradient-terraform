@@ -43,6 +43,11 @@ variable "cloudflare_zone_id" {
     default = ""
 }
 
+variable "kind" {
+    description = "Kind of cluster"
+    default = "singlenode"
+}
+
 variable "machine_storage_main" {
     type = number
     description = "Main storage id"
@@ -50,13 +55,29 @@ variable "machine_storage_main" {
 }
 variable "machine_template_id_main" {
     description = "Main template id"
-    default = "tpi7gqht" # tpi7gqht comes pre-installed with docker
+    default = "tpi7gqht"
 }
 variable "machine_type_main" {
     description = "Main machine type"
     default = "C5"
 }
 
+
+variable "machine_storage_service" {
+    type = number
+    description = "Service storage"
+    default = 500
+}
+
+variable "machine_template_id_service" {
+    description = "Service template id"
+    default = "tpi7gqht"
+}
+
+variable "machine_type_service" {
+    description = "Service machine type"
+    default = "C5"
+}
 variable "machine_storage_worker_cpu" {
     type = number
     description = "CPU worker storage"
@@ -64,7 +85,7 @@ variable "machine_storage_worker_cpu" {
 }
 variable "machine_template_id_cpu" {
     description = "CPU template id"
-    default = "tpi7gqht" # tpi7gqht comes pre-installed with docker
+    default = "tpi7gqht"
 }
 
 variable "machine_storage_worker_gpu" {
