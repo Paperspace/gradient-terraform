@@ -261,7 +261,7 @@ resource "rancher2_cluster_sync" "main" {
     state_confirm = 10
 
     timeouts {
-        create = "8m"
+        create = "15m"
     }
 }
 
