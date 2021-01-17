@@ -52,15 +52,15 @@ locals {
 
     cluster_autoscaler_cloudprovider = "paperspace"
     cluster_autoscaler_enabled = true
-    enable_gradient_service = var.kind == "singlenode" ? 0 : 1
-    enable_gradient_lb = var.kind == "singlenode" ? 0 : 1
-    gradient_lb_count = var.kind == "singlenode" ? 0 : 2
-    gradient_main_count = var.kind == "singlenode" ? 1 : 3
-    gradient_service_count = var.kind == "singlenode" ? 0 : 2
+    enable_gradient_service = var.kind == "multinode" ? 1 : 0
+    enable_gradient_lb = var.kind == "multinode" ? 1 : 0
+    gradient_lb_count = var.kind == "multinode" ? 2 : 0
+    gradient_main_count = var.kind == "multinode" ? 3 : 1
+    gradient_service_count = var.kind == "multinode" ? 2 : 0
     k8s_version = var.k8s_version == "" ? "1.15.12" : var.k8s_version
     kubeconfig = yamldecode(rancher2_cluster_sync.main.kube_config)
-    lb_ips = var.kind == "singlenode" ? [paperspace_machine.gradient_main[0].public_ip_address] : paperspace_machine.gradient_lb.*.public_ip_address
-    lb_pool_name = var.kind == "singlenode" ? "services-small" : "lb"
+    lb_ips = var.kind == "multinode" ? paperspace_machine.gradient_lb.*.public_ip_address : [paperspace_machine.gradient_main[0].public_ip_address]
+    lb_pool_name = var.kind == "multinode" ? "lb" : "services-small"
 
     storage_path = "/srv/gradient"
     storage_server = paperspace_machine.gradient_main[0].private_ip_address
@@ -121,7 +121,7 @@ resource "paperspace_script" "gradient_main" {
     name = "Main setup"
     description = "Add public SSH key on machine create"
     script_text = templatefile("${path.module}/templates/setup-script.tpl", {
-        kind = var.kind == "singlenode" ? "main_single" : "main"
+        kind = var.kind == "multinode" ? "main" : "main_single"
         gpu_enabled = false
         pool_name = "main"
         pool_type = "cpu"
@@ -258,6 +258,7 @@ resource "rancher2_cluster" "main" {
 resource "rancher2_cluster_sync" "main" {
     depends_on = [paperspace_machine.gradient_main]
     cluster_id =  rancher2_cluster.main.id
+    wait_monitoring = true
     state_confirm = 10
 
     timeouts {
