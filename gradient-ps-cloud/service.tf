@@ -35,7 +35,12 @@ resource "paperspace_machine" "gradient_service" {
     network_id = paperspace_network.network.handle
     live_forever = true
     is_managed = true
+}
 
+resource "null_resource" "gradient_service_check" {
+    count = length(paperspace_machine.gradient_service)
+
+    depends_on = [ paperspace_machine.gradient_service ]
     provisioner "remote-exec" {
         connection {
             bastion_host = paperspace_machine.gradient_main[0].public_ip_address
@@ -45,7 +50,7 @@ resource "paperspace_machine" "gradient_service" {
             timeout = "10m"
             type     = "ssh"
             user     = "paperspace"
-            host     = self.private_ip_address
+            host     = paperspace_machine.gradient_service[count.index].private_ip_address
             private_key = tls_private_key.ssh_key.private_key_pem
         }
     } 

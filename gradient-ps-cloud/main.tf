@@ -52,6 +52,7 @@ locals {
 
     cluster_autoscaler_cloudprovider = "paperspace"
     cluster_autoscaler_enabled = true
+    dns_node_selector = var.kind == "multinode" ? {} : { "paperspace.com/pool-name" = "services-small" }
     enable_gradient_service = var.kind == "multinode" ? 1 : 0
     enable_gradient_lb = var.kind == "multinode" ? 1 : 0
     gradient_lb_count = var.kind == "multinode" ? 2 : 0
@@ -251,9 +252,7 @@ resource "rancher2_cluster" "main" {
         kubernetes_version = "v${local.k8s_version}-rancher1-1"
 
         dns {
-            node_selector = {
-              "paperspace.com/pool-name" = "services-small"
-            }
+            node_selector = local.dns_node_selector
         }
 
         ingress {
@@ -269,7 +268,7 @@ resource "rancher2_cluster" "main" {
 }
 
 resource "rancher2_cluster_sync" "main" {
-    depends_on = [paperspace_machine.gradient_main]
+    depends_on = [paperspace_machine.gradient_main, null_resource.gradient_lb_check, null_resource.gradient_service_check]
     cluster_id =  rancher2_cluster.main.id
     wait_monitoring = true
     state_confirm = 10
