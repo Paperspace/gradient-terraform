@@ -183,10 +183,23 @@ resource "paperspace_machine" "gradient_main" {
     }
 }
 
+resource "null_resource" "check_cluster" {
+    triggers = {
+        cluster_id = rancher2_cluster_sync.main.id
+    }
+
+    provisioner "local-exec" {
+        command     = "until curl -k -s $ENDPOINT/healthz >/dev/null; do sleep 4; done"
+        environment = {
+            ENDPOINT = local.kubeconfig["clusters"][0]["cluster"]["server"]
+        } 
+    }
+}
+
 // Gradient
 module "gradient_processing" {
     source = "../modules/gradient-processing"
-    enabled = rancher2_cluster_sync.main.id == "" ? false : true
+    enabled = null_resource.check_cluster.id == "" ? false : true
 
     amqp_hostname = var.amqp_hostname
     amqp_port = var.amqp_port
