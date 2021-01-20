@@ -6,7 +6,7 @@ terraform {
         }
         rancher2 = {
             source = "rancher/rancher2"
-            version = "1.10.1"
+            version = "1.10.6"
         }
     }
 }
@@ -52,11 +52,19 @@ locals {
 
     cluster_autoscaler_cloudprovider = "paperspace"
     cluster_autoscaler_enabled = true
+    dns_node_selector = var.kind == "multinode" ? {} : { "paperspace.com/pool-name" = "services-small" }
+    enable_gradient_service = var.kind == "multinode" ? 1 : 0
+    enable_gradient_lb = var.kind == "multinode" ? 1 : 0
+    gradient_lb_count = var.kind == "multinode" ? 2 : 0
+    gradient_main_count = var.kind == "multinode" ? 3 : 1
+    gradient_service_count = var.kind == "multinode" ? 2 : 0
     k8s_version = var.k8s_version == "" ? "1.15.12" : var.k8s_version
     kubeconfig = yamldecode(rancher2_cluster_sync.main.kube_config)
+    lb_ips = var.kind == "multinode" ? paperspace_machine.gradient_lb.*.public_ip_address : [paperspace_machine.gradient_main[0].public_ip_address]
+    lb_pool_name = var.kind == "multinode" ? "lb" : "services-small"
 
     storage_path = "/srv/gradient"
-    storage_server = paperspace_machine.gradient_main.private_ip_address
+    storage_server = paperspace_machine.gradient_main[0].private_ip_address
     storage_type = "nfs"
     ssh_key_path = "${path.module}/ssh_key"
 }
@@ -79,46 +87,49 @@ provider "rancher2" {
     secret_key = var.rancher_secret_key
 }
 
+provider "helm" {
+    debug = true
+    version = "1.2.1"
+    kubernetes {
+        host     = local.kubeconfig["clusters"][0]["cluster"]["server"]
+        token = local.kubeconfig["users"][0]["user"]["token"]
+
+        load_config_file = false
+    }
+}
+provider "kubernetes" {
+    host     = local.kubeconfig["clusters"][0]["cluster"]["server"]
+    token = local.kubeconfig["users"][0]["user"]["token"]
+    
+    load_config_file = false
+}
 data "paperspace_user" "admin" {
     email = var.admin_email
     team_id = var.team_id
 }
 
+
+
 resource "tls_private_key" "ssh_key" {
     algorithm = "RSA"
 }
 
-resource "paperspace_script" "add_public_ssh_key" {
-    name = "Add public SSH key"
-    description = "Add public SSH key on machine create"
-    script_text = <<EOF
-        #!/bin/bash
-        echo "${tls_private_key.ssh_key.public_key_openssh}" >> /home/paperspace/.ssh/authorized_keys
-
-        until docker ps -a || (( count++ >= 30 )); do echo "Check if docker is up..."; sleep 2; done
-        cat <<EOL > /etc/docker/daemon.json
-{
-    "bridge": "none",
-    "log-driver": "json-file",
-    "log-opts": {
-        "max-size": "10m",
-        "max-file": "10"
-    },
-    "live-restore": true,
-    "max-concurrent-downloads": 10,
-    "registry-mirrors": ["https://mirror.gcr.io"]
+resource "paperspace_network" "network" {
+    team_id = var.team_id_integer
 }
-EOL
-        service docker reload
 
+resource "paperspace_script" "gradient_main" {
+    name = "Main setup"
+    description = "Add public SSH key on machine create"
+    script_text = templatefile("${path.module}/templates/setup-script.tpl", {
+        kind = var.kind == "multinode" ? "main" : "main_single"
+        gpu_enabled = false
+        pool_name = "main"
+        pool_type = "cpu"
+        rancher_command =  rancher2_cluster.main.cluster_registration_token[0].node_command
+        ssh_public_key = tls_private_key.ssh_key.public_key_openssh
+    })
 
-        ${rancher2_cluster.main.cluster_registration_token[0].node_command} \
-            --etcd --controlplane --worker \
-            --label paperspace.com/pool-name=services-small \
-            --label paperspace.com/pool-type=cpu \
-            --address `curl -s https://metadata.paperspace.com/meta-data/machine | grep publicIpAddress | sed 's/^.*: "\(.*\)".*/\1/'` \
-            --internal-address `curl -s https://metadata.paperspace.com/meta-data/machine | grep privateIpAddress | sed 's/^.*: "\(.*\)".*/\1/'`
-    EOF
     is_enabled = true
     run_once = true
 
@@ -128,19 +139,16 @@ EOL
         EOF
     }
 }
-
-resource "paperspace_network" "network" {
-    team_id = var.team_id_integer
-}
-
 resource "paperspace_machine" "gradient_main" {
+    count = local.gradient_main_count
+
     depends_on = [
-        paperspace_script.add_public_ssh_key,
+        paperspace_script.gradient_main,
         tls_private_key.ssh_key,
     ]
 
     region = var.region
-    name = "${var.cluster_handle}-${var.name}-main"
+    name = "${var.name}-main${format("%02s", count.index + 1)}"
     machine_type = var.machine_type_main
     size = var.machine_storage_main
     billing_type = "hourly"
@@ -148,13 +156,14 @@ resource "paperspace_machine" "gradient_main" {
     template_id = var.machine_template_id_main
     user_id = data.paperspace_user.admin.id
     team_id = data.paperspace_user.admin.team_id
-    script_id = paperspace_script.add_public_ssh_key.id
+    script_id = paperspace_script.gradient_main.id
     network_id = paperspace_network.network.handle
     live_forever = true
     is_managed = true
 
     provisioner "remote-exec" {
         connection {
+            timeout = "10m"
             type     = "ssh"
             user     = "paperspace"
             host     = self.public_ip_address
@@ -167,7 +176,7 @@ resource "paperspace_machine" "gradient_main" {
             echo "${tls_private_key.ssh_key.private_key_pem}" > ${local.ssh_key_path} && chmod 600 ${local.ssh_key_path} && \
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
             --key-file ${local.ssh_key_path} \
-            -i '${paperspace_machine.gradient_main.public_ip_address},' \
+            -i '${self.public_ip_address},' \
             -e "install_nfs_server=true" \
             -e "nfs_subnet_host_with_netmask=${paperspace_network.network.network}/${paperspace_network.network.netmask}" \
             ${path.module}/ansible/playbook-gradient-metal-ps-cloud-node.yaml
@@ -175,28 +184,23 @@ resource "paperspace_machine" "gradient_main" {
     }
 }
 
-provider "helm" {
-    debug = true
-    version = "1.2.1"
-    kubernetes {
-        host     = local.kubeconfig["clusters"][0]["cluster"]["server"]
-        token = local.kubeconfig["users"][0]["user"]["token"]
-
-        load_config_file = false
+resource "null_resource" "check_cluster" {
+    triggers = {
+        cluster_id = rancher2_cluster_sync.main.id
     }
-}
 
-provider "kubernetes" {
-    host     = local.kubeconfig["clusters"][0]["cluster"]["server"]
-    token = local.kubeconfig["users"][0]["user"]["token"]
-    
-    load_config_file = false
+    provisioner "local-exec" {
+        command     = "until curl -k -s $ENDPOINT/healthz >/dev/null; do sleep 4; done"
+        environment = {
+            ENDPOINT = local.kubeconfig["clusters"][0]["cluster"]["server"]
+        } 
+    }
 }
 
 // Gradient
 module "gradient_processing" {
     source = "../modules/gradient-processing"
-    enabled = rancher2_cluster_sync.main.id == "" ? false : true
+    enabled = null_resource.check_cluster.id == "" ? false : true
 
     amqp_hostname = var.amqp_hostname
     amqp_port = var.amqp_port
@@ -222,6 +226,8 @@ module "gradient_processing" {
     elastic_search_port = var.elastic_search_port
     elastic_search_user = var.elastic_search_user
 
+    lb_count = length(local.lb_ips)
+    lb_pool_name = local.lb_pool_name
     letsencrypt_dns_name = var.letsencrypt_dns_name
     letsencrypt_dns_settings = var.letsencrypt_dns_settings
     local_storage_server = local.storage_server
@@ -246,9 +252,7 @@ resource "rancher2_cluster" "main" {
         kubernetes_version = "v${local.k8s_version}-rancher1-1"
 
         dns {
-            node_selector = {
-              "paperspace.com/pool-name" = "services-small"
-            }
+            node_selector = local.dns_node_selector
         }
 
         ingress {
@@ -264,11 +268,13 @@ resource "rancher2_cluster" "main" {
 }
 
 resource "rancher2_cluster_sync" "main" {
-    depends_on = [paperspace_machine.gradient_main]
+    depends_on = [paperspace_machine.gradient_main, null_resource.gradient_lb_check, null_resource.gradient_service_check]
     cluster_id =  rancher2_cluster.main.id
+    wait_monitoring = true
+    state_confirm = 10
 
     timeouts {
-        create = "8m"
+        create = "15m"
     }
 }
 
@@ -290,72 +296,17 @@ resource "paperspace_script" "autoscale" {
 
     name = "Autoscale cluster ${each.key}"
     description = "Autoscales cluster ${each.key}"
-    script_text = <<EOF
-        #!/usr/bin/env bash
-
-        sudo su -
-
-        until docker ps -a || (( count++ >= 30 )); do echo "Check if docker is up..."; sleep 2; done
-
-        usermod -G docker paperspace
-
-        if [ ${each.value.type} = cpu ];then
-            cat <<EOL > /etc/docker/daemon.json
-{
-    "bridge": "none",
-    "log-driver": "json-file",
-    "log-opts": {
-        "max-size": "10m",
-        "max-file": "10"
-    },
-    "live-restore": true,
-    "max-concurrent-downloads": 10,
-    "registry-mirrors": ["https://mirror.gcr.io"]
-}
-EOL
-        fi
-
-        if [ ${each.value.type} = gpu ];then
-            cat <<EOL > /etc/docker/daemon.json
-{
-    "exec-opts": ["native.cgroupdriver=systemd"],
-    "log-driver": "json-file",
-    "log-opts": {
-        "max-size": "100m"
-    },
-    "storage-driver": "overlay2",
-    "default-runtime": "nvidia",
-    "runtimes": {
-        "nvidia": {
-            "path": "/usr/bin/nvidia-container-runtime",
-            "runtimeArgs": []
-        }
-    },
-    "registry-mirrors": ["https://mirror.gcr.io"]
-}
-EOL
-        fi
-
-        service docker reload
-
-        echo "${tls_private_key.ssh_key.public_key_openssh}" >> /home/paperspace/.ssh/authorized_keys
-
-        export MACHINE_ID=`curl -s https://metadata.paperspace.com/meta-data/machine | grep id | sed 's/^.*: "\(.*\)".*/\1/'`
-        export MACHINE_PRIVATE_IP=`curl -s https://metadata.paperspace.com/meta-data/machine | grep privateIpAddress | sed 's/^.*: "\(.*\)".*/\1/'`
-
-        ${rancher2_cluster.main.cluster_registration_token[0].node_command} \
-            --worker \
-            --label paperspace.com/pool-name=${each.key} \
-            --label paperspace.com/pool-type=${each.value.type} \
-            --label provider.autoscaler/prefix=paperspace \
-            --label provider.autoscaler/nodeName=$MACHINE_ID \
-            --node-name $MACHINE_ID \
-            --address $MACHINE_PRIVATE_IP
-    EOF
+    script_text = templatefile("${path.module}/templates/setup-script.tpl", {
+        kind = "autoscale_worker"
+        gpu_enabled = each.value.type == "gpu"
+        pool_name = each.key
+        pool_type = each.value.type
+        rancher_command =  rancher2_cluster.main.cluster_registration_token[0].node_command
+        ssh_public_key = tls_private_key.ssh_key.public_key_openssh
+    })
     is_enabled = true
     run_once = true
 }
-
 resource "null_resource" "register_managed_cluster_network" {
     provisioner "local-exec" {
         command = <<EOF
@@ -365,35 +316,37 @@ resource "null_resource" "register_managed_cluster_network" {
 }
 
 resource "null_resource" "register_managed_cluster_machine_main" {
+    count = local.gradient_main_count
+
     provisioner "local-exec" {
         command = <<EOF
-            curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPOST '${var.api_host}/clusterMachines/register' -d '{"clusterId":"${var.cluster_handle}", "machineId":"${paperspace_machine.gradient_main.id}"}'
+            curl -H 'Content-Type:application/json' -H 'X-API-Key: ${var.cluster_apikey}' -XPOST '${var.api_host}/clusterMachines/register' -d '{"clusterId":"${var.cluster_handle}", "machineId":"${paperspace_machine.gradient_main[count.index].id}"}'
         EOF
     }
 }
 
 resource "cloudflare_record" "subdomain" {
-    count = var.cloudflare_api_key == "" && var.cloudflare_email == "" && var.cloudflare_zone_id == "" ? 0 : 1
+    count = var.cloudflare_api_key == "" || var.cloudflare_email == "" || var.cloudflare_zone_id == ""  ? 0 : length(local.lb_ips)
     zone_id = var.cloudflare_zone_id
     name    = var.domain
-    value   = paperspace_machine.gradient_main.public_ip_address
+    value   = local.lb_ips[count.index]
     type    = "A"
     ttl     = 3600
     proxied = false
 }
 
 resource "cloudflare_record" "subdomain_wildcard" {
-    count = var.cloudflare_api_key == "" && var.cloudflare_email == "" && var.cloudflare_zone_id == "" ? 0 : 1
+    count = var.cloudflare_api_key == "" || var.cloudflare_email == "" || var.cloudflare_zone_id == ""  ? 0 : length(local.lb_ips)
     zone_id = var.cloudflare_zone_id
     name    = "*.${var.domain}"
-    value   = paperspace_machine.gradient_main.public_ip_address
+    value   = local.lb_ips[count.index]
     type    = "A"
     ttl     = 3600
     proxied = false
 }
 
 output "main_node_public_ip_address" {
-  value = paperspace_machine.gradient_main.public_ip_address
+  value = paperspace_machine.gradient_main[0].public_ip_address
 }
 
 output "network_handle" {
