@@ -40,7 +40,7 @@ resource "paperspace_machine" "gradient_lb" {
 
 resource "null_resource" "gradient_lb_check" {
     depends_on = [paperspace_machine.gradient_lb]
-    count = length(paperspace_machine.gradient_lb)
+    count = local.gradient_lb_count
 
     provisioner "remote-exec" {
         connection {

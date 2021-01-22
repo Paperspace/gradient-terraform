@@ -38,7 +38,7 @@ resource "paperspace_machine" "gradient_service" {
 }
 
 resource "null_resource" "gradient_service_check" {
-    count = length(paperspace_machine.gradient_service)
+    count = local.gradient_service_count
 
     depends_on = [ paperspace_machine.gradient_service ]
     provisioner "remote-exec" {
