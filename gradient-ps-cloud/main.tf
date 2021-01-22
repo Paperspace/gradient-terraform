@@ -98,17 +98,15 @@ provider "helm" {
     }
 }
 provider "kubernetes" {
+    version = "1.13.3"
+
     host     = local.kubeconfig["clusters"][0]["cluster"]["server"]
     token = local.kubeconfig["users"][0]["user"]["token"]
-    
-    load_config_file = false
 }
 data "paperspace_user" "admin" {
     email = var.admin_email
     team_id = var.team_id
 }
-
-
 
 resource "tls_private_key" "ssh_key" {
     algorithm = "RSA"
