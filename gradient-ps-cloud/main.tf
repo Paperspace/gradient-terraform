@@ -102,6 +102,8 @@ provider "kubernetes" {
 
     host     = local.kubeconfig["clusters"][0]["cluster"]["server"]
     token = local.kubeconfig["users"][0]["user"]["token"]
+
+    load_config_file = false
 }
 data "paperspace_user" "admin" {
     email = var.admin_email
