@@ -34,6 +34,9 @@ global:
       server: ${shared_storage_server}
       type: ${shared_storage_type}
 
+ceph-csi-cephfs:
+  enabled: ${cephfs_enabled}
+
 cluster-autoscaler:
   enabled: ${cluster_autoscaler_enabled}
   %{ if cluster_autoscaler_cloudprovider == "paperspace" }

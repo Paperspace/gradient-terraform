@@ -41,6 +41,12 @@ variable "chart" {
     default = "gradient-processing"
 }
 
+variable "cephfs" {
+  type = map
+  description = "cephfs config"
+  default = {}
+}
+
 variable "cluster_apikey" {
   description = "Gradient cluster apikey"
 }

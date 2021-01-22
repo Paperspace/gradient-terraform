@@ -1,4 +1,15 @@
 locals {
+    cephfs_secrets = [
+        {
+            key = "user"
+            value = lookup(var.cephfs, "user", "")
+        },
+        {
+            key = "key"
+            value = lookup(var.cephfs, "key", "")
+        }
+    ]
+
     letsencrypt_enabled = (length(var.letsencrypt_dns_settings) != 0 && (var.tls_cert == "" && var.tls_key == ""))
     local_storage_name = "gradient-processing-local"
     helm_repo_url = var.helm_repo_url == "" ? "https://infrastructure-public-chart-museum-repository.storage.googleapis.com" : var.helm_repo_url
@@ -61,6 +72,14 @@ resource "helm_release" "gradient_processing" {
     }
 
     dynamic "set_sensitive" {
+        for_each = var.cephfs == {} ? [] : local.cephfs_secrets
+        content {
+            name = "secrets.${set_sensitive.key}"
+            value = set_sensitive.value
+        }
+    }
+
+    dynamic "set_sensitive" {
         for_each = var.letsencrypt_dns_settings
 
         content {
@@ -75,6 +94,7 @@ resource "helm_release" "gradient_processing" {
 
             aws_region = var.aws_region
             artifacts_path = var.artifacts_path
+            cephfs_enabled = var.shared_storage_type == "cephfs"
             cluster_autoscaler_autoscaling_groups = var.cluster_autoscaler_autoscaling_groups
             cluster_autoscaler_cloudprovider = var.cluster_autoscaler_cloudprovider
             cluster_autoscaler_enabled = var.cluster_autoscaler_enabled
