@@ -57,6 +57,8 @@ provider "helm" {
 }
 
 provider "kubernetes" {
+    version = "1.13.3"
+
     host     = module.kubernetes.k8s_host
     username = module.kubernetes.k8s_username
 

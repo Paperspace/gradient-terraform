@@ -115,6 +115,8 @@ provider "helm" {
     }
 }
 provider "kubernetes" {
+    version = "1.13.3"
+
     alias = "gradient"
 
     host                   = element(concat(data.aws_eks_cluster.cluster[*].endpoint, list("")), 0)

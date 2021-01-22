@@ -98,6 +98,8 @@ provider "helm" {
     }
 }
 provider "kubernetes" {
+    version = "1.13.3"
+
     host     = local.kubeconfig["clusters"][0]["cluster"]["server"]
     token = local.kubeconfig["users"][0]["user"]["token"]
 }
