@@ -25,14 +25,14 @@ cat <<EOL > /etc/docker/daemon.json
 }
 EOL
 
+service docker reload
+
 echo "${ssh_public_key}" >> /home/paperspace/.ssh/authorized_keys
 
 export MACHINE_ID=`curl -s https://metadata.paperspace.com/meta-data/machine | grep id | sed 's/^.*: "\(.*\)".*/\1/'`
 export MACHINE_PRIVATE_IP=`curl -s https://metadata.paperspace.com/meta-data/machine | grep privateIpAddress | sed 's/^.*: "\(.*\)".*/\1/'`
 export MACHINE_PUBLIC_IP=`curl -s https://metadata.paperspace.com/meta-data/machine | grep publicIpAddress | sed 's/^.*: "\(.*\)".*/\1/'`
 
-service docker stop
-service docker start
 
 %{ if kind == "main" ~}
 ${rancher_command} \

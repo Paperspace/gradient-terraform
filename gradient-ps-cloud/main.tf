@@ -249,7 +249,7 @@ resource "rancher2_cluster" "main" {
   name = var.cluster_handle
   description = var.name
   rke_config {
-        kubernetes_version = "v${local.k8s_version}-rancher1-1"
+        kubernetes_version = "v${local.k8s_version}-rancher2-7"
 
         dns {
             node_selector = local.dns_node_selector
