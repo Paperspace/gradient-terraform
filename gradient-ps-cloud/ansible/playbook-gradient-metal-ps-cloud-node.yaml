@@ -25,24 +25,6 @@
           service:
             name: ssh
             state: reloaded
-    - name: Docker dameon.json
-      copy:
-        dest: /etc/docker/daemon.json
-        content: |
-          {
-            "bridge": "none",
-            "log-driver": "json-file",
-            "log-opts": {
-              "max-size": "10m",
-              "max-file": "10"
-            },
-            "live-restore": true,
-            "max-concurrent-downloads": 10,
-            "registry-mirrors": ["https://mirror.gcr.io"]
-          }
-      notify:
-        - Reload docker
-
     - name: Install & configure nfs server
       block:
         - name: Install nfs server
@@ -73,9 +55,3 @@
             state: started
             enabled: yes
       when: install_nfs_server|bool
-
-  handlers:
-    - name: Reload docker
-      ansible.builtin.service:
-        name: docker
-        state: reloaded
