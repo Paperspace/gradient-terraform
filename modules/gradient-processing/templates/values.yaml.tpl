@@ -36,6 +36,7 @@ global:
 
 ceph-csi-cephfs:
   enabled: ${cephfs_enabled}
+  monitors:
 
 cluster-autoscaler:
   enabled: ${cluster_autoscaler_enabled}

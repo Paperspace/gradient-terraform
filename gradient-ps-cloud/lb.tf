@@ -36,18 +36,13 @@ resource "paperspace_machine" "gradient_lb" {
     network_id = paperspace_network.network.handle
     live_forever = true
     is_managed = true
-}
-
-resource "null_resource" "gradient_lb_check" {
-    depends_on = [paperspace_machine.gradient_lb]
-    count = local.gradient_lb_count
 
     provisioner "remote-exec" {
         connection {
             timeout = "10m"
             type     = "ssh"
             user     = "paperspace"
-            host     = paperspace_machine.gradient_lb[count.index].public_ip_address
+            host     = self.public_ip_address
             private_key = tls_private_key.ssh_key.private_key_pem
         }
     } 

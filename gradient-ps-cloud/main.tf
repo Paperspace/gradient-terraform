@@ -268,10 +268,9 @@ resource "rancher2_cluster" "main" {
 }
 
 resource "rancher2_cluster_sync" "main" {
-    depends_on = [paperspace_machine.gradient_main, null_resource.gradient_lb_check, null_resource.gradient_service_check]
+    depends_on = [paperspace_machine.gradient_main, paperspace_machine.gradient_lb, null_resource.gradient_service_check]
     cluster_id =  rancher2_cluster.main.id
-    wait_monitoring = true
-    state_confirm = 10
+    state_confirm = 1
 
     timeouts {
         create = "15m"
