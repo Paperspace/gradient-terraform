@@ -1,9 +1,15 @@
 locals {
-    cephfs_secrets = {
-        "global.storage.gradient-processing-local.cephfs.user" = lookup(var.cephfs, "user", "")
-        "global.storage.gradient-processing-local.cephfs.user" = lookup(var.cephfs, "key", "")
-        "global.storage.gradient-processing-shared.cephfs.user" = lookup(var.cephfs, "user", "")
-        "global.storage.gradient-processing-shared.cephfs.user" = lookup(var.cephfs, "key", "")
+    local_storage_secrets = {
+        "cephfs-csi" = {
+            "global.storage.gradient-processing-local.cephfs.user" = lookup(var.local_storage_config, "user", "")
+            "global.storage.gradient-processing-local.cephfs.key" = lookup(var.local_storage_config, "key", "")
+        }
+    }
+    shared_storage_secrets = {
+        "cephfs" = {
+            "global.storage.gradient-processing-shared.cephfs.user" = lookup(var.shared_storage_config, "user", "")
+            "global.storage.gradient-processing-shared.cephfs.key" = lookup(var.shared_storage_config, "key", "")
+        }
     }
 
     letsencrypt_enabled = (length(var.letsencrypt_dns_settings) != 0 && (var.tls_cert == "" && var.tls_key == ""))
@@ -68,12 +74,21 @@ resource "helm_release" "gradient_processing" {
     }
 
     dynamic "set_sensitive" {
-        for_each = var.cephfs == {} ? {} : local.cephfs_secrets
+        for_each = lookup(local.local_storage_secrets, var.local_storage_type, {})
         content {
             name = "secrets.${set_sensitive.key}"
             value = set_sensitive.value
         }
     }
+
+    dynamic "set_sensitive" {
+        for_each = lookup(local.shared_storage_secrets, var.shared_storage_type, {})
+        content {
+            name = "secrets.${set_sensitive.key}"
+            value = set_sensitive.value
+        }
+    }
+
 
     dynamic "set_sensitive" {
         for_each = var.letsencrypt_dns_settings
@@ -90,7 +105,6 @@ resource "helm_release" "gradient_processing" {
 
             aws_region = var.aws_region
             artifacts_path = var.artifacts_path
-            cephfs_enabled = (var.shared_storage_type == "cephfs")
             cluster_autoscaler_autoscaling_groups = var.cluster_autoscaler_autoscaling_groups
             cluster_autoscaler_cloudprovider = var.cluster_autoscaler_cloudprovider
             cluster_autoscaler_enabled = var.cluster_autoscaler_enabled
@@ -112,6 +126,7 @@ resource "helm_release" "gradient_processing" {
             lb_count = var.lb_count
             lb_pool_name = var.lb_pool_name
             letsencrypt_enabled = local.letsencrypt_enabled
+            local_storage_config = var.local_storage_config
             local_storage_name = local.local_storage_name
             local_storage_path = var.local_storage_path
             local_storage_server = var.local_storage_server
@@ -122,6 +137,7 @@ resource "helm_release" "gradient_processing" {
             paperspace_base_url = var.paperspace_base_url
             sentry_dsn = var.sentry_dsn
             service_pool_name = var.service_pool_name
+            shared_storage_config = var.shared_storage_config
             shared_storage_name = local.shared_storage_name
             shared_storage_path = var.shared_storage_path
             shared_storage_server = var.shared_storage_server

@@ -230,6 +230,7 @@ module "gradient_processing" {
     lb_pool_name = local.lb_pool_name
     letsencrypt_dns_name = var.letsencrypt_dns_name
     letsencrypt_dns_settings = var.letsencrypt_dns_settings
+    local_storage_config = var.local_storage_config
     local_storage_server = local.storage_server
     local_storage_path = local.storage_path
     local_storage_type = local.storage_type
@@ -238,6 +239,7 @@ module "gradient_processing" {
     name = var.name
     paperspace_base_url = var.api_host
     sentry_dsn = var.sentry_dsn
+    shared_storage_config = var.shared_storage_config
     shared_storage_server = local.storage_server
     shared_storage_path = local.storage_path
     shared_storage_type = local.storage_type

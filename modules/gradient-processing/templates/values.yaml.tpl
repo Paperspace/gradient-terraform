@@ -28,15 +28,36 @@ global:
       path: ${local_storage_path}
       server: ${local_storage_server}
       type: ${local_storage_type}
+
+      %{ if local_storage_type == "cephfs" }
+      monitors: 
+        %{ for monitor in local_storage_cephfs["monitors"] }
+        - ${ monitor }
+        %{ endfor }
+
+      user: ${local_storage_config["user"]}
+      password: ${local_storage_config["password"]}
+      fsName: ${local_storage_config["fs_name"]}
+      %{ end }
     gradient-processing-shared:
       class: gradient-processing-shared
       path: ${shared_storage_path}
       server: ${shared_storage_server}
       type: ${shared_storage_type}
 
+      %{ if shared_storage_type == "cephfs" }
+      user: ${local_storage_config["user"]}
+      password: ${local_storage_config["password"]}
+      %{ end }
+
 ceph-csi-cephfs:
   enabled: ${cephfs_enabled}
   monitors:
+  %{ if local_storage_type == "cephfs" }
+  %{ for monitor in local_storage_cephfs["monitors"] }
+    - ${ monitor }
+  %{ endfor }
+  %{ end }
 
 cluster-autoscaler:
   enabled: ${cluster_autoscaler_enabled}

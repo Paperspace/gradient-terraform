@@ -41,12 +41,6 @@ variable "chart" {
     default = "gradient-processing"
 }
 
-variable "cephfs" {
-  type = map
-  description = "cephfs config"
-  default = {}
-}
-
 variable "cluster_apikey" {
   description = "Gradient cluster apikey"
 }
@@ -139,6 +133,12 @@ variable "name" {
   description = "Cloud provider name"
 }
 
+variable "local_storage_config" {
+  description = "Local storage config"
+  type = map
+  default = {}
+}
+
 variable "local_storage_path" {
   description = "Local storage path "
   default = "/"
@@ -151,6 +151,8 @@ variable "local_storage_type" {
   description = "Local local storage type"
 }
 
+
+
 variable "shared_storage_path" {
   description = "Shared storage path "
   default = "/"
@@ -162,6 +164,12 @@ variable "shared_storage_server" {
 
 variable "shared_storage_type" {
   description = "Default shared storage type"
+}
+
+variable "shared_storage_config" {
+  description = "Shared storage config"
+  type = map
+  default = {}
 }
 
 variable "lb_count" {

@@ -13,7 +13,7 @@ variable "amqp_protocol" {
 }
 
 variable "artifacts_access_key_id" {
-    description = "S3 compatible access key for artifacts object storage"
+    description = "S3 compatibile access key for artifacts object storage"
 }
 
 variable "artifacts_object_storage_endpoint" {
@@ -24,6 +24,12 @@ variable "artifacts_object_storage_endpoint" {
 variable "artifacts_path" { 
     description = "Object storage path used for Gradient"
 }
+
+variable "artifacts_region" { 
+    description = "Object storage region used for Gradient"
+    default = "us-east-1"
+}
+
 variable "artifacts_secret_access_key" {
     description = "S3 compatible access key for artifacts object storage"
 }
@@ -120,13 +126,43 @@ variable "letsencrypt_dns_settings" {
     default = {}
 }
 
+variable "local_storage_config" {
+    description = "Local storage config"
+    default = {}
+}
+variable "local_storage_path" {
+    description = "Local storage path on nodes"
+    default = ""
+}
+
+variable "local_storage_server" {
+    description = "Local storage server"
+    default = ""
+}
+
+variable "local_storage_type" {
+    description = "Local storage type"
+    default = ""
+}
+
 variable "name" {
     description = "Name"
+}
+
+variable "public_key_path" {
+    description = "Login key path"
+    default = ""
 }
 
 variable "sentry_dsn" {
     description = "DSN for sentry alerts"
     default = ""
+}
+
+variable "shared_storage_config" {
+    type = map
+    description = "Shared storage configuration"
+    default = {}
 }
 
 variable "shared_storage_server" {
