@@ -127,8 +127,8 @@ variable "letsencrypt_dns_settings" {
 }
 
 variable "local_storage_config" {
-    description = "Local storage config"
-    default = {}
+    description = "Local storage config json"
+    default = ""
 }
 variable "local_storage_path" {
     description = "Local storage path on nodes"
@@ -160,9 +160,8 @@ variable "sentry_dsn" {
 }
 
 variable "shared_storage_config" {
-    type = map
-    description = "Shared storage configuration"
-    default = {}
+    description = "Shared storage configuration json"
+    default = ""
 }
 
 variable "shared_storage_server" {

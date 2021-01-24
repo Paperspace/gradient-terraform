@@ -1,21 +1,24 @@
 locals {
+    helm_repo_url = var.helm_repo_url == "" ? "https://infrastructure-public-chart-museum-repository.storage.googleapis.com" : var.helm_repo_url
+    letsencrypt_enabled = (length(var.letsencrypt_dns_settings) != 0 && (var.tls_cert == "" && var.tls_key == ""))
+
+    local_storage_config = jsondecode(var.local_storage_config)
+    local_storage_name = "gradient-processing-local"
     local_storage_secrets = {
-        "cephfs-csi" = {
-            "global.storage.gradient-processing-local.cephfs.user" = lookup(var.local_storage_config, "user", "")
-            "global.storage.gradient-processing-local.cephfs.key" = lookup(var.local_storage_config, "key", "")
+        "ceph-csi" = {
+            "global.storage.gradient-processing-local.user" = lookup(local.local_storage_config, "user", "")
+            "global.storage.gradient-processing-local.password" = lookup(local.local_storage_config, "password", "")
         }
     }
+    shared_storage_config = jsondecode(var.shared_storage_config)
+    shared_storage_name = "gradient-processing-shared"
     shared_storage_secrets = {
         "cephfs" = {
-            "global.storage.gradient-processing-shared.cephfs.user" = lookup(var.shared_storage_config, "user", "")
-            "global.storage.gradient-processing-shared.cephfs.key" = lookup(var.shared_storage_config, "key", "")
+            "global.storage.gradient-processing-shared.user" = lookup(local.shared_storage_config, "user", "")
+            "global.storage.gradient-processing-shared.password" = lookup(local.shared_storage_config, "password", "")
         }
     }
 
-    letsencrypt_enabled = (length(var.letsencrypt_dns_settings) != 0 && (var.tls_cert == "" && var.tls_key == ""))
-    local_storage_name = "gradient-processing-local"
-    helm_repo_url = var.helm_repo_url == "" ? "https://infrastructure-public-chart-museum-repository.storage.googleapis.com" : var.helm_repo_url
-    shared_storage_name = "gradient-processing-shared"
     tls_secret_name = "gradient-processing-tls"
 }
 
@@ -126,7 +129,7 @@ resource "helm_release" "gradient_processing" {
             lb_count = var.lb_count
             lb_pool_name = var.lb_pool_name
             letsencrypt_enabled = local.letsencrypt_enabled
-            local_storage_config = var.local_storage_config
+            local_storage_config = local.local_storage_config
             local_storage_name = local.local_storage_name
             local_storage_path = var.local_storage_path
             local_storage_server = var.local_storage_server
@@ -137,7 +140,7 @@ resource "helm_release" "gradient_processing" {
             paperspace_base_url = var.paperspace_base_url
             sentry_dsn = var.sentry_dsn
             service_pool_name = var.service_pool_name
-            shared_storage_config = var.shared_storage_config
+            shared_storage_config = local.shared_storage_config
             shared_storage_name = local.shared_storage_name
             shared_storage_path = var.shared_storage_path
             shared_storage_server = var.shared_storage_server

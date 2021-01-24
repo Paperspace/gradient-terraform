@@ -63,10 +63,13 @@ locals {
     lb_ips = var.kind == "multinode" ? paperspace_machine.gradient_lb.*.public_ip_address : [paperspace_machine.gradient_main[0].public_ip_address]
     lb_pool_name = var.kind == "multinode" ? "lb" : "services-small"
 
-    storage_path = "/srv/gradient"
-    storage_server = paperspace_machine.gradient_main[0].private_ip_address
-    storage_type = "nfs"
+    local_storage_path = var.local_storage_path == "" ? "/srv/gradient" : var.local_storage_path
+    local_storage_type = var.local_storage_type == "" ? "nfs" : var.local_storage_type
+    shared_storage_path = var.shared_storage_path == "" ? "/srv/gradient" : var.shared_storage_path
+    shared_storage_type = var.shared_storage_type == "" ? "nfs" : var.shared_storage_type
+
     ssh_key_path = "${path.module}/ssh_key"
+    storage_server = paperspace_machine.gradient_main[0].private_ip_address
 }
 
 provider "cloudflare" {
@@ -232,8 +235,8 @@ module "gradient_processing" {
     letsencrypt_dns_settings = var.letsencrypt_dns_settings
     local_storage_config = var.local_storage_config
     local_storage_server = local.storage_server
-    local_storage_path = local.storage_path
-    local_storage_type = local.storage_type
+    local_storage_path = local.local_storage_path
+    local_storage_type = local.local_storage_type
     logs_host = var.logs_host
     gradient_processing_version = var.gradient_processing_version
     name = var.name
@@ -241,8 +244,8 @@ module "gradient_processing" {
     sentry_dsn = var.sentry_dsn
     shared_storage_config = var.shared_storage_config
     shared_storage_server = local.storage_server
-    shared_storage_path = local.storage_path
-    shared_storage_type = local.storage_type
+    shared_storage_path = local.shared_storage_path
+    shared_storage_type = local.shared_storage_type
     tls_cert = var.tls_cert
     tls_key = var.tls_key
 }

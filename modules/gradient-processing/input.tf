@@ -134,9 +134,8 @@ variable "name" {
 }
 
 variable "local_storage_config" {
-  description = "Local storage config"
-  type = map
-  default = {}
+  description = "Local storage config json"
+  default = ""
 }
 
 variable "local_storage_path" {
@@ -151,7 +150,10 @@ variable "local_storage_type" {
   description = "Local local storage type"
 }
 
-
+variable "shared_storage_config" {
+  description = "Shared storage config json"
+  default = ""
+}
 
 variable "shared_storage_path" {
   description = "Shared storage path "
@@ -164,12 +166,6 @@ variable "shared_storage_server" {
 
 variable "shared_storage_type" {
   description = "Default shared storage type"
-}
-
-variable "shared_storage_config" {
-  description = "Shared storage config"
-  type = map
-  default = {}
 }
 
 variable "lb_count" {
