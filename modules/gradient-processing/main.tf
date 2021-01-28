@@ -2,18 +2,18 @@ locals {
     helm_repo_url = var.helm_repo_url == "" ? "https://infrastructure-public-chart-museum-repository.storage.googleapis.com" : var.helm_repo_url
     letsencrypt_enabled = (length(var.letsencrypt_dns_settings) != 0 && (var.tls_cert == "" && var.tls_key == ""))
 
-    local_storage_config = jsondecode(var.local_storage_config)
+    local_storage_config = var.local_storage_config == "" ? {} : jsondecode(var.local_storage_config)
     local_storage_name = "gradient-processing-local"
     local_storage_secrets = {
-        "ceph-csi" = {
+        "ceph-csi-fs" = {
             "global.storage.gradient-processing-local.user" = lookup(local.local_storage_config, "user", "")
             "global.storage.gradient-processing-local.password" = lookup(local.local_storage_config, "password", "")
         }
     }
-    shared_storage_config = jsondecode(var.shared_storage_config)
+    shared_storage_config = var.shared_storage_config == "" ? {} : jsondecode(var.shared_storage_config)
     shared_storage_name = "gradient-processing-shared"
     shared_storage_secrets = {
-        "cephfs" = {
+        "ceph-csi-fs" = {
             "global.storage.gradient-processing-shared.user" = lookup(local.shared_storage_config, "user", "")
             "global.storage.gradient-processing-shared.password" = lookup(local.shared_storage_config, "password", "")
         }

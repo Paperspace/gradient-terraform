@@ -65,7 +65,7 @@ locals {
 
     local_storage_path = var.local_storage_path == "" ? "/srv/gradient" : var.local_storage_path
     local_storage_type = var.local_storage_type == "" ? "nfs" : var.local_storage_type
-    shared_storage_path = var.shared_storage_path == "" ? "/srv/gradient" : var.shared_storage_path
+    shared_storage_path = var.shared_storage_path == "/" ? "/srv/gradient" : var.shared_storage_path
     shared_storage_type = var.shared_storage_type == "" ? "nfs" : var.shared_storage_type
 
     ssh_key_path = "${path.module}/ssh_key"
@@ -238,7 +238,7 @@ module "gradient_processing" {
     local_storage_path = local.local_storage_path
     local_storage_type = local.local_storage_type
     logs_host = var.logs_host
-    gradient_processing_version = var.gradient_processing_version
+    gradient_processing_version = "v0.16.2-beta3" //var.gradient_processing_version
     name = var.name
     paperspace_base_url = var.api_host
     sentry_dsn = var.sentry_dsn
