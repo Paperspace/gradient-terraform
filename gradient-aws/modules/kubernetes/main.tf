@@ -330,6 +330,7 @@ locals {
         asg_max_size = local.node_asg_max_sizes[node_type]
         asg_min_size = local.node_asg_min_sizes[node_type]
         instance_type = local.node_instance_types[node_type]
+        root_volume_type = "gp2"
         key_name = var.public_key == "" ? "" : aws_key_pair.main[0].id
         kubelet_extra_args = "--node-labels=${join(",",
             concat([
