@@ -392,6 +392,7 @@ resource "aws_key_pair" "main" {
 
 module "eks" {
     source          = "terraform-aws-modules/eks/aws"
+    version = "13.2.1"
 
     config_output_path = pathexpand(var.kubeconfig_path)
     create_eks = var.enable
