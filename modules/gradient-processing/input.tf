@@ -133,6 +133,11 @@ variable "name" {
   description = "Cloud provider name"
 }
 
+variable "local_storage_config" {
+  description = "Local storage config json"
+  default = ""
+}
+
 variable "local_storage_path" {
   description = "Local storage path "
   default = "/"
@@ -143,6 +148,11 @@ variable "local_storage_server" {
 }
 variable "local_storage_type" {
   description = "Local local storage type"
+}
+
+variable "shared_storage_config" {
+  description = "Shared storage config json"
+  default = ""
 }
 
 variable "shared_storage_path" {

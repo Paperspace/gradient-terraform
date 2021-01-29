@@ -63,21 +63,6 @@ variable "gpu_selector" {
     default = "metal-gpu"
 }
 
-variable "local_storage_path" {
-    description = "Local storage path on nodes"
-    default = ""
-}
-
-variable "local_storage_server" {
-    description = "Local storage server"
-    default = ""
-}
-
-variable "local_storage_type" {
-    description = "Local storage type"
-    default = ""
-}
-
 variable "setup_docker" {
     description = "Setup docker"
     default = false

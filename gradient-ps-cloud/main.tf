@@ -55,7 +55,7 @@ locals {
     dns_node_selector = var.kind == "multinode" ? {} : { "paperspace.com/pool-name" = "services-small" }
     enable_gradient_service = var.kind == "multinode" ? 1 : 0
     enable_gradient_lb = var.kind == "multinode" ? 1 : 0
-    gradient_lb_count = var.kind == "multinode" ? 2 : 0
+    gradient_lb_count = var.kind == "multinode" ? 1 : 0
     gradient_main_count = var.kind == "multinode" ? 3 : 1
     gradient_service_count = var.kind == "multinode" ? 2 : 0
     k8s_version = var.k8s_version == "" ? "1.15.12" : var.k8s_version
@@ -63,10 +63,13 @@ locals {
     lb_ips = var.kind == "multinode" ? paperspace_machine.gradient_lb.*.public_ip_address : [paperspace_machine.gradient_main[0].public_ip_address]
     lb_pool_name = var.kind == "multinode" ? "lb" : "services-small"
 
-    storage_path = "/srv/gradient"
-    storage_server = paperspace_machine.gradient_main[0].private_ip_address
-    storage_type = "nfs"
+    local_storage_path = var.local_storage_path == "" ? "/srv/gradient" : var.local_storage_path
+    local_storage_type = var.local_storage_type == "" ? "nfs" : var.local_storage_type
+    shared_storage_path = var.shared_storage_path == "/" ? "/srv/gradient" : var.shared_storage_path
+    shared_storage_type = var.shared_storage_type == "" ? "nfs" : var.shared_storage_type
+
     ssh_key_path = "${path.module}/ssh_key"
+    storage_server = paperspace_machine.gradient_main[0].private_ip_address
 }
 
 provider "cloudflare" {
@@ -230,17 +233,19 @@ module "gradient_processing" {
     lb_pool_name = local.lb_pool_name
     letsencrypt_dns_name = var.letsencrypt_dns_name
     letsencrypt_dns_settings = var.letsencrypt_dns_settings
+    local_storage_config = var.local_storage_config
     local_storage_server = local.storage_server
-    local_storage_path = local.storage_path
-    local_storage_type = local.storage_type
+    local_storage_path = local.local_storage_path
+    local_storage_type = local.local_storage_type
     logs_host = var.logs_host
     gradient_processing_version = var.gradient_processing_version
     name = var.name
     paperspace_base_url = var.api_host
     sentry_dsn = var.sentry_dsn
+    shared_storage_config = var.shared_storage_config
     shared_storage_server = local.storage_server
-    shared_storage_path = local.storage_path
-    shared_storage_type = local.storage_type
+    shared_storage_path = local.shared_storage_path
+    shared_storage_type = local.shared_storage_type
     tls_cert = var.tls_cert
     tls_key = var.tls_key
 }
@@ -249,7 +254,7 @@ resource "rancher2_cluster" "main" {
   name = var.cluster_handle
   description = var.name
   rke_config {
-        kubernetes_version = "v${local.k8s_version}-rancher1-1"
+        kubernetes_version = "v${local.k8s_version}-rancher2-7"
 
         dns {
             node_selector = local.dns_node_selector
@@ -268,10 +273,9 @@ resource "rancher2_cluster" "main" {
 }
 
 resource "rancher2_cluster_sync" "main" {
-    depends_on = [paperspace_machine.gradient_main, null_resource.gradient_lb_check, null_resource.gradient_service_check]
+    depends_on = [paperspace_machine.gradient_main, paperspace_machine.gradient_lb, null_resource.gradient_service_check]
     cluster_id =  rancher2_cluster.main.id
-    wait_monitoring = true
-    state_confirm = 10
+    state_confirm = 1
 
     timeouts {
         create = "15m"

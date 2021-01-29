@@ -28,11 +28,52 @@ global:
       path: ${local_storage_path}
       server: ${local_storage_server}
       type: ${local_storage_type}
+
+      %{ if local_storage_type == "ceph-csi-fs" }
+      monitors: 
+        %{ for monitor in split(",", lookup(local_storage_config, "monitors")) }
+        - ${ monitor }
+        %{ endfor }
+
+      user: ${local_storage_config["user"]}
+      password: ${local_storage_config["password"]}
+      fsName: ${local_storage_config["fsName"]}
+      %{ endif }
     gradient-processing-shared:
       class: gradient-processing-shared
       path: ${shared_storage_path}
       server: ${shared_storage_server}
       type: ${shared_storage_type}
+
+      %{ if shared_storage_type == "ceph-csi-fs" }
+      user: ${shared_storage_config["user"]}
+      password: ${shared_storage_config["password"]}
+      fsName: ${shared_storage_config["fsName"]}
+      monitors: 
+        %{ for monitor in split(",", lookup(shared_storage_config, "monitors")) }
+        - ${ monitor }
+        %{ endfor }
+
+      %{ endif }
+
+ceph-csi-cephfs:
+  enabled: ${local_storage_type == "ceph-csi-fs" || shared_storage_type == "ceph-csi-fs" ? true : false }
+  csiConfig:
+    %{ if local_storage_type == "ceph-csi-fs" }
+    - clusterID: gradient-processing-local
+      monitors:
+      %{ for monitor in split(",", lookup(local_storage_config, "monitors")) }
+        - ${ monitor }
+      %{ endfor }
+    %{ endif }
+    %{ if shared_storage_type == "ceph-csi-fs" }
+    - clusterID: gradient-processing-shared
+      monitors:
+      %{ for monitor in split(",", lookup(shared_storage_config, "monitors")) }
+        - ${ monitor }
+      %{ endfor }
+    %{ endif }
+
 
 cluster-autoscaler:
   enabled: ${cluster_autoscaler_enabled}

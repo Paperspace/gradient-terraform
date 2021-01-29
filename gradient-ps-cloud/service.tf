@@ -39,8 +39,7 @@ resource "paperspace_machine" "gradient_service" {
 
 resource "null_resource" "gradient_service_check" {
     count = local.gradient_service_count
-
-    depends_on = [ paperspace_machine.gradient_service ]
+    
     provisioner "remote-exec" {
         connection {
             bastion_host = paperspace_machine.gradient_main[0].public_ip_address
@@ -55,5 +54,3 @@ resource "null_resource" "gradient_service_check" {
         }
     } 
 }
-
-
