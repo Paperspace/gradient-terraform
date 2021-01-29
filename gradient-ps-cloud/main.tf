@@ -55,7 +55,7 @@ locals {
     dns_node_selector = var.kind == "multinode" ? {} : { "paperspace.com/pool-name" = "services-small" }
     enable_gradient_service = var.kind == "multinode" ? 1 : 0
     enable_gradient_lb = var.kind == "multinode" ? 1 : 0
-    gradient_lb_count = var.kind == "multinode" ? 2 : 0
+    gradient_lb_count = var.kind == "multinode" ? 1 : 0
     gradient_main_count = var.kind == "multinode" ? 3 : 1
     gradient_service_count = var.kind == "multinode" ? 2 : 0
     k8s_version = var.k8s_version == "" ? "1.15.12" : var.k8s_version
@@ -238,7 +238,7 @@ module "gradient_processing" {
     local_storage_path = local.local_storage_path
     local_storage_type = local.local_storage_type
     logs_host = var.logs_host
-    gradient_processing_version = "v0.16.2-beta3" //var.gradient_processing_version
+    gradient_processing_version = var.gradient_processing_version
     name = var.name
     paperspace_base_url = var.api_host
     sentry_dsn = var.sentry_dsn
