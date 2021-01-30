@@ -57,7 +57,7 @@ locals {
     enable_gradient_lb = var.kind == "multinode" ? 1 : 0
     gradient_lb_count = var.kind == "multinode" ? 1 : 0
     gradient_main_count = var.kind == "multinode" ? 3 : 1
-    gradient_service_count = var.kind == "multinode" ? 2 : 0
+    gradient_service_count = var.kind == "multinode" ? 3 : 0
     k8s_version = var.k8s_version == "" ? "1.15.12" : var.k8s_version
     kubeconfig = yamldecode(rancher2_cluster_sync.main.kube_config)
     lb_ips = var.kind == "multinode" ? paperspace_machine.gradient_lb.*.public_ip_address : [paperspace_machine.gradient_main[0].public_ip_address]
