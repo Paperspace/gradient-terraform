@@ -73,7 +73,9 @@ ceph-csi-cephfs:
         - ${ monitor }
       %{ endfor }
     %{ endif }
-
+  provisioner:
+    nodeSelector:
+      paperspace.com/pool-name: ${service_pool_name}
 
 cluster-autoscaler:
   enabled: ${cluster_autoscaler_enabled}
@@ -230,7 +232,157 @@ gradient-operator:
           requests:
             memory: 58Gi
     %{ endif }
-    %{ if cluster_autoscaler_cloudprovider == "paperspace" }
+    %{ if gradient_machine_config == "paperspace-public" }
+    modelDeploymentConfig:
+      labelName: paperspace.com/pool-name
+      cpu:
+        small:
+          label: "Free-CPU"
+          requests:
+            cpu: 3
+            memory: 6Gi
+        medium:
+          label: "C7"
+          requests:
+            cpu: 9
+            memory: 22.5Gi
+        large:
+          label: "C10"
+          requests:
+            cpu: 24
+            memory: 183Gi
+      gpu:
+        small:
+          label: "Free-GPU"
+          requests:
+            cpu: 8
+            memory: 22.5Gi
+            nvidia.com/gpu: 1
+        medium:
+          label: "P4000"
+          requests:
+            cpu: 6
+            memory: 22.5Gi
+            nvidia.com/gpu: 1
+        large:
+          label: "P5000"
+          requests:
+            cpu: 6
+            memory: 22.5Gi
+            nvidia.com/gpu: 1
+    experimentConfig:
+      labelName: paperspace.com/pool-name
+      cpu:
+        small:
+          label: "Free-CPU"
+          requests:
+            cpu: 3
+            memory: 6Gi
+        medium:
+          label: "C7"
+          requests:
+            cpu: 9
+            memory: 22.5Gi
+        large:
+          label: "C10"
+          requests:
+            cpu: 24
+            memory: 183Gi
+      gpu:
+        small:
+          label: "Free-GPU"
+          requests:
+            cpu: 8
+            memory: 22.5Gi
+            nvidia.com/gpu: 1
+        medium:
+          label: "P4000"
+          requests:
+            cpu: 6
+            memory: 22.5Gi
+            nvidia.com/gpu: 1
+        large:
+          label: "P5000"
+          requests:
+            cpu: 6
+            memory: 22.5Gi
+            nvidia.com/gpu: 1
+    notebookConfig:
+      labelName: paperspace.com/pool-name
+      cpu:
+        small:
+          label: "Free-CPU"
+          requests:
+            cpu: 3
+            memory: 6Gi
+        medium:
+          label: "C7"
+          requests:
+            cpu: 9
+            memory: 22.5Gi
+        large:
+          label: "C10"
+          requests:
+            cpu: 24
+            memory: 183Gi
+      gpu:
+        small:
+          label: "Free-GPU"
+          requests:
+            cpu: 8
+            memory: 22.5Gi
+            nvidia.com/gpu: 1
+        medium:
+          label: "P4000"
+          requests:
+            cpu: 6
+            memory: 22.5Gi
+            nvidia.com/gpu: 1
+        large:
+          label: "P5000"
+          requests:
+            cpu: 6
+            memory: 22.5Gi
+            nvidia.com/gpu: 1
+    tensorboardConfig:
+      labelName: paperspace.com/pool-name
+      cpu:
+        small:
+          label: "Free-CPU"
+          requests:
+            cpu: 3
+            memory: 6Gi
+        medium:
+          label: "C7"
+          requests:
+            cpu: 9
+            memory: 22.5Gi
+        large:
+          label: "C10"
+          requests:
+            cpu: 24
+            memory: 183Gi
+      gpu:
+        small:
+          label: "Free-GPU"
+          requests:
+            cpu: 8
+            memory: 22.5Gi
+            nvidia.com/gpu: 1
+        medium:
+          label: "P4000"
+          requests:
+            cpu: 6
+            memory: 22.5Gi
+            nvidia.com/gpu: 1
+        large:
+          label: "P5000"
+          requests:
+            cpu: 6
+            memory: 22.5Gi
+            nvidia.com/gpu: 1
+    %{ endif }
+    %{ if gradient_machine_config == "paperspace-managed" }
     modelDeploymentConfig:
       labelName: paperspace.com/pool-name
       cpu:
@@ -266,10 +418,6 @@ gradient-operator:
             nvidia.com/gpu: 1
             cpu: 6
             memory: 22.5Gi
-
-
-
-
     experimentConfig:
       labelName: paperspace.com/pool-name
       cpu:

@@ -102,6 +102,10 @@ variable "global_selector" {
     default = ""
 }
 
+variable "gradient_machine_config" {
+  description = "Gradient machine config"
+  default = ""
+}
 variable "gradient_processing_version" {
   description = "Gradient processing version"
 }
