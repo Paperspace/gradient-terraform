@@ -71,6 +71,10 @@ variable "elastic_search_user" {
     default = "gradient"
 }
 
+variable "gradient_machine_config" {
+    description = "Gradient machine config"
+    default = ""
+}
 variable "gradient_processing_chart" {
     description = "Gradient processing chart"
     default = "gradient-processing"
