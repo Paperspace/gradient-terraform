@@ -382,7 +382,7 @@ gradient-operator:
             memory: 22.5Gi
             nvidia.com/gpu: 1
     %{ endif }
-    %{ if gradient_storage_config == "paperspace-managed" }
+    %{ if gradient_machine_config == "paperspace-managed" }
     modelDeploymentConfig:
       labelName: paperspace.com/pool-name
       cpu:
@@ -418,10 +418,6 @@ gradient-operator:
             nvidia.com/gpu: 1
             cpu: 6
             memory: 22.5Gi
-
-
-
-
     experimentConfig:
       labelName: paperspace.com/pool-name
       cpu:
