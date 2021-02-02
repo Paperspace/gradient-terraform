@@ -236,8 +236,13 @@ gradient-operator:
     modelDeploymentConfig:
       labelName: paperspace.com/pool-name
       cpu:
-        small:
+        freeSmall:
           label: "Free-CPU"
+          requests:
+            cpu: 3
+            memory: 6Gi
+        small:
+          label: "C5"
           requests:
             cpu: 3
             memory: 6Gi
@@ -252,29 +257,42 @@ gradient-operator:
             cpu: 24
             memory: 183Gi
       gpu:
-        small:
+        freeSmall:
           label: "Free-GPU"
           requests:
             cpu: 8
             memory: 22.5Gi
             nvidia.com/gpu: 1
-        medium:
+        small:
           label: "P4000"
           requests:
             cpu: 6
             memory: 22.5Gi
             nvidia.com/gpu: 1
-        large:
+        medium:
           label: "P5000"
           requests:
             cpu: 6
             memory: 22.5Gi
             nvidia.com/gpu: 1
+        large:
+          label: "V100"
+          requests:
+            nvidia.com/gpu: 1
+            cpu: 6
+            memory: 22.5Gi
+
+
     experimentConfig:
       labelName: paperspace.com/pool-name
       cpu:
-        small:
+        freeSmall:
           label: "Free-CPU"
+          requests:
+            cpu: 3
+            memory: 6Gi
+        small:
+          label: "C5"
           requests:
             cpu: 3
             memory: 6Gi
@@ -289,29 +307,40 @@ gradient-operator:
             cpu: 24
             memory: 183Gi
       gpu:
-        small:
+        freeSmall:
           label: "Free-GPU"
           requests:
             cpu: 8
             memory: 22.5Gi
             nvidia.com/gpu: 1
-        medium:
+        small:
           label: "P4000"
           requests:
             cpu: 6
             memory: 22.5Gi
             nvidia.com/gpu: 1
-        large:
+        medium:
           label: "P5000"
           requests:
             cpu: 6
             memory: 22.5Gi
             nvidia.com/gpu: 1
+        large:
+          label: "V100"
+          requests:
+            nvidia.com/gpu: 1
+            cpu: 6
+            memory: 22.5Gi
     notebookConfig:
       labelName: paperspace.com/pool-name
       cpu:
-        small:
+        freeSmall:
           label: "Free-CPU"
+          requests:
+            cpu: 3
+            memory: 6Gi
+        small:
+          label: "C5"
           requests:
             cpu: 3
             memory: 6Gi
@@ -326,29 +355,41 @@ gradient-operator:
             cpu: 24
             memory: 183Gi
       gpu:
-        small:
+        freeSmall:
           label: "Free-GPU"
           requests:
             cpu: 8
             memory: 22.5Gi
             nvidia.com/gpu: 1
-        medium:
+        small:
           label: "P4000"
           requests:
             cpu: 6
             memory: 22.5Gi
             nvidia.com/gpu: 1
-        large:
+        medium:
           label: "P5000"
           requests:
             cpu: 6
             memory: 22.5Gi
             nvidia.com/gpu: 1
+        large:
+          label: "V100"
+          requests:
+            nvidia.com/gpu: 1
+            cpu: 6
+            memory: 22.5Gi
+
     tensorboardConfig:
       labelName: paperspace.com/pool-name
       cpu:
-        small:
+        freeSmall:
           label: "Free-CPU"
+          requests:
+            cpu: 3
+            memory: 6Gi
+        small:
+          label: "C5"
           requests:
             cpu: 3
             memory: 6Gi
@@ -363,24 +404,31 @@ gradient-operator:
             cpu: 24
             memory: 183Gi
       gpu:
-        small:
+        freeSmall:
           label: "Free-GPU"
           requests:
             cpu: 8
             memory: 22.5Gi
             nvidia.com/gpu: 1
-        medium:
+        small:
           label: "P4000"
           requests:
             cpu: 6
             memory: 22.5Gi
             nvidia.com/gpu: 1
-        large:
+        medium:
           label: "P5000"
           requests:
             cpu: 6
             memory: 22.5Gi
             nvidia.com/gpu: 1
+        large:
+          label: "V100"
+          requests:
+            nvidia.com/gpu: 1
+            cpu: 6
+            memory: 22.5Gi
+
     %{ endif }
     %{ if gradient_machine_config == "paperspace-managed" }
     modelDeploymentConfig:
