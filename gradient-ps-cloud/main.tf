@@ -13,12 +13,12 @@ terraform {
 
 locals {
     asg_types = var.gradient_machine_config == "paperspace-public" ? merge(local.base_asg_types, {
-/*        "Free-CPU"={
+        "Free-CPU"={
             type = "cpu"
         }
         "Free-GPU"={
             type = "gpu"
-        }*/
+        }
     }) : local.base_asg_types
 
     base_asg_types = {
@@ -43,8 +43,8 @@ locals {
     }
 
     asg_max_sizes = var.gradient_machine_config == "paperspace-public" ? merge(local.base_asg_max_sizes, {
-#        "Free-CPU"=10,
-#        "Free-GPU"=10,
+        "Free-CPU"=10,
+        "Free-GPU"=10,
     }) : local.base_asg_max_sizes
     base_asg_max_sizes = merge({
         "C5"=10,
@@ -56,8 +56,8 @@ locals {
     }, var.asg_min_sizes)
 
     asg_min_sizes = var.gradient_machine_config == "paperspace-public" ? merge(local.base_asg_min_sizes, {
-#        "Free-CPU"=10,
-#        "Free-GPU"=10,
+        "Free-CPU"=0,
+        "Free-GPU"=0,
     }) : local.base_asg_min_sizes
     base_asg_min_sizes = merge({
         "C5"=0,
