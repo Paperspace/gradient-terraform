@@ -248,4 +248,5 @@ variable "metrics_new_relic_name" {
 
 variable "pod_assignment_label_name" {
     description = "Label that your nodes will be selected against"
+    default = ""
 }
