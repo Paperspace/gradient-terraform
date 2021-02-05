@@ -141,7 +141,7 @@ gradient-operator:
   config:
     ingressHost: ${domain}
     usePodAntiAffinity: ${use_pod_anti_affinity}
-    %{ if pod_assignment_label_name }
+    %{ if pod_assignment_label_name != "" }
     podAssignmentLabelName: ${pod_assignment_label_name}
     %{ endif }
 
