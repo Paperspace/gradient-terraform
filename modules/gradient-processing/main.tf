@@ -149,6 +149,7 @@ resource "helm_release" "gradient_processing" {
             use_pod_anti_affinity = var.use_pod_anti_affinity
             metrics_new_relic_enabled = var.metrics_new_relic_enabled
             metrics_new_relic_name = var.metrics_new_relic_name
+            pod_assignment_label_name = var.pod_assignment_label_name
         })
     ]
 }
