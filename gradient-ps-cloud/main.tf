@@ -80,6 +80,7 @@ locals {
     kubeconfig = yamldecode(rancher2_cluster_sync.main.kube_config)
     lb_ips = var.kind == "multinode" ? paperspace_machine.gradient_lb.*.public_ip_address : [paperspace_machine.gradient_main[0].public_ip_address]
     lb_pool_name = var.kind == "multinode" ? "lb" : "services-small"
+    pod_assignment_label_name = "paperspace.com/pool-name"
 
     local_storage_path = var.local_storage_path == "" ? "/srv/gradient" : var.local_storage_path
     local_storage_type = var.local_storage_type == "" ? "nfs" : var.local_storage_type
