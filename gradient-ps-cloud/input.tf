@@ -48,6 +48,10 @@ variable "kind" {
     default = "singlenode"
 }
 
+variable "gradient_machine_config" {
+    description = "Gradient machine config"
+    default = ""
+}
 variable "machine_storage_main" {
     type = number
     description = "Main storage id"

@@ -124,7 +124,6 @@ resource "helm_release" "gradient_processing" {
             elastic_search_user = var.elastic_search_user
             domain = var.domain
             global_selector = var.global_selector
-            gradient_machine_config = var.gradient_machine_config
             label_selector_cpu = var.label_selector_cpu
             label_selector_gpu = var.label_selector_gpu
             lb_count = var.lb_count
