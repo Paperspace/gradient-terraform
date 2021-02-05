@@ -248,6 +248,7 @@ module "gradient_processing" {
     shared_storage_type = local.shared_storage_type
     tls_cert = var.tls_cert
     tls_key = var.tls_key
+    pod_assignment_label_name = "paperspace.com/pool-name"
 }
 
 resource "rancher2_cluster" "main" {

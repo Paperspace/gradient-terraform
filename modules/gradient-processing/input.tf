@@ -102,10 +102,6 @@ variable "global_selector" {
     default = ""
 }
 
-variable "gradient_machine_config" {
-  description = "Gradient machine config"
-  default = ""
-}
 variable "gradient_processing_version" {
   description = "Gradient processing version"
 }
@@ -248,4 +244,8 @@ variable "metrics_new_relic_enabled" {
 variable "metrics_new_relic_name" {
     description = "Postfix for New Relic application name"
     default = ""
+}
+
+variable "pod_assignment_label_name" {
+    description = "Label that your nodes will be selected against"
 }
