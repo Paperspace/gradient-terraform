@@ -12,7 +12,16 @@ terraform {
 }
 
 locals {
-    asg_types = {
+    asg_types = var.gradient_machine_config == "paperspace-public" ? merge(local.base_asg_types, {
+        "Free-CPU"={
+            type = "cpu"
+        }
+        "Free-GPU"={
+            type = "gpu"
+        }
+    }) : local.base_asg_types
+
+    base_asg_types = {
         "C5"={
             type = "cpu"
         },
@@ -32,7 +41,12 @@ locals {
             type = "gpu"
         },
     }
-    asg_max_sizes = merge({
+
+    asg_max_sizes = var.gradient_machine_config == "paperspace-public" ? merge(local.base_asg_max_sizes, {
+        "Free-CPU"=10,
+        "Free-GPU"=10,
+    }) : local.base_asg_max_sizes
+    base_asg_max_sizes = merge({
         "C5"=10,
         "C7"=10,
         "C10"=10,
@@ -41,7 +55,11 @@ locals {
         "V100"=10,
     }, var.asg_min_sizes)
 
-    asg_min_sizes = merge({
+    asg_min_sizes = var.gradient_machine_config == "paperspace-public" ? merge(local.base_asg_min_sizes, {
+        "Free-CPU"=0,
+        "Free-GPU"=0,
+    }) : local.base_asg_min_sizes
+    base_asg_min_sizes = merge({
         "C5"=0,
         "C7"=0,
         "C10"=0,
@@ -238,7 +256,6 @@ module "gradient_processing" {
     local_storage_path = local.local_storage_path
     local_storage_type = local.local_storage_type
     logs_host = var.logs_host
-    gradient_machine_config = var.gradient_machine_config
     gradient_processing_version = var.gradient_processing_version
     name = var.name
     paperspace_base_url = var.api_host
@@ -249,6 +266,7 @@ module "gradient_processing" {
     shared_storage_type = local.shared_storage_type
     tls_cert = var.tls_cert
     tls_key = var.tls_key
+    pod_assignment_label_name = "paperspace.com/pool-name"
 }
 
 resource "rancher2_cluster" "main" {
