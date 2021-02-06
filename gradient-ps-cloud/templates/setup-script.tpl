@@ -21,7 +21,7 @@ cat <<EOL > /etc/docker/daemon.json
         }
     },
 %{ endif ~}
-    "registry-mirrors": ["https://mirror.gcr.io"]
+    "registry-mirrors": ["http://docker-registry-mirror.paperspace.io", "https://mirror.gcr.io"]
 }
 EOL
 

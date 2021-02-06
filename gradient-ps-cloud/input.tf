@@ -100,7 +100,7 @@ variable "machine_type_service" {
 variable "machine_storage_worker_cpu" {
     type = number
     description = "CPU worker storage"
-    default = 100
+    default = 500
 }
 variable "machine_template_id_cpu" {
     description = "CPU template id"
@@ -110,7 +110,7 @@ variable "machine_template_id_cpu" {
 variable "machine_storage_worker_gpu" {
     type = number
     description = "GPU worker storage"
-    default = 100
+    default = 500
 }
 variable "machine_template_id_gpu" {
     description = "GPU template id"
