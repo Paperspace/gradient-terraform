@@ -250,3 +250,8 @@ variable "pod_assignment_label_name" {
     description = "Label that your nodes will be selected against"
     default = ""
 } 
+
+variable "legacy_datasets_host_path" {
+    description = "This directory will be mounted as `/data` in your notebooks"
+    default = ""
+} 

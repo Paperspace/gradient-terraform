@@ -85,6 +85,7 @@ locals {
     local_storage_type = var.local_storage_type == "" ? "nfs" : var.local_storage_type
     shared_storage_path = var.shared_storage_path == "/" ? "/srv/gradient" : var.shared_storage_path
     shared_storage_type = var.shared_storage_type == "" ? "nfs" : var.shared_storage_type
+    legacy_datasets_host_path = var.gradient_machine_config == "paperspace-public" ? "/storage/public_datasets" : ""
 
     ssh_key_path = "${path.module}/ssh_key"
     storage_server = paperspace_machine.gradient_main[0].private_ip_address
@@ -267,6 +268,7 @@ module "gradient_processing" {
     tls_cert = var.tls_cert
     tls_key = var.tls_key
     pod_assignment_label_name = "paperspace.com/pool-name"
+    legacy_datasets_host_path = local.legacy_datasets_host_path
 }
 
 resource "rancher2_cluster" "main" {
