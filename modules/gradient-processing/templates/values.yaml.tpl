@@ -144,6 +144,9 @@ gradient-operator:
     %{ if pod_assignment_label_name != "" }
     podAssignmentLabelName: ${pod_assignment_label_name}
     %{ endif }
+    %{ if legacy_datasets_host_path != "" }
+    legacyDatasetsHostPath: ${legacy_datasets_host_path}
+    %{ endif }
 
 
     %{ if label_selector_cpu != "" && label_selector_gpu != "" }
