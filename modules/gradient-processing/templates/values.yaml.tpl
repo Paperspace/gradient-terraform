@@ -269,6 +269,11 @@ prometheus:
     ingress:
       hosts:
         - ${domain}/prometheus
+    %{ if prometheus_server_memory_limit != "" }
+    resources:
+      limits:
+        memory: ${prometheus_server_memory_limit}
+    %{ endif }
   kube-state-metrics:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}

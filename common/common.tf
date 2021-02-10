@@ -149,6 +149,11 @@ variable "name" {
     description = "Name"
 }
 
+variable "prometheus_server_memory_limit" {
+    description = "Prometheus server memory limit"
+    default = ""
+}
+
 variable "public_key_path" {
     description = "Login key path"
     default = ""

@@ -251,6 +251,11 @@ variable "pod_assignment_label_name" {
     default = ""
 } 
 
+variable "prometheus_server_memory_limit" {
+  description = "Prometheus server memory limit"
+  default = ""
+}
+
 variable "legacy_datasets_host_path" {
     description = "This directory will be mounted as `/data` in your notebooks"
     default = ""
