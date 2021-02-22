@@ -196,7 +196,7 @@ resource "paperspace_machine" "gradient_main" {
             host     = self.public_ip_address
             private_key = tls_private_key.ssh_key.private_key_pem
         }
-    } 
+    }
 
     provisioner "local-exec" {
         command = <<EOF
@@ -220,7 +220,7 @@ resource "null_resource" "check_cluster" {
         command     = "until curl -k -s $ENDPOINT/healthz >/dev/null; do sleep 4; done"
         environment = {
             ENDPOINT = local.kubeconfig["clusters"][0]["cluster"]["server"]
-        } 
+        }
     }
 }
 
@@ -240,6 +240,7 @@ module "gradient_processing" {
     cluster_apikey = var.cluster_apikey
     cluster_autoscaler_cloudprovider = "paperspace"
     cluster_autoscaler_enabled = true
+    cluster_autoscaler_delay_after_add = "2m"
     cluster_autoscaler_unneeded_time = "8m"
     cluster_handle = var.cluster_handle
     domain = var.domain
@@ -310,10 +311,10 @@ resource "rancher2_cluster_sync" "main" {
 
 resource "paperspace_autoscaling_group" "main" {
     for_each = local.asg_types
-    
+
     name = "${var.cluster_handle}-${each.key}"
     cluster_id = var.cluster_handle
-    machine_type = each.key 
+    machine_type = each.key
     template_id = each.value.type == "cpu" ? var.machine_template_id_cpu : var.machine_template_id_gpu
     max = local.asg_max_sizes[each.key]
     min = local.asg_min_sizes[each.key]
