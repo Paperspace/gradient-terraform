@@ -119,9 +119,6 @@ cluster-autoscaler:
     requests:
       cpu: 100m
       memory: 128Mi
-    limits:
-      cpu: 100m
-      memory: 128Mi
 
 efs-provisioner:
   enabled: ${efs_provisioner_enabled}
