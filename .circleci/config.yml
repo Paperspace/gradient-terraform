@@ -106,7 +106,7 @@ workflows:
             branches:
               ignore: master
       - docker-tools/build_and_push:
-          name: docker_build_and_push
+          name: docker-build-and-push-pr
           context: docker-deploy
           docker_username: ${DOCKER_USERNAME}
           docker_password: ${DOCKER_PASSWORD}
@@ -125,18 +125,6 @@ workflows:
           filters:
             branches:
               only: master
-      - docker-tools/build_and_push:
-          name: docker_build_and_push
-          context: docker-deploy
-          docker_username: ${DOCKER_USERNAME}
-          docker_password: ${DOCKER_PASSWORD}
-          workspace_root: *workspace_root
-          docker_image: *docker_image_gradient_installer
-          docker_tag: 0.0.0-latest
-          docker_file: Dockerfile
-          filters:
-            branches:
-              only: master
 
   tag:
     jobs:
@@ -147,3 +135,28 @@ workflows:
               only: /.*/
             branches:
               ignore: /.*/
+      - docker-tools/build_and_push:
+          name: docker-build-and-push
+          context: docker-deploy
+          docker_username: ${DOCKER_USERNAME}
+          docker_password: ${DOCKER_PASSWORD}
+          workspace_root: *workspace_root
+          docker_image: *docker_image_gradient_installer
+          docker_tag: 0.0.0-latest
+          docker_file: Dockerfile
+          filters:
+            branches:
+              only: master
+      - docker-tools/tag:
+          name: docker-tag
+          context: docker-deploy
+          docker_username: ${DOCKER_USERNAME}
+          docker_password: ${DOCKER_PASSWORD}
+          docker_image: *docker_image_gradient_installer
+          docker_source_tag: 0.0.0-latest
+          docker_destination_tag: ${CIRCLE_TAG}
+          filters:
+            branches:
+              only: master
+          requires:
+            - docker-build-and-push
