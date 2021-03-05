@@ -83,7 +83,7 @@ cluster-autoscaler:
   image:
     pullPolicy: Always
     repository: paperspace/cluster-autoscaler
-    tag: v1.15.1
+    tag: v1.15.3
 
   autoscalingGroups:
     %{ for autoscaling_group in cluster_autoscaler_autoscaling_groups }
@@ -117,9 +117,6 @@ cluster-autoscaler:
 
   resources:
     requests:
-      cpu: 100m
-      memory: 128Mi
-    limits:
       cpu: 100m
       memory: 128Mi
 
