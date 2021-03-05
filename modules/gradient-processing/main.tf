@@ -111,6 +111,7 @@ resource "helm_release" "gradient_processing" {
             cluster_autoscaler_autoscaling_groups = var.cluster_autoscaler_autoscaling_groups
             cluster_autoscaler_cloudprovider = var.cluster_autoscaler_cloudprovider
             cluster_autoscaler_enabled = var.cluster_autoscaler_enabled
+            cluster_autoscaler_delay_after_add = var.cluster_autoscaler_delay_after_add
             cluster_autoscaler_unneeded_time = var.cluster_autoscaler_unneeded_time
             cluster_handle = var.cluster_handle
             cluster_secret_checksum = sha256("${var.cluster_handle}${var.cluster_apikey}")

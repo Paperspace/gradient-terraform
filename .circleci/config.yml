@@ -64,7 +64,7 @@ jobs:
           command: bin/build ${CIRCLE_TAG}
       - run:
           command: bin/upload ${CIRCLE_TAG}
-      
+
 workflows:
   version: 2
   pr:
@@ -73,39 +73,47 @@ workflows:
           filters:
             branches:
               ignore: master
-         
       - terraform_plan_12:
-          name: plan_aws
+          name: plan_aws_12
           path: gradient-aws/tests
           workspace: default
           context: terraform
           filters:
             branches:
               ignore: master
-
       - terraform_plan_12:
-          name: plan_metal
+          name: plan_metal_12
           path: gradient-metal/tests
           workspace: default
           context: terraform
           filters:
             branches:
               ignore: master
-
       - terraform_plan_13:
-          name: plan_aws
+          name: plan_aws_13
           path: gradient-aws/tests
           workspace: default
           context: terraform
           filters:
             branches:
               ignore: master
-
       - terraform_plan_13:
-          name: plan_metal
+          name: plan_metal_13
           path: gradient-metal/tests
           workspace: default
           context: terraform
+          filters:
+            branches:
+              ignore: master
+      - docker-tools/build_and_push:
+          name: docker-build-and-push-pr
+          context: docker-deploy
+          docker_username: ${DOCKER_USERNAME}
+          docker_password: ${DOCKER_PASSWORD}
+          workspace_root: *workspace_root
+          docker_image: *docker_image_gradient_installer
+          docker_tag: 0.0.0-${CIRCLE_SHA1}
+          docker_file: Dockerfile
           filters:
             branches:
               ignore: master
@@ -114,19 +122,6 @@ workflows:
     jobs:
       - release-tools/release:
           context: semantic-release
-          filters:
-            branches:
-              only: master
-
-      - docker-tools/build_and_push:
-          name: docker_build_and_push
-          context: docker-deploy
-          docker_username: ${DOCKER_USERNAME}
-          docker_password: ${DOCKER_PASSWORD}
-          workspace_root: *workspace_root
-          docker_image: *docker_image_gradient_installer
-          docker_tag: 0.0.0-latest
-          docker_file: Dockerfile
           filters:
             branches:
               only: master
@@ -140,3 +135,28 @@ workflows:
               only: /.*/
             branches:
               ignore: /.*/
+      - docker-tools/build_and_push:
+          name: docker-build-and-push
+          context: docker-deploy
+          docker_username: ${DOCKER_USERNAME}
+          docker_password: ${DOCKER_PASSWORD}
+          workspace_root: *workspace_root
+          docker_image: *docker_image_gradient_installer
+          docker_tag: 0.0.0-latest
+          docker_file: Dockerfile
+          filters:
+            branches:
+              only: master
+      - docker-tools/tag:
+          name: docker-tag
+          context: docker-deploy
+          docker_username: ${DOCKER_USERNAME}
+          docker_password: ${DOCKER_PASSWORD}
+          docker_image: *docker_image_gradient_installer
+          docker_source_tag: 0.0.0-latest
+          docker_destination_tag: ${CIRCLE_TAG}
+          filters:
+            branches:
+              only: master
+          requires:
+            - docker-build-and-push

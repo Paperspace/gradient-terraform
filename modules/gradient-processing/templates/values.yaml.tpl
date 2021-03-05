@@ -30,7 +30,7 @@ global:
       type: ${local_storage_type}
 
       %{ if local_storage_type == "ceph-csi-fs" }
-      monitors: 
+      monitors:
         %{ for monitor in split(",", lookup(local_storage_config, "monitors")) }
         - ${ monitor }
         %{ endfor }
@@ -49,7 +49,7 @@ global:
       user: ${shared_storage_config["user"]}
       password: ${shared_storage_config["password"]}
       fsName: ${shared_storage_config["fsName"]}
-      monitors: 
+      monitors:
         %{ for monitor in split(",", lookup(shared_storage_config, "monitors")) }
         - ${ monitor }
         %{ endfor }
@@ -83,7 +83,7 @@ cluster-autoscaler:
   image:
     pullPolicy: Always
     repository: paperspace/cluster-autoscaler
-    tag: v1.15.2
+    tag: v1.15.3
 
   autoscalingGroups:
     %{ for autoscaling_group in cluster_autoscaler_autoscaling_groups }
@@ -94,7 +94,7 @@ cluster-autoscaler:
   extraArgs:
     skip-nodes-with-system-pods: false
     %{ if cluster_autoscaler_unneeded_time != "" }
-    scale-down-delay-after-add: ${cluster_autoscaler_unneeded_time}
+    scale-down-delay-after-add: ${cluster_autoscaler_delay_after_add}
     scale-down-unneeded-time: ${cluster_autoscaler_unneeded_time}
     %{ endif }
   extraEnv:
