@@ -31,9 +31,6 @@ locals {
         "C7"={
             type = "cpu"
         },
-        "C10"={
-            type = "cpu"
-        },
         "P4000"={
             type = "gpu"
         },
@@ -56,7 +53,6 @@ locals {
     base_asg_max_sizes = merge({
         "C5"=10,
         "C7"=10,
-        "C10"=10,
         "P4000"=10,
         "P5000"=10,
         "P6000"=10,
@@ -71,7 +67,6 @@ locals {
     base_asg_min_sizes = merge({
         "C5"=0,
         "C7"=0,
-        "C10"=0,
         "P4000"=0,
         "P5000"=0,
         "P6000"=0,
