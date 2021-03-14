@@ -16,7 +16,7 @@ variable "amqp_protocol" {
 
 # Cluster
 variable "artifacts_access_key_id" {
-    description = "S3 compatibile access key for artifacts object storage"
+    description = "S3 compatible access key for artifacts object storage"
 }
 
 variable "artifacts_object_storage_endpoint" {
