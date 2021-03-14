@@ -159,3 +159,8 @@ workflows:
           docker_destination_tag: ${CIRCLE_TAG}
           requires:
             - docker-build-and-push
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              ignore: /.*/
