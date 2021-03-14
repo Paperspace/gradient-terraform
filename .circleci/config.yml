@@ -145,8 +145,10 @@ workflows:
           docker_tag: 0.0.0-latest
           docker_file: Dockerfile
           filters:
+            tags:
+              only: /.*/
             branches:
-              only: master
+              ignore: /.*/
       - docker-tools/tag:
           name: docker-tag
           context: docker-deploy
@@ -155,8 +157,5 @@ workflows:
           docker_image: *docker_image_gradient_installer
           docker_source_tag: 0.0.0-latest
           docker_destination_tag: ${CIRCLE_TAG}
-          filters:
-            branches:
-              only: master
           requires:
             - docker-build-and-push
