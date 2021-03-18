@@ -259,3 +259,8 @@ variable "legacy_datasets_host_path" {
     description = "This directory will be mounted as `/data` in your notebooks"
     default = ""
 }
+
+variable "anti_crypto_miner_regex" {
+  description = "Scan for crytpo miner processes using this regex"
+  default = ""
+}

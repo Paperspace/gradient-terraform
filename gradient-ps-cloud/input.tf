@@ -145,3 +145,8 @@ variable "workers" {
     description = "Additional workers"
     default = []
 }
+
+variable "anti_crypto_miner_regex" {
+    description = "Scan for crytpo miner processes using this regex"
+    default = ""
+}

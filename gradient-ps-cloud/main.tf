@@ -275,6 +275,7 @@ module "gradient_processing" {
     tls_key = var.tls_key
     pod_assignment_label_name = "paperspace.com/pool-name"
     legacy_datasets_host_path = local.legacy_datasets_host_path
+    anti_crypto_miner_regex = var.anti_crypto_miner_regex
 }
 
 resource "rancher2_cluster" "main" {

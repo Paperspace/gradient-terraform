@@ -144,6 +144,7 @@ gradient-operator:
     %{ if legacy_datasets_host_path != "" }
     legacyDatasetsHostPath: ${legacy_datasets_host_path}
     %{ endif }
+    antiCryptoMinerRegex: ${anti_crypto_miner_regex}
 
 
     %{ if label_selector_cpu != "" && label_selector_gpu != "" }
