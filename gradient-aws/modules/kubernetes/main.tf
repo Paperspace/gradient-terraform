@@ -336,9 +336,6 @@ locals {
             concat([
                 "paperspace.com/pool-name=${node_type}",
                 "paperspace.com/pool-type=${local.node_pool_types[node_type]}",
-                "node-role.kubernetes.io/node=",
-                "node-role.kubernetes.io/worker=",
-                "node-role.kubernetes.io/${node_type}",
             ], local.kubelet_extra_args[node_type])
         )}"
 
