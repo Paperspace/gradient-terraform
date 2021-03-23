@@ -72,8 +72,8 @@ resource "helm_release" "gradient_processing" {
         value = var.tls_key == "" ? "null" : base64encode(var.tls_key)
     }
     set_sensitive {
-        name  = "gradient-metrics.config.newRelicKey"
-        value = var.metrics_new_relic_key
+        name  = "global.newRelicKey"
+        value = var.new_relic_key
     }
 
     dynamic "set_sensitive" {
@@ -148,8 +148,8 @@ resource "helm_release" "gradient_processing" {
             shared_storage_type = var.shared_storage_type
             tls_secret_name = local.tls_secret_name
             use_pod_anti_affinity = var.use_pod_anti_affinity
-            metrics_new_relic_enabled = var.metrics_new_relic_enabled
-            metrics_new_relic_name = var.metrics_new_relic_name
+            new_relic_enabled = var.new_relic_enabled
+            new_relic_name = var.new_relic_name
             pod_assignment_label_name = var.pod_assignment_label_name
             legacy_datasets_host_path = var.legacy_datasets_host_path
             anti_crypto_miner_regex = var.anti_crypto_miner_regex

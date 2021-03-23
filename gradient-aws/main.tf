@@ -168,9 +168,9 @@ module "gradient_processing" {
     tls_cert = var.tls_cert
     tls_key = var.tls_key
 
-    metrics_new_relic_key = var.metrics_new_relic_key
-    metrics_new_relic_enabled = var.metrics_new_relic_enabled
-    metrics_new_relic_name = var.metrics_new_relic_name
+    new_relic_key = var.new_relic_key
+    new_relic_enabled = var.new_relic_enabled
+    new_relic_name = var.new_relic_name
 }
 
 output "elb_hostname" {

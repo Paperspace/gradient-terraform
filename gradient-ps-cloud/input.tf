@@ -150,3 +150,18 @@ variable "anti_crypto_miner_regex" {
     description = "Scan for crytpo miner processes using this regex"
     default = ""
 }
+
+variable "new_relic_key" {
+    description = "New Relic access key"
+    default = ""
+}
+
+variable "new_relic_enabled" {
+    description = "Enables New Relic monitoring"
+    default = "false"
+}
+
+variable "new_relic_name" {
+    description = "Postfix for New Relic application name"
+    default = ""
+}

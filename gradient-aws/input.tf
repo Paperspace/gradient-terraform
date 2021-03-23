@@ -84,17 +84,17 @@ variable "subnet_netmask" {
     default = "18"
 }
 
-variable "metrics_new_relic_key" {
+variable "new_relic_key" {
     description = "New Relic access key"
     default = ""
 }
 
-variable "metrics_new_relic_enabled" {
-    description = "Enables New Relic monitoring on the metrics API"
+variable "new_relic_enabled" {
+    description = "Enables New Relic monitoring"
     default = "false"
 }
 
-variable "metrics_new_relic_name" {
+variable "new_relic_name" {
     description = "Postfix for New Relic application name"
     default = ""
 }
