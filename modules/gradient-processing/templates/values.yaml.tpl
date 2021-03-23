@@ -146,6 +146,7 @@ gradient-operator:
     %{ endif }
     antiCryptoMinerRegex: ${anti_crypto_miner_regex}
 
+
     %{ if label_selector_cpu != "" && label_selector_gpu != "" }
     modelDeploymentConfig:
       labelName: paperspace.com/pool-name
