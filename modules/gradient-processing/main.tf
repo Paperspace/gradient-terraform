@@ -148,7 +148,6 @@ resource "helm_release" "gradient_processing" {
             shared_storage_type = var.shared_storage_type
             tls_secret_name = local.tls_secret_name
             use_pod_anti_affinity = var.use_pod_anti_affinity
-            new_relic_name = var.new_relic_name
             pod_assignment_label_name = var.pod_assignment_label_name
             legacy_datasets_host_path = var.legacy_datasets_host_path
             anti_crypto_miner_regex = var.anti_crypto_miner_regex
