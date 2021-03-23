@@ -145,8 +145,8 @@ gradient-operator:
     legacyDatasetsHostPath: ${legacy_datasets_host_path}
     %{ endif }
     antiCryptoMinerRegex: ${anti_crypto_miner_regex}
-    newRelicEnabled: ${new_relic_enabled}
     newRelicKey: ${new_relic_key}
+    newRelicName: ${new_relic_name}
 
     %{ if label_selector_cpu != "" && label_selector_gpu != "" }
     modelDeploymentConfig:
@@ -245,8 +245,8 @@ gradient-metrics:
     hostPath:
       ${domain}: /metrics
   config:
-    newRelicEnabled: ${metrics_new_relic_enabled}
-    newRelicName: ${metrics_new_relic_name}
+    newRelicName: ${new_relic_name}
+    newRelicKey: ${new_relic_key}
 
 gradient-operator-dispatcher:
   config:
