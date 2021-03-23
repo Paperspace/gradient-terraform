@@ -156,11 +156,6 @@ variable "new_relic_key" {
     default = ""
 }
 
-variable "new_relic_enabled" {
-    description = "Enables New Relic monitoring"
-    default = "false"
-}
-
 variable "new_relic_name" {
     description = "Postfix for New Relic application name"
     default = ""

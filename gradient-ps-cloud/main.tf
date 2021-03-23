@@ -276,7 +276,6 @@ module "gradient_processing" {
     pod_assignment_label_name = "paperspace.com/pool-name"
     legacy_datasets_host_path = local.legacy_datasets_host_path
     anti_crypto_miner_regex = var.anti_crypto_miner_regex
-    new_relic_enabled = var.new_relic_enabled
     new_relic_key = var.new_relic_key
     new_relic_name = var.new_relic_name
 }

@@ -169,7 +169,6 @@ module "gradient_processing" {
     tls_key = var.tls_key
 
     new_relic_key = var.new_relic_key
-    new_relic_enabled = var.new_relic_enabled
     new_relic_name = var.new_relic_name
 }
 
