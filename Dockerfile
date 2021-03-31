@@ -3,8 +3,6 @@ FROM hashicorp/terraform:0.14.9
 RUN apk add ansible curl bash
 
 RUN mkdir /home/paperspace
-ADD ./bin/setup /home/paperspace/gradient-installer/bin/setup
-RUN /home/paperspace/gradient-installer/bin/setup
 
 ADD . /home/paperspace/gradient-installer
 
