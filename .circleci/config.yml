@@ -123,6 +123,14 @@ workflows:
           filters:
             branches:
               ignore: master
+      - terraform_plan_13:
+          name: plan_ps_13
+          path: gradient-ps-cloud/tests
+          workspace: default
+          context: terraform
+          filters:
+            branches:
+              ignore: master
       - terraform_plan_14:
           name: plan_aws_14
           path: gradient-aws/tests
@@ -139,6 +147,15 @@ workflows:
           filters:
             branches:
               ignore: master
+      - terraform_plan_14:
+          name: plan_ps_14
+          path: gradient-ps-cloud/tests
+          workspace: default
+          context: terraform
+          filters:
+            branches:
+              ignore: master
+
       - docker-tools/build_and_push:
           name: docker-build-and-push-pr
           context: docker-deploy
