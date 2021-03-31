@@ -115,6 +115,22 @@ workflows:
           filters:
             branches:
               ignore: master
+      - terraform_plan_13:
+          name: plan_metal_13
+          path: gradient-metal/tests
+          workspace: default
+          context: terraform
+          filters:
+            branches:
+              ignore: master
+      - terraform_plan_14:
+          name: plan_aws_14
+          path: gradient-aws/tests
+          workspace: default
+          context: terraform
+          filters:
+            branches:
+              ignore: master
       - terraform_plan_14:
           name: plan_metal_14
           path: gradient-metal/tests
