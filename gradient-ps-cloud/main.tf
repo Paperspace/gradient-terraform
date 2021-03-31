@@ -6,6 +6,7 @@ terraform {
         }
         paperspace = {
             source = "Paperspace/paperspace"
+            version = "0.4.0"
         }
         rancher2 = {
             source = "rancher/rancher2"
@@ -100,7 +101,6 @@ locals {
 }
 
 provider "cloudflare" {
-    version = "~> 2.0"
     email   = var.cloudflare_email
     api_key = var.cloudflare_api_key
 }
