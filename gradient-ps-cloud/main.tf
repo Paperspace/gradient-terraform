@@ -4,6 +4,9 @@ terraform {
             source  = "cloudflare/cloudflare"
             version = "~> 2.10.0"
         }
+        paperspace = {
+            source = "Paperspace/paperspace"
+        }
         rancher2 = {
             source = "rancher/rancher2"
             version = "1.10.6"
