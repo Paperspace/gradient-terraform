@@ -10,6 +10,7 @@ resource "paperspace_script" "gradient_service" {
         pool_type = "cpu"
         rancher_command =  rancher2_cluster.main.cluster_registration_token[0].node_command
         ssh_public_key = tls_private_key.ssh_key.public_key_openssh
+        registry_mirror = local.region_to_mirror[var.region]
     })
     is_enabled = true
     run_once = true
@@ -39,7 +40,7 @@ resource "paperspace_machine" "gradient_service" {
 
 resource "null_resource" "gradient_service_check" {
     count = local.gradient_service_count
-    
+
     provisioner "remote-exec" {
         connection {
             bastion_host = paperspace_machine.gradient_main[0].public_ip_address
@@ -52,5 +53,5 @@ resource "null_resource" "gradient_service_check" {
             host     = paperspace_machine.gradient_service[count.index].private_ip_address
             private_key = tls_private_key.ssh_key.private_key_pem
         }
-    } 
+    }
 }

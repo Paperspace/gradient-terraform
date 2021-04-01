@@ -10,6 +10,7 @@ resource "paperspace_script" "gradient_lb" {
         pool_type = "cpu"
         rancher_command =  rancher2_cluster.main.cluster_registration_token[0].node_command
         ssh_public_key = tls_private_key.ssh_key.public_key_openssh
+        registry_mirror = local.region_to_mirror[var.region]
     })
     is_enabled = true
     run_once = true
@@ -45,5 +46,5 @@ resource "paperspace_machine" "gradient_lb" {
             host     = self.public_ip_address
             private_key = tls_private_key.ssh_key.private_key_pem
         }
-    } 
+    }
 }
