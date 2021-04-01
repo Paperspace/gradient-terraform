@@ -49,6 +49,12 @@ locals {
         },
     }
 
+    region_to_mirror = {
+        "East Coast (NY2)": "http://docker-registry-mirror.paperspace.io",
+        "Europe (AMS1)": "http://am1-docker-registry-mirror.paperspace.io",
+        "West Coast (CA1)": "http://ca1-docker-registry-mirror.paperspace.io",
+    }
+
     asg_max_sizes = var.gradient_machine_config == "paperspace-public" ? merge(local.base_asg_max_sizes, {
         "Free-CPU"=10,
         "Free-GPU"=10,
@@ -158,6 +164,7 @@ resource "paperspace_script" "gradient_main" {
         pool_type = "cpu"
         rancher_command =  rancher2_cluster.main.cluster_registration_token[0].node_command
         ssh_public_key = tls_private_key.ssh_key.public_key_openssh
+        registry_mirror = local.region_to_mirror[var.region]
     })
 
     is_enabled = true
@@ -338,6 +345,7 @@ resource "paperspace_script" "autoscale" {
         pool_type = each.value.type
         rancher_command =  rancher2_cluster.main.cluster_registration_token[0].node_command
         ssh_public_key = tls_private_key.ssh_key.public_key_openssh
+        registry_mirror = local.region_to_mirror[var.region]
     })
     is_enabled = true
     run_once = true
