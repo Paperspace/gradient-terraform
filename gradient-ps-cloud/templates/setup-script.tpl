@@ -6,6 +6,13 @@ until docker ps -a || (( count++ >= 30 )); do echo "Check if docker is up..."; s
 
 usermod -G docker paperspace
 
+mkdir -p /sys/fs/cgroup/pids/podruntime.slice
+mkdir -p /sys/fs/cgroup/hugetlb/podruntime.slice
+mkdir -p /sys/fs/cgroup/cpuset/podruntime.slice
+mkdir -p /sys/fs/cgroup/cpu/podruntime.slice
+mkdir -p /sys/fs/cgroup/memory/podruntime.slice
+mkdir -p /sys/fs/cgroup/systemd/podruntime.slice
+
 cat <<EOL > /etc/docker/daemon.json
 {
     "log-driver": "json-file",
