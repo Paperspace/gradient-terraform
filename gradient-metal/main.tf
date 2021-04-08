@@ -1,7 +1,7 @@
 locals {
     has_k8s = var.k8s_endpoint == "" ? false : true
     has_shared_storage = var.shared_storage_path == "" ? false : true
-    k8s_version = var.k8s_version == "" ? "1.16.15" : var.k8s_version
+    k8s_version = var.k8s_version == "" ? "1.16.10" : var.k8s_version
     shared_storage_type = var.shared_storage_type == "" ? "nfs" : var.shared_storage_type
 
     is_single_node = length(var.k8s_workers) == 0
