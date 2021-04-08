@@ -268,7 +268,9 @@ kube-prometheus-stack:
       paperspace.com/pool-name: ${service_pool_name}
     ingress:
       hosts:
-        - ${domain}/prometheus
+        - ${domain}
+      paths:
+        - /prometheus
   kube-state-metrics:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
