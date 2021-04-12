@@ -104,6 +104,11 @@ locals {
 
     ssh_key_path = "${path.module}/ssh_key"
     storage_server = paperspace_machine.gradient_main[0].private_ip_address
+
+    k8s_version_to_rke_version = {
+        "1.16.15"="v1.16.15-rancher1-4",
+        "1.15.12"="v1.15.12-rancher2-7",
+    }
 }
 
 provider "cloudflare" {
@@ -292,7 +297,7 @@ resource "rancher2_cluster" "main" {
   name = var.cluster_handle
   description = var.name
   rke_config {
-        kubernetes_version = "v${local.k8s_version}"
+        kubernetes_version = local.k8s_version_to_rke_version[local.k8s_version]
 
         dns {
             node_selector = local.dns_node_selector
