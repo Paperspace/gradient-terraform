@@ -91,7 +91,7 @@ locals {
     gradient_lb_count = var.kind == "multinode" ? 1 : 0
     gradient_main_count = var.kind == "multinode" ? 3 : 1
     gradient_service_count = var.kind == "multinode" ? 3 : 0
-    k8s_version = var.k8s_version == "" ? "1.15.12" : var.k8s_version
+    k8s_version = var.k8s_version == "" ? "1.16.15" : var.k8s_version
     kubeconfig = yamldecode(rancher2_cluster_sync.main.kube_config)
     lb_ips = var.kind == "multinode" ? paperspace_machine.gradient_lb.*.public_ip_address : [paperspace_machine.gradient_main[0].public_ip_address]
     lb_pool_name = var.kind == "multinode" ? "lb" : "services-small"
@@ -104,6 +104,11 @@ locals {
 
     ssh_key_path = "${path.module}/ssh_key"
     storage_server = paperspace_machine.gradient_main[0].private_ip_address
+
+    k8s_version_to_rke_version = {
+        "1.16.15"="v1.16.15-rancher1-4",
+        "1.15.12"="v1.15.12-rancher2-7",
+    }
 }
 
 provider "cloudflare" {
@@ -292,7 +297,7 @@ resource "rancher2_cluster" "main" {
   name = var.cluster_handle
   description = var.name
   rke_config {
-        kubernetes_version = "v${local.k8s_version}-rancher2-7"
+        kubernetes_version = local.k8s_version_to_rke_version[local.k8s_version]
 
         dns {
             node_selector = local.dns_node_selector
