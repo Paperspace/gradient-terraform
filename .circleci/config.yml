@@ -16,24 +16,6 @@ jobs:
       - run:
           command: go test ./...
 
-  terraform_plan_12:
-    docker:
-      - image: hashicorp/terraform:0.12.29
-    parameters:
-      path:
-        type: string
-      workspace:
-        type: string
-    steps:
-      - checkout
-      - run:
-          command: |-
-            apk add curl
-            bin/setup
-            cd << parameters.path >>
-            terraform init
-            terraform workspace select << parameters.workspace >>
-            terraform plan
   terraform_plan_13:
     docker:
       - image: hashicorp/terraform:0.13.4
@@ -88,22 +70,6 @@ workflows:
   pr:
     jobs:
       - test_cli:
-          filters:
-            branches:
-              ignore: master
-      - terraform_plan_12:
-          name: plan_aws_12
-          path: gradient-aws/tests
-          workspace: default
-          context: terraform
-          filters:
-            branches:
-              ignore: master
-      - terraform_plan_12:
-          name: plan_metal_12
-          path: gradient-metal/tests
-          workspace: default
-          context: terraform
           filters:
             branches:
               ignore: master
