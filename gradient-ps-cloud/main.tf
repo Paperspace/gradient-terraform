@@ -312,6 +312,16 @@ resource "rancher2_cluster" "main" {
             max_unavailable_controlplane = "1"
             max_unavailable_worker       = "10%"
         }
+
+        services {
+            kubelet {
+                extra_args = {
+                    "system-reserved" = "cpu=500m,memory=256Mi,ephemeral-storage=5Gi"
+                    "kube-reserved-cgroup" = "/podruntime.slice"
+                    "kube-reserved" = "cpu=500m,memory=256Mi,ephemeral-storage=5Gi"
+                }
+            }
+        }
   }
 }
 
