@@ -263,7 +263,7 @@ nfs-client-provisioner:
     paperspace.com/pool-name: ${service_pool_name}
 
 kube-prometheus-stack:
-  graphana:
+  grafana:
     enabled: false
   prometheus:
     prometheusSpec:
