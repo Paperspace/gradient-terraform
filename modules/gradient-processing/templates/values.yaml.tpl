@@ -279,10 +279,6 @@ kube-prometheus-stack:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
 
-  pushgateway:
-    ingress:
-      enabled: false
-
 traefik:
   replicas: ${lb_count}
   nodeSelector:
