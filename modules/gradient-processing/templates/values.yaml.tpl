@@ -264,8 +264,9 @@ nfs-client-provisioner:
 
 kube-prometheus-stack:
   prometheus:
-    nodeSelector:
-      paperspace.com/pool-name: ${service_pool_name}
+    prometheusSpec:
+      nodeSelector:
+        paperspace.com/pool-name: ${service_pool_name}
     ingress:
       hosts:
         - ${domain}
@@ -274,10 +275,9 @@ kube-prometheus-stack:
   kube-state-metrics:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
-
-  pushgateway:
-    ingress:
-      enabled: false
+  prometheusOperator:
+    nodeSelector:
+      paperspace.com/pool-name: ${service_pool_name}
 
 traefik:
   replicas: ${lb_count}
