@@ -318,7 +318,7 @@ resource "rancher2_cluster" "main" {
                 extra_args = {
                     "system-reserved" = "cpu=500m,memory=256Mi,ephemeral-storage=5Gi"
                     "kube-reserved-cgroup" = "/podruntime.slice"
-                    "kube-reserved" = "cpu=500m,memory=256Mi,ephemeral-storage=5Gi"
+                    "kube-reserved" = "cpu=500m,memory=256Mi,ephemeral-storage=10Gi"
                 }
             }
         }
