@@ -263,15 +263,21 @@ nfs-client-provisioner:
     paperspace.com/pool-name: ${service_pool_name}
 
 kube-prometheus-stack:
+  graphana:
+    enabled: false
   prometheus:
-    nodeSelector:
-      paperspace.com/pool-name: ${service_pool_name}
+    prometheusSpec:
+      nodeSelector:
+        paperspace.com/pool-name: ${service_pool_name}
     ingress:
       hosts:
         - ${domain}
       paths:
         - /prometheus
   kube-state-metrics:
+    nodeSelector:
+      paperspace.com/pool-name: ${service_pool_name}
+  prometheusOperator:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
 
