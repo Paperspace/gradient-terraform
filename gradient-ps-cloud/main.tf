@@ -245,6 +245,7 @@ resource "null_resource" "check_cluster" {
 module "gradient_processing" {
     source = "../modules/gradient-processing"
     enabled = null_resource.check_cluster.id == "" ? false : true
+    is_public_cluster = local.is_public_cluster
 
     amqp_hostname = var.amqp_hostname
     amqp_port = var.amqp_port
