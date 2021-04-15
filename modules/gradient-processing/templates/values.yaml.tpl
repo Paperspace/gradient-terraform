@@ -267,6 +267,15 @@ kube-prometheus-stack:
     prometheusSpec:
       nodeSelector:
         paperspace.com/pool-name: ${service_pool_name}
+      %{ if is_public_cluster }
+      resources:
+        limits:
+          cpu: 4000m
+          memory: 3Gi
+        requests:
+          cpu: 2000m
+          memory: 1Gi
+      %{ endif }
     ingress:
       hosts:
         - ${domain}
@@ -322,6 +331,16 @@ traefik:
       - 8.8.8.8:53
     persistence:
       storageClass: ${shared_storage_name}
+  %{ endif }
+
+  %{ if is_public_cluster }
+  resources:
+    requests:
+      cpu: 500m
+      memory: 256Mi
+    limits:
+      cpu: 1000m
+      memory: 2048Mi
   %{ endif }
 
 argo:

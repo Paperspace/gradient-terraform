@@ -83,6 +83,8 @@ locals {
         "V100"=0,
     }, var.asg_min_sizes)
 
+    is_public_cluster = var.gradient_machine_config == "paperspace-public"
+
     cluster_autoscaler_cloudprovider = "paperspace"
     cluster_autoscaler_enabled = true
     dns_node_selector = var.kind == "multinode" ? {} : { "paperspace.com/pool-name" = "services-small" }
