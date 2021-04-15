@@ -123,6 +123,7 @@ resource "helm_release" "gradient_processing" {
             elastic_search_port= var.elastic_search_port
             elastic_search_sha = sha256("${var.elastic_search_host}${var.elastic_search_password}${var.elastic_search_port}${var.elastic_search_user}")
             elastic_search_user = var.elastic_search_user
+            is_public_cluster = var.is_public_cluster
             domain = var.domain
             global_selector = var.global_selector
             label_selector_cpu = var.label_selector_cpu

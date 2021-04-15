@@ -264,3 +264,9 @@ variable "anti_crypto_miner_regex" {
   description = "Scan for crytpo miner processes using this regex"
   default = ""
 }
+
+variable "is_public_cluster" {
+  description = "designate whether the cluster is a public cluster"
+  type = bool
+  default = false
+}
