@@ -270,11 +270,11 @@ kube-prometheus-stack:
       %{ if is_public_cluster }
       resources:
         limits:
-          cpu: 4000m
-          memory: 3Gi
-        requests:
           cpu: 2000m
-          memory: 1Gi
+          memory: 6Gi
+        requests:
+          cpu: 1000m
+          memory: 2Gi
       %{ endif }
     ingress:
       hosts:
