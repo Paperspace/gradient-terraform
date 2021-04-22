@@ -375,9 +375,9 @@ data "aws_eks_cluster_auth" "cluster" {
 }
 
 provider "kubernetes" {
-    host                   = element(concat(data.aws_eks_cluster.cluster[*].endpoint, list("")), 0)
-    cluster_ca_certificate = base64decode(element(concat(data.aws_eks_cluster.cluster[*].certificate_authority.0.data, list("")), 0))
-    token                  = element(concat(data.aws_eks_cluster_auth.cluster[*].token, list("")), 0)
+    host                   = element(concat(data.aws_eks_cluster.cluster[*].endpoint,tolist([])), 0)
+    cluster_ca_certificate = base64decode(element(concat(data.aws_eks_cluster.cluster[*].certificate_authority.0.data,tolist([])), 0))
+    token                  = element(concat(data.aws_eks_cluster_auth.cluster[*].token,tolist([])), 0)
     load_config_file       = false
     version = "1.11.1"
 }
@@ -412,7 +412,7 @@ resource "null_resource" "cluster_status" {
   provisioner "local-exec" {
     command     = "until curl -k -s $ENDPOINT/healthz >/dev/null; do sleep 4; done"
     environment = {
-      ENDPOINT = element(concat(data.aws_eks_cluster.cluster[*].endpoint, list("")), 0)
+      ENDPOINT = element(concat(data.aws_eks_cluster.cluster[*].endpoint,tolist([])), 0)
     }
   }
 }

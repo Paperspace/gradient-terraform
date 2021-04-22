@@ -3,7 +3,7 @@
 
 provider "registry.terraform.io/cloudflare/cloudflare" {
   version     = "2.10.1"
-  constraints = "~> 2.0, ~> 2.10.0"
+  constraints = "~> 2.10.0"
   hashes = [
     "h1:xPvUyKmw21YRkFeaKif8jf+DrF6FfBbG2AYqbTf7S2s=",
     "zh:09841840b820f4b0b69f7b9b7816db2a5b44f9f6e68a04139b384f232e72760f",
@@ -38,7 +38,8 @@ provider "registry.terraform.io/hashicorp/helm" {
 }
 
 provider "registry.terraform.io/hashicorp/kubernetes" {
-  version = "1.13.3"
+  version     = "1.13.3"
+  constraints = "1.13.3"
   hashes = [
     "h1:whoGs/NeucMF8U/urPaeXdQUb+ppaO1Ae4r5aJRhfrU=",
     "zh:11fd58df9c297a4f3cab82ce8eb2f54f1be27f78fa23be2273ecd545ab254b91",
