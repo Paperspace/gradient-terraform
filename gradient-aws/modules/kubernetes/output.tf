@@ -3,11 +3,12 @@ output "k8s_cluster_ca_certificate" {
 }
 
 output "k8s_host" {
-    value = element(concat(data.aws_eks_cluster.cluster[*].endpoint, list("")), 0)
+    value = element(concat(data.aws_eks_cluster.cluster[*].endpoint,tolist([])), 0)
 }
 
 output "k8s_token" {
-    value = element(concat(data.aws_eks_cluster_auth.cluster[*].token, list("")), 0)
+    sensitive = true
+    value = element(concat(data.aws_eks_cluster_auth.cluster[*].token,tolist([])), 0)
 }
 
 output "cluster_id" {
