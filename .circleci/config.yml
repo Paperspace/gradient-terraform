@@ -52,7 +52,24 @@ jobs:
             terraform init
             terraform workspace select << parameters.workspace >>
             terraform plan
-
+  terraform_plan_15:
+    docker:
+      - image: hashicorp/terraform:0.15.0
+    parameters:
+      path:
+        type: string
+      workspace:
+        type: string
+    steps:
+      - checkout
+      - run:
+          command: |-
+            apk add curl
+            bin/setup
+            cd << parameters.path >>
+            terraform init
+            terraform workspace select << parameters.workspace >>
+            terraform plan
 
   upload_assets:
     docker:
@@ -99,6 +116,22 @@ workflows:
               ignore: master
       - terraform_plan_14:
           name: plan_metal_14
+          path: gradient-metal/tests
+          workspace: default
+          context: terraform
+          filters:
+            branches:
+              ignore: master
+      - terraform_plan_14:
+          name: plan_aws_15
+          path: gradient-aws/tests
+          workspace: default
+          context: terraform
+          filters:
+            branches:
+              ignore: master
+      - terraform_plan_15:
+          name: plan_metal_15
           path: gradient-metal/tests
           workspace: default
           context: terraform
