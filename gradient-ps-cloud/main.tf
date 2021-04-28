@@ -1,47 +1,47 @@
 terraform {
-    required_providers {
-        cloudflare = {
-            source  = "cloudflare/cloudflare"
-            version = "~> 2.10.0"
-        }
-        paperspace = {
-            source = "Paperspace/paperspace"
-            version = "0.4.0"
-        }
-        rancher2 = {
-            source = "rancher/rancher2"
-            version = "1.10.6"
-        }
+  required_providers {
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 2.10.0"
     }
+    paperspace = {
+      source  = "Paperspace/paperspace"
+      version = "0.4.0"
+    }
+    rancher2 = {
+      source  = "rancher/rancher2"
+      version = "1.10.6"
+    }
+  }
 }
 
 locals {
-    asg_types = var.gradient_machine_config == "paperspace-public" ? merge(local.base_asg_types, {
-        "Free-CPU"={
-            type = "cpu"
-        }
-        "Free-GPU"={
-            type = "gpu"
-        }
-        "Free-P5000"={
-            type = "gpu"
-        }
-    }) : local.base_asg_types
+  asg_types = var.gradient_machine_config == "paperspace-public" ? merge(local.base_asg_types, {
+    "Free-CPU" = {
+      type = "cpu"
+    }
+    "Free-GPU" = {
+      type = "gpu"
+    }
+    "Free-P5000" = {
+      type = "gpu"
+    }
+  }) : local.base_asg_types
 
-    base_asg_types = {
-        "C5"={
-            type = "cpu"
-        },
-        "C7"={
-            type = "cpu"
-        },
-        "P4000"={
-            type = "gpu"
-        },
-        "P5000"={
-            type = "gpu"
-        },
-        "P6000"={
+  base_asg_types = {
+    "C5" = {
+      type = "cpu"
+    },
+    "C7" = {
+      type = "cpu"
+    },
+    "P4000" = {
+      type = "gpu"
+    },
+    "P5000" = {
+      type = "gpu"
+    },
+    "P6000" = {
             type = "gpu"
         },
         "V100"={
@@ -294,6 +294,7 @@ module "gradient_processing" {
     pod_assignment_label_name = "paperspace.com/pool-name"
     legacy_datasets_host_path = local.legacy_datasets_host_path
     anti_crypto_miner_regex = var.anti_crypto_miner_regex
+    prometheus_resources = var.prometheus_resources
 }
 
 resource "rancher2_cluster" "main" {
