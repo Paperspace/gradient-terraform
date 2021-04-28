@@ -267,7 +267,7 @@ kube-prometheus-stack:
     prometheusSpec:
       nodeSelector:
         paperspace.com/pool-name: ${service_pool_name}
-      %{ if prometheus_resources }
+      %{ if prometheus_resources != null }
       resources:
         limits:
           cpu: ${prometheus_resources["cpu"]}
