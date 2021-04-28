@@ -199,5 +199,5 @@ variable "write_kubeconfig" {
 
 variable "prometheus_resources" {
     description = "map of k8s resource requests for prometheus"
-    type        = map(string, map(string, string))
+    type        = map(map(string))
 }
