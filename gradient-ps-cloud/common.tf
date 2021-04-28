@@ -196,3 +196,8 @@ variable "write_kubeconfig" {
     description = "Write kubeconfig to a file"
     default = "true"
 }
+
+variable "prometheus_resources" {
+    description = "map of k8s resource requests for prometheus"
+    type        = map(string, map(string, string))
+}

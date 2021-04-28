@@ -267,14 +267,14 @@ kube-prometheus-stack:
     prometheusSpec:
       nodeSelector:
         paperspace.com/pool-name: ${service_pool_name}
-      %{ if is_public_cluster }
+      %{ if prometheus_resources }
       resources:
         limits:
-          cpu: 2000m
-          memory: 6Gi
+          cpu: ${prometheus_resources["limits"]["cpu"]
+          memory: ${prometheus_resources["limits"]["memory"]
         requests:
-          cpu: 1000m
-          memory: 2Gi
+          cpu: ${prometheus_resources["requests"]["cpu"]
+          memory: ${prometheus_resources["requests"]["memory"]
       %{ endif }
     ingress:
       hosts:

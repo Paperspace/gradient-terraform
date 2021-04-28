@@ -270,3 +270,8 @@ variable "is_public_cluster" {
   type = bool
   default = false
 }
+
+variable "prometheus_resources" {
+  description = "map of k8s resource requests for prometheus"
+  type        = map(string, map(string, string))
+}
