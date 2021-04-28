@@ -8,5 +8,4 @@ ADD . /home/paperspace/gradient-installer
 
 WORKDIR /home/paperspace/gradient-cluster
 ENTRYPOINT
-#CMD terraform init && terraform plan
-CMD sleep 10000
+CMD terraform init && terraform plan
