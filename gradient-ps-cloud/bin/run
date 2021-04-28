@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
 # Note: Terraform reads vars from env vars that are prefixed TF_VARS_,
 # and they'll be named whatever the rest of the env var name is.
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-pushd ${DIR}/..
+pushd "${DIR}"/..
 
 echo "Configuring managed backend..."
 
@@ -21,14 +21,14 @@ terraform {
 EOF
 
 terraform init
-terraform workspace new $TF_VAR_cluster_handle || true
-terraform workspace select $TF_VAR_cluster_handle
+terraform workspace new "${TF_VAR_cluster_handle:-}" || true
+terraform workspace select "${TF_VAR_cluster_handle:-}"
 
-export PAPERSPACE_API_KEY=$TF_VAR_admin_user_api_key
-export PAPERSPACE_API_HOST=$TF_VAR_api_host
-export PAPERSPACE_REGION=$TF_VAR_region
+export PAPERSPACE_API_KEY="${TF_VAR_admin_user_api_key:-}"
+export PAPERSPACE_API_HOST="${TF_VAR_api_host:-}"
+export PAPERSPACE_REGION="${TF_VAR_region:-}"
 
-case "$TERRAFORM_COMMAND" in
+case "${TERRAFORM_COMMAND:-}" in
   destroy)
     terraform state rm module.gradient_processing || true
     terraform state rm module.kubernetes || true
@@ -36,6 +36,7 @@ case "$TERRAFORM_COMMAND" in
     ;;
   plan)
     terraform plan
+    ;;
   *)
     terraform apply -auto-approve
     ;;
