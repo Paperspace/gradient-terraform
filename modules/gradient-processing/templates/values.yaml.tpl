@@ -270,11 +270,11 @@ kube-prometheus-stack:
       %{ if prometheus_resources }
       resources:
         limits:
-          cpu: ${prometheus_resources["limits"]["cpu"]
-          memory: ${prometheus_resources["limits"]["memory"]
+          cpu: ${prometheus_resources["cpu"]}
+          memory: ${prometheus_resources["memory"]}
         requests:
-          cpu: ${prometheus_resources["requests"]["cpu"]
-          memory: ${prometheus_resources["requests"]["memory"]
+          cpu: ${prometheus_resources["cpu"]}
+          memory: ${prometheus_resources["memory"]}
       %{ endif }
     ingress:
       hosts:
