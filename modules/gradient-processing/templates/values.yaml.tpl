@@ -141,9 +141,6 @@ gradient-operator:
     %{ if pod_assignment_label_name != "" }
     podAssignmentLabelName: ${pod_assignment_label_name}
     %{ endif }
-    %{ if legacy_datasets_host_path != "" }
-    legacyDatasetsHostPath: ${legacy_datasets_host_path}
-    %{ endif }
 
     abuseWatcher:
       enabled: ${anti_crypto_miner_regex != ""}
