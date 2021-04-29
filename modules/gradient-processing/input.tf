@@ -293,4 +293,5 @@ variable "kubefledged_ca_bundle" {
 
 variable "kubefledged_images_object" {
   description = "Kubefleged configuration on what images and which nodes to cache on"
+  default = ""
 }
