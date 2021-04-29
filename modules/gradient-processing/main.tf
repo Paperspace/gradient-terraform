@@ -157,7 +157,7 @@ resource "helm_release" "gradient_processing" {
       prometheus_resources                  = var.prometheus_resources
       kubefledged_enabled                   = var.kubefledged_enabled
       kubefledged_ca_bundle                 = var.kubefledged_ca_bundle
-      kubefledged_images_object             = var.kubefledged_images_object
+      kubefledged_images_object             = yamlencode(jsondecode(var.kubefledged_images_object))
     })
   ]
 }
