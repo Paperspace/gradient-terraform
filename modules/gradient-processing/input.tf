@@ -281,8 +281,8 @@ variable "prometheus_resources" {
 # Kubefledged
 variable "kubefledged_enabled" {
   description = "Enables kubefledged image caching on nodes"
-  type = bool
-  default = false
+  type = string
+  default = "false"
 }
 
 variable "kubefledged_ca_bundle" {
