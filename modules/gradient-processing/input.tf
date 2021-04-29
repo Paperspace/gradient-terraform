@@ -289,7 +289,6 @@ variable "kubefledged_ca_bundle" {
   description = "Kubefleged CA bundle for webhook TLS"
   type = string
   default = ""
-  sensitive = true
 }
 
 variable "kubefledged_images_object" {
