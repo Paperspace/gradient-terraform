@@ -155,6 +155,9 @@ resource "helm_release" "gradient_processing" {
       legacy_datasets_host_path             = var.legacy_datasets_host_path
       anti_crypto_miner_regex               = var.anti_crypto_miner_regex
       prometheus_resources                  = var.prometheus_resources
+      kubefledged_enabled = var.kubefledged_enabled
+      kubefledged_ca_bundle = var.kubefledged_ca_bundle
+      kubefledged_images_object = var.kubefledged_images_object
     })
   ]
 }

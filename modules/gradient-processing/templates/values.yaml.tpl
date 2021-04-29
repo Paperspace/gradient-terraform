@@ -347,3 +347,8 @@ argo:
   controller:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
+
+kubefledged:
+  enabled: ${kubefledged_enabled}
+  validatingWebhookCABundle: ${kubefledged_ca_bundle}
+  images: ${kubefledged_images_object}

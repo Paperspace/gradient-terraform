@@ -265,6 +265,7 @@ variable "anti_crypto_miner_regex" {
   default     = ""
 }
 
+# TODO(roger): move the concept of a public cluster outside gradient-installer
 variable "is_public_cluster" {
   description = "designate whether the cluster is a public cluster"
   type        = bool
@@ -275,4 +276,22 @@ variable "prometheus_resources" {
   description = "map of k8s resource requests for prometheus"
   type        = map(string)
   default     = null
+}
+
+# Kubefledged
+variable "kubefledged_enabled" {
+  description = "Enables kubefledged image caching on nodes"
+  type = bool
+  default = false
+}
+
+variable "kubefledged_ca_bundle" {
+  description = "Kubefleged CA bundle for webhook TLS"
+  type = string
+  default = ""
+  sensitive = true
+}
+
+variable "kubefledged_images_object" {
+  description = "Kubefleged configuration on what images and which nodes to cache on"
 }
