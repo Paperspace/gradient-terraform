@@ -218,5 +218,8 @@ variable "image_cache_enabled" {
 variable "image_cache_list" {
   description = "list of containers to cache on your worker nodes"
   type = list(string)
-  default = []
+  default = [
+    "paperspace/fastai:2.0-CUDA9.2-fastbook-v0.1.0",
+    "tensorflow/tensorflow:2.4.1-jupyter",
+  ]
 }
