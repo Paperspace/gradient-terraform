@@ -60,6 +60,7 @@ ${rancher_command} \
     --worker \
     --label paperspace.com/pool-name=${pool_name} \
     --label paperspace.com/pool-type=${pool_type} \
+    --label paperspace.com/gradient-worker=true \
     --label provider.autoscaler/prefix=paperspace \
     --label provider.autoscaler/nodeName=$MACHINE_ID \
     --node-name $MACHINE_ID \
@@ -70,6 +71,7 @@ ${rancher_command} \
 ${rancher_command} \
     --worker \
     --label paperspace.com/pool-name=${pool_name} \
+    --label paperspace.com/gradient-worker=true \
     --label paperspace.com/pool-type=${pool_type} \
     --node-name $MACHINE_ID \
     --address $MACHINE_PRIVATE_IP
@@ -79,6 +81,7 @@ ${rancher_command} \
 ${rancher_command} \
     --worker \
     --label paperspace.com/pool-name=${pool_name} \
+    --label paperspace.com/gradient-worker=true \
     --label paperspace.com/pool-type=${pool_type} \
     --node-name $MACHINE_ID \
     --address $MACHINE_PUBLIC_IP \

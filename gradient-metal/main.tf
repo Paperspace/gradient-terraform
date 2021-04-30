@@ -117,4 +117,7 @@ module "gradient_processing" {
     tls_cert = var.tls_cert
     tls_key = var.tls_key
     use_pod_anti_affinity = var.use_pod_anti_affinity
+    cert_manager_enabled = var.cert_manager_enabled
+    image_cache_enabled = var.image_cache_enabled
+    image_cache_list = var.image_cache_list
 }

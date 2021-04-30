@@ -347,3 +347,12 @@ argo:
   controller:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
+
+kubefledged:
+  enabled: ${image_cache_enabled}
+  %{ if image_cache_enabled }
+  cacheSpec:
+    - images: ${image_cache_list}
+      nodeSelector:
+        paperspace.com/gradient-worker: "true"
+  %{ endif }

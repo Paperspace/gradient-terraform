@@ -22,6 +22,37 @@ locals {
   tls_secret_name = "gradient-processing-tls"
 }
 
+resource "helm_release" "cert-manager" {
+  count = var.cert_manager_enabled ? 1 : 0
+
+  name                = "cert-manager"
+  repository          = "https://charts.jetstack.io"
+  chart               = "cert-manager"
+  version             = var.cert_manager_version
+
+  set {
+    name = "installCRDs"
+    value = "true"
+  }
+}
+
+resource "helm_release" "kube-fledged" {
+  count = var.image_cache_enabled ? 1 : 0
+
+  name                = "fledged"
+  repository          = local.helm_repo_url
+  repository_username = var.helm_repo_username
+  repository_password = var.helm_repo_password
+  chart               = "kubefledged"
+  version             = var.kubefledged_version
+
+
+  set {
+    name = "certManager.enabled"
+    value = "true"
+  }
+}
+
 resource "helm_release" "gradient_processing" {
   name                = "gradient-processing"
   repository          = local.helm_repo_url
@@ -155,6 +186,8 @@ resource "helm_release" "gradient_processing" {
       legacy_datasets_host_path             = var.legacy_datasets_host_path
       anti_crypto_miner_regex               = var.anti_crypto_miner_regex
       prometheus_resources                  = var.prometheus_resources
+      image_cache_enabled                   = var.image_cache_enabled
+      image_cache_list                      = jsonencode(var.image_cache_list)
     })
   ]
 }
