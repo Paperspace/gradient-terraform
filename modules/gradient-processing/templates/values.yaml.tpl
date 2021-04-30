@@ -354,5 +354,5 @@ kubefledged:
   cacheSpec:
     - images: ${image_cache_list}
       nodeSelector:
-        paperspace.com/gradient-worker: true
+        paperspace.com/gradient-worker: "true"
   %{ endif }
