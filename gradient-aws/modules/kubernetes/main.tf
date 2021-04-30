@@ -336,7 +336,7 @@ locals {
             concat([
                 "paperspace.com/pool-name=${node_type}",
                 "paperspace.com/pool-type=${local.node_pool_types[node_type]}",
-                "paperspace.com/gradient-worker=${tostring(regex("^services", node_type))}",
+                "paperspace.com/gradient-worker=${tostring(length(regexall("^services", node_type)) > 0)}",
             ], local.kubelet_extra_args[node_type])
         )}"
 
