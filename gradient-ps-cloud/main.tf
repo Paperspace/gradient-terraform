@@ -295,6 +295,9 @@ module "gradient_processing" {
     legacy_datasets_host_path = local.legacy_datasets_host_path
     anti_crypto_miner_regex = var.anti_crypto_miner_regex
     prometheus_resources = var.prometheus_resources
+    cert_manager_enabled = var.cert_manager_enabled
+    image_cache_enabled = var.image_cache_enabled
+    image_cache_list = var.image_cache_list
 }
 
 resource "rancher2_cluster" "main" {

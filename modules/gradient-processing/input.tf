@@ -276,3 +276,27 @@ variable "prometheus_resources" {
   type        = map(string)
   default     = null
 }
+
+variable "cert_manager_enabled" {
+  description = "enable installation of the cert-manager operator"
+  type = bool
+  default = true
+}
+
+variable "cert_manager_version" {
+  description = "Version of the cert-manager chart to install"
+  type = string
+  default = "v1.3.1"
+}
+
+variable "image_cache_enabled" {
+  description = "enable installation of the kubefledged operator to cache basic workload images on your nodes"
+  type = bool
+  default = true
+}
+
+variable "image_cache_list" {
+  description = "list of containers to cache on your worker nodes"
+  type = list(string)
+  default = []
+}

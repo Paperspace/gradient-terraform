@@ -202,3 +202,21 @@ variable "prometheus_resources" {
   type        = map(string)
   default     = null
 }
+
+variable "cert_manager_enabled" {
+  description = "Enable cert-manager helm package, this is required for gradient but should only be installed once per cluster"
+  default     = true
+  type        = bool
+}
+
+variable "image_cache_enabled" {
+  description = "enable installation of the kubefledged operator to cache basic workload images on your nodes"
+  type = bool
+  default = true
+}
+
+variable "image_cache_list" {
+  description = "list of containers to cache on your worker nodes"
+  type = list(string)
+  default = []
+}

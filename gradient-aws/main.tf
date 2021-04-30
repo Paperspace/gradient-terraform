@@ -171,6 +171,9 @@ module "gradient_processing" {
     metrics_new_relic_key = var.metrics_new_relic_key
     metrics_new_relic_enabled = var.metrics_new_relic_enabled
     metrics_new_relic_name = var.metrics_new_relic_name
+    cert_manager_enabled = var.cert_manager_enabled
+    image_cache_enabled = var.image_cache_enabled
+    image_cache_list = var.image_cache_list
 }
 
 output "elb_hostname" {

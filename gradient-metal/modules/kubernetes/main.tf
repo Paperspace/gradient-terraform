@@ -32,6 +32,7 @@ locals {
             "node-role.kubernetes.io/worker": ""
             "paperspace.com/pool-name" = worker["pool-name"]
             "paperspace.com/pool-type" = worker["pool-type"]
+            "paperspace.com/gradient-worker": tostring(regex("^services", worker["pool-name"]))
         }
         roles = [
             "worker",

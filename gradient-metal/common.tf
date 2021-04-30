@@ -196,3 +196,21 @@ variable "write_kubeconfig" {
     description = "Write kubeconfig to a file"
     default = "true"
 }
+
+variable "cert_manager_enabled" {
+  description = "Enable cert-manager helm package, this is required for gradient but should only be installed once per cluster"
+  default     = false
+  type        = bool
+}
+
+variable "image_cache_enabled" {
+  description = "enable installation of the kubefledged operator to cache basic workload images on your nodes"
+  type = bool
+  default = false
+}
+
+variable "image_cache_list" {
+  description = "list of containers to cache on your worker nodes"
+  type = list(string)
+  default = []
+}
