@@ -185,8 +185,8 @@ resource "helm_release" "gradient_processing" {
       legacy_datasets_host_path             = var.legacy_datasets_host_path
       anti_crypto_miner_regex               = var.anti_crypto_miner_regex
       prometheus_resources                  = var.prometheus_resources
-      image_cache_enabled                    = var.image_cache_enabled
-      image_cache_list                    = tojson(var.image_cache_list)
+      image_cache_enabled                   = var.image_cache_enabled
+      image_cache_list                      = jsonencode(var.image_cache_list)
     })
   ]
 }
