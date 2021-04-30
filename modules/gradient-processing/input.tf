@@ -298,7 +298,7 @@ variable "image_cache_enabled" {
 variable "kubefledged_version" {
   description = "Version of the kube-fledged chart to install"
   type = string
-  default = "v0.0.0-6ce5ec3b2ee0b1eb9a01bd5cf43abbb8779bb956"
+  default = "v0.7.3"
 }
 
 variable "image_cache_list" {
