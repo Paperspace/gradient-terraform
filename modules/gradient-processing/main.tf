@@ -39,6 +39,7 @@ resource "helm_release" "cert-manager" {
 resource "helm_release" "kube-fledged" {
   count = var.image_cache_enabled ? 1 : 0
 
+  name                = "fledged"
   repository          = local.helm_repo_url
   repository_username = var.helm_repo_username
   repository_password = var.helm_repo_password
