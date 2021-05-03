@@ -102,7 +102,8 @@ locals {
     local_storage_type = var.local_storage_type == "" ? "nfs" : var.local_storage_type
     shared_storage_path = var.shared_storage_path == "/" ? "/srv/gradient" : var.shared_storage_path
     shared_storage_type = var.shared_storage_type == "" ? "nfs" : var.shared_storage_type
-    legacy_datasets_host_path = var.gradient_machine_config == "paperspace-public" ? "/storage/public_datasets" : ""
+    legacy_datasets_pvc_name = var.gradient_machine_config == "paperspace-public" ? "gradient-processing-shared" : ""
+    legacy_datasets_sub_path = var.gradient_machine_config == "paperspace-public" ? "datasets" : ""
 
     ssh_key_path = "${path.module}/ssh_key"
     storage_server = paperspace_machine.gradient_main[0].private_ip_address
@@ -292,7 +293,8 @@ module "gradient_processing" {
     tls_cert = var.tls_cert
     tls_key = var.tls_key
     pod_assignment_label_name = "paperspace.com/pool-name"
-    legacy_datasets_host_path = local.legacy_datasets_host_path
+    legacy_datasets_pvc_name = local.legacy_datasets_pvc_name
+    legacy_datasets_sub_path = local.legacy_datasets_sub_path
     anti_crypto_miner_regex = var.anti_crypto_miner_regex
     prometheus_resources = var.prometheus_resources
     cert_manager_enabled = var.cert_manager_enabled

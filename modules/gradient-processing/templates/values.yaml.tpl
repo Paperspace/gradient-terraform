@@ -144,6 +144,12 @@ gradient-operator:
     %{ if legacy_datasets_host_path != "" }
     legacyDatasetsHostPath: ${legacy_datasets_host_path}
     %{ endif }
+    %{ if legacy_datasets_pvc_name != "" }
+    legacyDatasetsHostPath: ${legacy_datasets_pvc_name}
+    %{ endif }
+    %{ if legacy_datasets_sub_path != "" }
+    legacyDatasetsHostPath: ${legacy_datasets_sub_path}
+    %{ endif }
 
     abuseWatcher:
       enabled: ${anti_crypto_miner_regex != ""}
