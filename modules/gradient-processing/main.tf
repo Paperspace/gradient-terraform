@@ -184,6 +184,8 @@ resource "helm_release" "gradient_processing" {
       metrics_new_relic_name                = var.metrics_new_relic_name
       pod_assignment_label_name             = var.pod_assignment_label_name
       legacy_datasets_host_path             = var.legacy_datasets_host_path
+      legacy_datasets_sub_path              = var.legacy_datasets_sub_path
+      legacy_datasets_pvc_name              = var.legacy_datasets_pvc_name
       anti_crypto_miner_regex               = var.anti_crypto_miner_regex
       prometheus_resources                  = var.prometheus_resources
       image_cache_enabled                   = var.image_cache_enabled
