@@ -145,7 +145,7 @@ gradient-operator:
     legacyDatasetsHostPath: ${legacy_datasets_host_path}
     %{ endif }
     %{ if legacy_datasets_pvc_name != "" }
-    legacyDatasetPVCName: ${legacy_datasets_pvc_name}
+    legacyDatasetsPVCName: ${legacy_datasets_pvc_name}
     %{ endif }
     %{ if legacy_datasets_sub_path != "" }
     legacyDatasetsSubPath: ${legacy_datasets_sub_path}
