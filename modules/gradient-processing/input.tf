@@ -259,6 +259,7 @@ variable "legacy_datasets_host_path" {
   description = "This directory will be mounted as `/data` in your notebooks"
   default     = ""
 }
+
 variable "legacy_datasets_pvc_name" {
   description = "This volume will be mounted as `/data` in your notebooks"
   default     = ""
@@ -288,30 +289,30 @@ variable "prometheus_resources" {
 
 variable "cert_manager_enabled" {
   description = "enable installation of the cert-manager operator"
-  type = bool
-  default = true
+  type        = bool
+  default     = true
 }
 
 variable "cert_manager_version" {
   description = "Version of the cert-manager chart to install"
-  type = string
-  default = "v1.3.1"
+  type        = string
+  default     = "v1.3.1"
 }
 
 variable "image_cache_enabled" {
   description = "enable installation of the kubefledged operator to cache basic workload images on your nodes"
-  type = bool
-  default = true
+  type        = bool
+  default     = true
 }
 
 variable "kubefledged_version" {
   description = "Version of the kube-fledged chart to install"
-  type = string
-  default = "v0.7.3"
+  type        = string
+  default     = "v0.7.3"
 }
 
 variable "image_cache_list" {
   description = "list of containers to cache on your worker nodes"
-  type = list(string)
-  default = []
+  type        = list(string)
+  default     = []
 }
