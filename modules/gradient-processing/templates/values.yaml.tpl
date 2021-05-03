@@ -354,5 +354,9 @@ kubefledged:
   cacheSpec:
     - images: ${image_cache_list}
       nodeSelector:
+        %{ if is_public_cluster }
+        provider.autoscaler/prefix: paperspace
+        %{ else }
         paperspace.com/gradient-worker: "true"
+        %{ endif }
   %{ endif }
