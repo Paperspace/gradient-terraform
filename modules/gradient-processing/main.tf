@@ -34,7 +34,7 @@ resource "helm_release" "cert_manager" {
     name = "installCRDs"
     value = "true"
   }
-  
+
   set {
     name = "nodeSelector"
     value = jsonencode({ "paperspace.com/pool-name" = var.service_pool_name })
@@ -53,11 +53,11 @@ resource "helm_release" "kube_fledged" {
   version             = var.kubefledged_version
 
 
- {
+  set {
     name = "certManager.enabled"
     value = "true"
   }
-  
+
   set {
     name = "nodeSelector"
     value = jsonencode({ "paperspace.com/pool-name" = var.service_pool_name })
