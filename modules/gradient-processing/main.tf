@@ -61,6 +61,7 @@ resource "helm_release" "kube_fledged" {
   set {
     name = "nodeSelector"
     value = { "paperspace.com/pool-name" = var.service_pool_name }
+    type = map
   }
 }
 
