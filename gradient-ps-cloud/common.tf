@@ -226,7 +226,7 @@ variable "image_cache_list" {
     "tensorflow/tensorflow:1.5.0-gpu-py3",
     "paperspace/transformers-gpu:0.4.0",
     "paperspace/gradient-coder:latest",
-    "paperspace/gradient-base:tf24-py36-0.10-small",
+    "paperspace/gradient-base:tf24-py38-0.10-small",
     "paperspace/gradient-base:tf24-py36-0.10",
     "paperspace/gradient-base:tf115-py36-0.10",
     "paperspace/fastai:2.0-CUDA9.2-fastbook-v0.1.0",
