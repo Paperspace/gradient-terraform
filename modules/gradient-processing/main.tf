@@ -38,7 +38,7 @@ resource "helm_release" "cert_manager" {
 
 resource "helm_release" "kube_fledged" {
   count = var.image_cache_enabled ? 1 : 0
-  depends_on = [ resource.helm_release.cert_manager ]
+  depends_on = [ helm_release.cert_manager ]
 
   name                = "fledged"
   repository          = local.helm_repo_url
