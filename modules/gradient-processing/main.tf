@@ -22,7 +22,7 @@ locals {
   tls_secret_name = "gradient-processing-tls"
 }
 
-resource "helm_release" "cert-manager" {
+resource "helm_release" "cert_manager" {
   count = var.cert_manager_enabled ? 1 : 0
 
   name                = "cert-manager"
@@ -36,8 +36,9 @@ resource "helm_release" "cert-manager" {
   }
 }
 
-resource "helm_release" "kube-fledged" {
-  count = var.image_cache_enabled ? 1 : 0
+resource "helm_release" "kube_fledged" {
+  count = var.image_cache_enabled and var.cert_manager_enabled ? 1 : 0
+  depends_on = [ resource.helm_release.cert_manager ]
 
   name                = "fledged"
   repository          = local.helm_repo_url
