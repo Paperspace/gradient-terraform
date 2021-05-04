@@ -224,5 +224,8 @@ variable "image_cache_list" {
     "paperspace/transformers-gpu:0.4.0",
     "nvcr.io/nvidia/rapidsai/rapidsai:0.18-cuda11.0-base-ubuntu18.04",
     "nvcr.io/nvidia/pytorch:21.02-py3",
+    "paperspace/gradient-base:tf24-py36-0.10-small",
+    "paperspace/gradient-base:tf24-py36-0.10",
+    "paperspace/gradient-base:tf115-py36-0.10",
   ]
 }
