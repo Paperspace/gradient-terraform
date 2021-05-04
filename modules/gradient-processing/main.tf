@@ -37,7 +37,7 @@ resource "helm_release" "cert_manager" {
 }
 
 resource "helm_release" "kube_fledged" {
-  count = var.image_cache_enabled and var.cert_manager_enabled ? 1 : 0
+  count = var.image_cache_enabled ? 1 : 0
   depends_on = [ resource.helm_release.cert_manager ]
 
   name                = "fledged"
