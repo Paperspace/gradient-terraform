@@ -30,15 +30,14 @@ resource "helm_release" "cert_manager" {
   chart               = "cert-manager"
   version             = var.cert_manager_version
 
-  set {
-    name = "installCRDs"
-    value = "true"
-  }
-
-  set {
-    name = "nodeSelector"
-    value = jsonencode({ "paperspace.com/pool-name" = var.service_pool_name })
-  }
+  values = [
+    yamlencode({
+      "installCRDs" = true
+      "nodeSelector" = {
+        "paperspace.com/pool-name" = var.service_pool_name
+      }
+    })
+  ]
 }
 
 resource "helm_release" "kube_fledged" {
@@ -52,16 +51,16 @@ resource "helm_release" "kube_fledged" {
   chart               = "kubefledged"
   version             = var.kubefledged_version
 
-
-  set {
-    name = "certManager.enabled"
-    value = "true"
-  }
-
-  set {
-    name = "nodeSelector"
-    value = jsonencode({ "paperspace.com/pool-name" = var.service_pool_name })
-  }
+  values = [
+    yamlencode({
+      "certManager" = {
+        "enabled" = true
+      }
+      "nodeSelector" = {
+        "paperspace.com/pool-name" = var.service_pool_name
+      }
+    })
+  ]
 }
 
 resource "helm_release" "gradient_processing" {
