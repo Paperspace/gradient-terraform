@@ -38,6 +38,7 @@ resource "helm_release" "cert_manager" {
   set {
     name = "nodeSelector"
     value = { "paperspace.com/pool-name" = var.service_pool_name }
+    type = map
   }
 }
 
