@@ -299,7 +299,17 @@ module "gradient_processing" {
     prometheus_resources = var.prometheus_resources
     cert_manager_enabled = var.cert_manager_enabled
     image_cache_enabled = var.image_cache_enabled
-    image_cache_list = var.image_cache_list
+    image_cache_list = length(var.image_cache_list) != 0 ? var.image_cache_list : [
+        "paperspace/fastai:2.0-CUDA9.2-fastbook-v0.1.0",
+        "tensorflow/tensorflow:2.4.1-jupyter",
+        "paperspace/transformers-gpu:0.4.0",
+        "jupyter/datascience-notebook",
+        "nvcr.io/nvidia/rapidsai/rapidsai:0.18-cuda11.0-base-ubuntu18.04",
+        "nvcr.io/nvidia/pytorch:21.02-py3",
+        "paperspace/gradient-base:tf24-py36-0.10-small",
+        "paperspace/gradient-base:tf24-py36-0.10",
+        "paperspace/gradient-base:tf115-py36-0.10",
+    ]
 }
 
 resource "rancher2_cluster" "main" {
