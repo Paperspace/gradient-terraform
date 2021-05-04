@@ -227,5 +227,20 @@ variable "image_cache_list" {
     "paperspace/gradient-base:tf24-py36-0.10-small",
     "paperspace/gradient-base:tf24-py36-0.10",
     "paperspace/gradient-base:tf115-py36-0.10",
+    "tensorflow/tensorflow:2.4.1-gpu-jupyter",
+    "ufoym/deepo:all-py27-jupyter"
+    "paperspace/transformers-gpu:0.4.0",
+    "jupyter/r-notebook",
+    "jalfaizy/cv_docker:latest",
+    "tensorflow/tensorflow:1.5.0-gpu-py3",
+    "nvcr.io/nvidia/pytorch:21.02-py3",
+    "paperspace/all-in-one:0.1.0",
+    "jupyter/datascience-notebook",
+    "tensorflow/tensorflow:2.0.0a0-py3-jupyter",
+    "paperspace/gradient-coder:latest",
+    "paperspace/fastai:2.0-CUDA9.2-fastbook-v0.1.0",
+    "paperspace/dl-containers:tensorflow1140-py36-cu100-cdnn7-jupyter",
+    "nvcr.io/nvidia/rapidsai/rapidsai:0.18-cuda11.0-base-ubuntu18.04",
+    "tensorflow/tensorflow:1.5.0-py3",
   ]
 }
