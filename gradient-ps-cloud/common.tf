@@ -221,5 +221,8 @@ variable "image_cache_list" {
   default = [
     "paperspace/fastai:2.0-CUDA9.2-fastbook-v0.1.0",
     "tensorflow/tensorflow:2.4.1-jupyter",
+    "paperspace/transformers-gpu:0.4.0",
+    "nvcr.io/nvidia/rapidsai/rapidsai:0.18-cuda11.0-base-ubuntu18.04",
+    "nvcr.io/nvidia/pytorch:21.02-py3",
   ]
 }
