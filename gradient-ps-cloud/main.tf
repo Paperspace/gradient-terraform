@@ -300,15 +300,19 @@ module "gradient_processing" {
     cert_manager_enabled = true
     image_cache_enabled = true
     image_cache_list = length(var.image_cache_list) != 0 ? var.image_cache_list : [
-        "paperspace/fastai:2.0-CUDA9.2-fastbook-v0.1.0",
-        "tensorflow/tensorflow:2.4.1-jupyter",
-        "paperspace/transformers-gpu:0.4.0",
-        "jupyter/datascience-notebook",
-        "nvcr.io/nvidia/rapidsai/rapidsai:0.18-cuda11.0-base-ubuntu18.04",
-        "nvcr.io/nvidia/pytorch:21.02-py3",
+        "ufoym/deepo:all-py27-jupyter",
+        "tensorflow/tensorflow:2.4.1-gpu-jupyter",
+        "tensorflow/tensorflow:2.0.0a0-py3-jupyter",
+        "tensorflow/tensorflow:1.5.0-py3",
+        "tensorflow/tensorflow:1.5.0-gpu-py3",
         "paperspace/gradient-base:tf24-py36-0.10-small",
         "paperspace/gradient-base:tf24-py36-0.10",
         "paperspace/gradient-base:tf115-py36-0.10",
+        "paperspace/fastai:2.0-CUDA9.2-fastbook-v0.1.0",
+        "paperspace/transformers-gpu:0.4.0",
+        "nvcr.io/nvidia/rapidsai/rapidsai:0.18-cuda11.0-base-ubuntu18.04",
+        "nvcr.io/nvidia/pytorch:21.02-py3",
+        "jupyter/datascience-notebook",
     ]
 }
 
