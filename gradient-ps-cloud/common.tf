@@ -197,35 +197,21 @@ variable "write_kubeconfig" {
   default     = "true"
 }
 
-variable "prometheus_resources" {
-  description = "map of k8s resource requests for prometheus"
-  type        = map(string)
-  default     = null
-}
-
 variable "cert_manager_enabled" {
   description = "Enable cert-manager helm package, this is required for gradient but should only be installed once per cluster"
-  default     = true
+  default     = false
   type        = bool
 }
+
 
 variable "image_cache_enabled" {
   description = "enable installation of the kubefledged operator to cache basic workload images on your nodes"
   type = bool
-  default = true
+  default = false
 }
 
 variable "image_cache_list" {
   description = "list of containers to cache on your worker nodes"
   type = list(string)
-  default = [
-    "paperspace/fastai:2.0-CUDA9.2-fastbook-v0.1.0",
-    "tensorflow/tensorflow:2.4.1-jupyter",
-    "paperspace/transformers-gpu:0.4.0",
-    "nvcr.io/nvidia/rapidsai/rapidsai:0.18-cuda11.0-base-ubuntu18.04",
-    "nvcr.io/nvidia/pytorch:21.02-py3",
-    "paperspace/gradient-base:tf24-py36-0.10-small",
-    "paperspace/gradient-base:tf24-py36-0.10",
-    "paperspace/gradient-base:tf115-py36-0.10",
-  ]
+  default = []
 }

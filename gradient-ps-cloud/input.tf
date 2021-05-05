@@ -117,6 +117,12 @@ variable "machine_template_id_gpu" {
     default = "tmun4o2g"
 }
 
+variable "prometheus_resources" {
+    description = "map of k8s resource requests for prometheus"
+    type        = map(string)
+    default     = null
+}
+
 variable "rancher_api_url" {
     description = "Rancher API URL"
 }
