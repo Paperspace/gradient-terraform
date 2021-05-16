@@ -61,7 +61,7 @@ func NewUpdateCommand() *cobra.Command {
 
 			// Check if current version is latest
 			if *latestRelease.TagName == version {
-				println(cli.TextSuccess("All up to date!"))
+				println(cli.TextSuccess("Already up to date"))
 
 				return nil
 			}
