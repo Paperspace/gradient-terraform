@@ -12,5 +12,5 @@ if [ -z "${VERSION}" ];then
     usage
 fi
 
-GOOS=darwin go build -ldflags "-X github.com/paperspace/gradient-installer/pkg/cli/commands.version=${VERSION}" -o ${DIR}/../build/gradient-installer-darwin ${DIR}/../cmd/gradient-installer/main.go
-GOOS=linux go build -ldflags "-X github.com/paperspace/gradient-installer/pkg/cli/commands.version=${VERSION}" -o ${DIR}/../build/gradient-installer-linux ${DIR}/../cmd/gradient-installer/main.go
+GOOS=darwin go build -ldflags "-X github.com/Paperspace/gradient-installer/pkg/cli/commands.version=${VERSION}" -o ${DIR}/../build/gradient-installer-darwin ${DIR}/../cmd/gradient-installer/main.go
+GOOS=linux go build -ldflags "-X github.com/Paperspace/gradient-installer/pkg/cli/commands.version=${VERSION}" -o ${DIR}/../build/gradient-installer-linux ${DIR}/../cmd/gradient-installer/main.go
