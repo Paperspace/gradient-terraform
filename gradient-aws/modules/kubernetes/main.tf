@@ -391,6 +391,7 @@ resource "aws_key_pair" "main" {
 
 module "eks" {
     source          = "terraform-aws-modules/eks/aws"
+    version = "15.2.0"
 
     config_output_path = pathexpand(var.kubeconfig_path)
     create_eks = var.enable
@@ -402,6 +403,7 @@ module "eks" {
     subnets         = var.node_subnet_ids
     vpc_id          = var.vpc_id
 
+    wait_for_cluster_cmd = "until curl -k -s $ENDPOINT/healthz >/dev/null; do sleep 4; done"
     worker_groups = local.worker_groups
     write_kubeconfig = var.write_kubeconfig
 }
