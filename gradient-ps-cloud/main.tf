@@ -298,7 +298,7 @@ module "gradient_processing" {
     anti_crypto_miner_regex = var.anti_crypto_miner_regex
     prometheus_resources = var.prometheus_resources
     cert_manager_enabled = true
-    image_cache_enabled = false
+    image_cache_enabled = true
     image_cache_list = length(var.image_cache_list) != 0 ? var.image_cache_list : [
         "ufoym/deepo:all-py27-jupyter",
         "tensorflow/tensorflow:2.4.1-gpu-jupyter",
