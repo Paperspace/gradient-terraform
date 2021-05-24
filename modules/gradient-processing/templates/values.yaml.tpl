@@ -12,6 +12,14 @@ global:
     port: ${elastic_search_port}
     user: ${elastic_search_user}
   %{ endif }
+
+  %{ if image_cache_enabled }
+  imageCacher:
+    enabled: true
+    config:
+      maxParallelism: 20
+      images: ${image_cache_list}
+  %{ endif }
   logs:
     host: ${logs_host}
   ingressHost: ${domain}
@@ -353,16 +361,3 @@ argo:
   controller:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
-
-kubefledged:
-  enabled: ${image_cache_enabled}
-  %{ if image_cache_enabled }
-  cacheSpec:
-    - images: ${image_cache_list}
-      nodeSelector:
-        %{ if is_public_cluster }
-        provider.autoscaler/prefix: paperspace
-        %{ else }
-        paperspace.com/gradient-worker: "true"
-        %{ endif }
-  %{ endif }

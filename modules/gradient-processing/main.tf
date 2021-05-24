@@ -40,29 +40,6 @@ resource "helm_release" "cert_manager" {
   ]
 }
 
-resource "helm_release" "kube_fledged" {
-  count = var.image_cache_enabled ? 1 : 0
-  depends_on = [ helm_release.cert_manager ]
-
-  name                = "fledged"
-  repository          = local.helm_repo_url
-  repository_username = var.helm_repo_username
-  repository_password = var.helm_repo_password
-  chart               = "kubefledged"
-  version             = var.kubefledged_version
-
-  values = [
-    yamlencode({
-      "certManager" = {
-        "enabled" = true
-      }
-      "nodeSelector" = {
-        "paperspace.com/pool-name" = var.service_pool_name
-      }
-    })
-  ]
-}
-
 resource "helm_release" "gradient_processing" {
   name                = "gradient-processing"
   repository          = local.helm_repo_url

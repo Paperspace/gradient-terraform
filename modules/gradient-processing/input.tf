@@ -305,12 +305,6 @@ variable "image_cache_enabled" {
   default     = true
 }
 
-variable "kubefledged_version" {
-  description = "Version of the kube-fledged chart to install"
-  type        = string
-  default     = "v0.7.3"
-}
-
 variable "image_cache_list" {
   description = "list of containers to cache on your worker nodes"
   type        = list(string)
