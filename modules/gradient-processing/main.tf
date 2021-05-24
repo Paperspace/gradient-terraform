@@ -47,7 +47,6 @@ resource "helm_release" "gradient_processing" {
   repository_password = var.helm_repo_password
   chart               = var.chart
   version             = var.gradient_processing_version
-  depends_on          = [ helm_release.kube_fledged ]
 
   set_sensitive {
     name  = "global.elasticSearch.password"
