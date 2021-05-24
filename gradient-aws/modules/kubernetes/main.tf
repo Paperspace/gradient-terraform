@@ -402,7 +402,6 @@ module "eks" {
     subnets         = var.node_subnet_ids
     vpc_id          = var.vpc_id
 
-    wait_for_cluster_cmd = "until curl -k -s $ENDPOINT/healthz >/dev/null; do sleep 4; done"
     worker_groups = local.worker_groups
     write_kubeconfig = var.write_kubeconfig
 }
