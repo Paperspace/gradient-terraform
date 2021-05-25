@@ -298,7 +298,7 @@ module "gradient_processing" {
     anti_crypto_miner_regex = var.anti_crypto_miner_regex
     prometheus_resources = var.prometheus_resources
     cert_manager_enabled = true
-    image_cache_enabled = false
+    image_cache_enabled = true
     image_cache_list = length(var.image_cache_list) != 0 ? var.image_cache_list : [
         "ufoym/deepo:all-py27-jupyter",
         "tensorflow/tensorflow:2.4.1-gpu-jupyter",
@@ -306,8 +306,7 @@ module "gradient_processing" {
         "tensorflow/tensorflow:1.5.0-py3",
         "tensorflow/tensorflow:1.5.0-gpu-py3",
         "paperspace/transformers-gpu:0.4.0",
-        "paperspace/gradient-base:tf24-py36-0.10-small",
-        "paperspace/gradient-base:tf24-py36-0.10",
+        "paperspace/gradient-base:tf24-py38-0.10-small",
         "paperspace/gradient-base:tf115-py36-0.10",
         "paperspace/fastai:2.0-CUDA9.2-fastbook-v0.1.0",
         "paperspace/dl-containers:tensorflow1140-py36-cu100-cdnn7-jupyter",
