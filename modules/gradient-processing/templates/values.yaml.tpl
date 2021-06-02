@@ -13,19 +13,17 @@ global:
     user: ${elastic_search_user}
   %{ endif }
 
-  %{ if image_cache_enabled }
-  imageCacher:
-    enabled: true
-    config:
-      maxParallelism: 20
-      images: ${image_cache_list}
-  %{ endif }
   logs:
     host: ${logs_host}
   ingressHost: ${domain}
   clusterSecretChecksum: ${cluster_secret_checksum}
   serviceNodeSelector:
     paperspace.com/pool-name: ${service_pool_name}
+  serviceResources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
   api: ${paperspace_base_url}
 
   defaultStorageName: ${default_storage_name}
@@ -361,3 +359,11 @@ argo:
   controller:
     nodeSelector:
       paperspace.com/pool-name: ${service_pool_name}
+
+%{ if image_cache_enabled }
+imageCacher:
+  enabled: true
+  config:
+    maxParallelism: 20
+    images: ${image_cache_list}
+%{ endif }
