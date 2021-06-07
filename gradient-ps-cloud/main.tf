@@ -306,7 +306,7 @@ module "gradient_processing" {
         "tensorflow/tensorflow:1.5.0-py3",
         "tensorflow/tensorflow:1.5.0-gpu-py3",
         "paperspace/transformers-gpu:0.4.0",
-        "paperspace/gradient-base:tf24-py38-0.10-small",
+        "paperspace/gradient-base:tf24-py36-0.10",
         "paperspace/gradient-base:tf115-py36-0.10",
         "paperspace/fastai:2.0-CUDA9.2-fastbook-v0.1.0",
         "paperspace/dl-containers:tensorflow1140-py36-cu100-cdnn7-jupyter",
