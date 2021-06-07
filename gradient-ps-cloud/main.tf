@@ -311,7 +311,7 @@ module "gradient_processing" {
         "paperspace/fastai:2.0-CUDA9.2-fastbook-v0.1.0",
         "paperspace/dl-containers:tensorflow1140-py36-cu100-cdnn7-jupyter",
         "paperspace/all-in-one:0.1.0",
-        "nvcr.io/nvidia/rapidsai/rapidsai:0.18-cuda11.0-base-ubuntu18.04",
+        "rapidsai/rapidsai:0.19-cuda11.0-runtime-ubuntu18.04-py3.7",
         "rapidsai/rapidsai:0.18-cuda11.0-base-ubuntu18.04",
         "nvcr.io/nvidia/pytorch:21.02-py3",
         "jupyter/r-notebook",
