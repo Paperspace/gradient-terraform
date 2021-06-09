@@ -42,6 +42,7 @@ resource "null_resource" "gradient_service_check" {
     count = local.gradient_service_count
 
     provisioner "remote-exec" {
+        inline = ["/bin/true"]
         connection {
             bastion_host = paperspace_machine.gradient_main[0].public_ip_address
             bastion_user = "paperspace"

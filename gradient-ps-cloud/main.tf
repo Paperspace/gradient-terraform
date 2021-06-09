@@ -207,6 +207,7 @@ resource "paperspace_machine" "gradient_main" {
     is_managed = true
 
     provisioner "remote-exec" {
+        inline = ["/bin/true"]
         connection {
             timeout = "10m"
             type     = "ssh"

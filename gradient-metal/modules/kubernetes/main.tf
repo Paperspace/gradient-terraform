@@ -90,7 +90,7 @@ resource "null_resource" "rke_nodes_wait" {
     }
 
     provisioner "remote-exec" {
-        inline = []
+        inline = ["/bin/true"]
         connection {
             type     = "ssh"
             user     = var.ssh_user
