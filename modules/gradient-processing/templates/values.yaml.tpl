@@ -144,6 +144,18 @@ gradient-operator:
   config:
     ingressHost: ${domain}
     usePodAntiAffinity: ${use_pod_anti_affinity}
+    
+    %{ if is_public_cluster }
+    controller:
+      resources:
+        requests:
+          cpu: 500m
+          memory: 512Mi
+        limits:
+          cpu: 1000m
+          memory: 1024Mi
+    %{ endif }
+
     %{ if pod_assignment_label_name != "" }
     podAssignmentLabelName: ${pod_assignment_label_name}
     %{ endif }
