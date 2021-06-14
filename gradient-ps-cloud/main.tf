@@ -90,7 +90,7 @@ locals {
   dns_node_selector                = var.kind == "multinode" ? {} : { "paperspace.com/pool-name" = "services-small" }
   enable_gradient_service          = var.kind == "multinode" ? 1 : 0
   enable_gradient_lb               = var.kind == "multinode" ? 1 : 0
-  enable_gradient_prometheus_pool  = is_public_cluster ? 1 : 0
+  enable_gradient_prometheus_pool  = local.is_public_cluster ? 1 : 0
   gradient_prometheus_pool_count   = local.enable_prometheus_pool ? 1 : 0
   promtheus_pool_name              = local.enable_prometheus_pool ? "prometheus" : "services-small"
   gradient_lb_count                = var.kind == "multinode" ? 1 : 0
