@@ -33,7 +33,8 @@ if [ "$TERRAFORM_COMMAND" = "destroy" ]; then
   terraform state rm module.kubernetes || true
   terraform destroy -auto-approve
 else
-  terraform apply -auto-approve
+  #terraform apply -auto-approve
+  terraform plan
 fi
 
 popd
