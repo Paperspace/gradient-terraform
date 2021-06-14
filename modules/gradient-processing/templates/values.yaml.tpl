@@ -144,7 +144,7 @@ gradient-operator:
   config:
     ingressHost: ${domain}
     usePodAntiAffinity: ${use_pod_anti_affinity}
-    
+ 
     %{ if is_public_cluster }
     controller:
       resources:
@@ -290,7 +290,7 @@ kube-prometheus-stack:
   prometheus:
     prometheusSpec:
       nodeSelector:
-        paperspace.com/pool-name: ${service_pool_name}
+        paperspace.com/pool-name: ${prometheus_pool_name}
       %{ if prometheus_resources != null }
       resources:
         limits:

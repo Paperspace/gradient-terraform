@@ -310,3 +310,9 @@ variable "image_cache_list" {
   type        = list(string)
   default     = []
 }
+
+variable "prometheus_pool_name" {
+  description = "paperspace.com/pool-name for prometheus"
+  type        = string
+  default     = "services-small"
+}

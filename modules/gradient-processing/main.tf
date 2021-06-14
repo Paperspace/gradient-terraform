@@ -25,10 +25,10 @@ locals {
 resource "helm_release" "cert_manager" {
   count = var.cert_manager_enabled ? 1 : 0
 
-  name                = "cert-manager"
-  repository          = "https://charts.jetstack.io"
-  chart               = "cert-manager"
-  version             = var.cert_manager_version
+  name       = "cert-manager"
+  repository = "https://charts.jetstack.io"
+  chart      = "cert-manager"
+  version    = var.cert_manager_version
 
   values = [
     yamlencode({
@@ -175,6 +175,7 @@ resource "helm_release" "gradient_processing" {
       legacy_datasets_pvc_name              = var.legacy_datasets_pvc_name
       anti_crypto_miner_regex               = var.anti_crypto_miner_regex
       prometheus_resources                  = var.prometheus_resources
+      prometheus_prometheus_pool_name       = var.prometheus_pool_name
       image_cache_enabled                   = var.image_cache_enabled
       image_cache_list                      = jsonencode(var.image_cache_list)
     })
