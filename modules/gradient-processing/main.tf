@@ -20,7 +20,7 @@ locals {
   }
 
   tls_secret_name      = "gradient-processing-tls"
-  prometheus_pool_name = var.prometheus_pool_name ? var.prometheus_pool_name : var.service_pool_name
+  prometheus_pool_name = var.prometheus_pool_name != "" ? var.prometheus_pool_name : var.service_pool_name
 }
 
 resource "helm_release" "cert_manager" {
