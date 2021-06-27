@@ -14,6 +14,7 @@ type Common struct {
 	ArtifactsRegion                string            `json:"artifacts_region,omitempty"`
 	ArtifactsSecretAccessKey       string            `json:"artifacts_secret_access_key"`
 	ClusterAPIKey                  string            `json:"cluster_apikey"`
+	ClusterAuthorizationToken      string            `json:"cluster_authorization_token"`
 	ClusterHandle                  string            `json:"cluster_handle"`
 	Domain                         string            `json:"domain"`
 	LetsEncryptDNSName             string            `json:"letsencrypt_dns_name,omitempty"`
@@ -110,6 +111,9 @@ func (c *Common) IsValid() bool {
 	if c.ClusterAPIKey == "" {
 		return false
 	}
+	if c.ClusterAuthorizationToken == "" {
+		return false
+	}
 	if c.ClusterHandle == "" {
 		return false
 	}
@@ -135,6 +139,7 @@ func (c *Common) UpdateFromCluster(cluster *paperspace.Cluster) {
 	c.ArtifactsSecretAccessKey = cluster.S3Credential.SecretKey
 
 	c.ClusterAPIKey = cluster.APIToken.Key
+	c.ClusterAuthorizationToken = cluster.ClusterAuthorizationToken.Key
 	c.ClusterHandle = cluster.ID
 	c.Domain = cluster.Domain
 	c.Name = strings.ReplaceAll(cluster.Name, " ", "-")

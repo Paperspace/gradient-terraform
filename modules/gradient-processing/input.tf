@@ -45,6 +45,10 @@ variable "cluster_apikey" {
   description = "Gradient cluster apikey"
 }
 
+variable "cluster_authorization_token" {
+    description = "Cluster auth token to facilitate secure internal communication between API and processing site"
+}
+
 variable "cluster_autoscaler_autoscaling_groups" {
   type        = list(any)
   description = "Cluster autoscaler autoscaling groups"

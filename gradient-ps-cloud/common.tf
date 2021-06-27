@@ -38,6 +38,10 @@ variable "cluster_apikey" {
   description = "Gradient cluster API key"
 }
 
+variable "cluster_authorization_token" {
+    description = "Cluster auth token to facilitate secure internal communication between API and processing site"
+}
+
 variable "cluster_handle" {
   description = "Gradient cluster API handle"
 }
