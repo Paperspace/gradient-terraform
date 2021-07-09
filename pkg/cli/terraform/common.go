@@ -14,7 +14,6 @@ type Common struct {
 	ArtifactsRegion                string            `json:"artifacts_region,omitempty"`
 	ArtifactsSecretAccessKey       string            `json:"artifacts_secret_access_key"`
 	ClusterAPIKey                  string            `json:"cluster_apikey"`
-	ClusterAuthorizationToken      string            `json:"cluster_authorization_token"`
 	ClusterHandle                  string            `json:"cluster_handle"`
 	Domain                         string            `json:"domain"`
 	LetsEncryptDNSName             string            `json:"letsencrypt_dns_name,omitempty"`
