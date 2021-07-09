@@ -107,11 +107,7 @@ func (c *Common) IsValid() bool {
 	if !c.HasValidArtifactsStorage() {
 		return false
 	}
-
 	if c.ClusterAPIKey == "" {
-		return false
-	}
-	if c.ClusterAuthorizationToken == "" {
 		return false
 	}
 	if c.ClusterHandle == "" {
@@ -139,7 +135,6 @@ func (c *Common) UpdateFromCluster(cluster *paperspace.Cluster) {
 	c.ArtifactsSecretAccessKey = cluster.S3Credential.SecretKey
 
 	c.ClusterAPIKey = cluster.APIToken.Key
-	c.ClusterAuthorizationToken = cluster.ClusterAuthorizationToken.Key
 	c.ClusterHandle = cluster.ID
 	c.Domain = cluster.Domain
 	c.Name = strings.ReplaceAll(cluster.Name, " ", "-")
