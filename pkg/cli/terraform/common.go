@@ -106,7 +106,6 @@ func (c *Common) IsValid() bool {
 	if !c.HasValidArtifactsStorage() {
 		return false
 	}
-
 	if c.ClusterAPIKey == "" {
 		return false
 	}

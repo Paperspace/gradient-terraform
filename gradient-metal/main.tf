@@ -82,6 +82,7 @@ module "gradient_processing" {
     artifacts_secret_access_key = var.artifacts_secret_access_key
     chart = var.gradient_processing_chart
     cluster_apikey = var.cluster_apikey
+    cluster_authorization_token = var.cluster_authorization_token
     cluster_autoscaler_autoscaling_groups = var.cluster_autoscaler_autoscaling_groups
     cluster_autoscaler_cloudprovider = var.cluster_autoscaler_cloudprovider
     cluster_autoscaler_enabled = var.cluster_autoscaler_enabled

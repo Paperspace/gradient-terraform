@@ -70,6 +70,10 @@ resource "helm_release" "gradient_processing" {
     value = var.cluster_apikey
   }
   set_sensitive {
+    name  = "secrets.clusterAuthorizationToken"
+    value = var.cluster_authorization_token
+  }
+  set_sensitive {
     name  = "secrets.tlsCert"
     value = var.tls_cert
   }

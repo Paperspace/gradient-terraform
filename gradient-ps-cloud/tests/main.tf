@@ -7,6 +7,7 @@ module "gradient" {
     artifacts_secret_access_key = "artifacts-secret-access-key"
     
     cluster_apikey = "cluster-apikey-from-paperspace-com"
+    cluster_authorization_token = "cluster-authorization-token-from-paperspace.com"
     cluster_handle = "cluster-handle-from-paperspace-com"
     domain = "gradient.mycompany.com"
 
